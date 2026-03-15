@@ -87,6 +87,28 @@ const health = aggregateHealth(root, overlay);
 
 Graph is from `decompose(loadGenome())` and is read-only; the overlay is caller-owned and in-memory only.
 
+## runPath(options?) — run one path end-to-end (story 9)
+
+Runs one full path: load genome → decompose → create overlay → walk to leaf molecule → resolve implementation → invoke molecule → set molecule node status in overlay. Returns `{ root, overlay, result? }`.
+
+- **Options:** `{ genomeDir?: string, path?: string, encoding?: string, repoRoot?: string }`. `genomeDir` passed to loadGenome. For the read_file molecule: `path` (file to read; default `.genome/mission.md`), `encoding`, `repoRoot` (default `process.cwd()`).
+- **Returns:** `{ root, overlay, result? }` — `root` is the organism node; `overlay` is the status overlay (molecule node set to ok/failed); `result` is the molecule return value (e.g. file contents) or undefined if invocation failed.
+- **RoleId → implementation:** Molecule roleId (e.g. `read_file`) maps to `.molecules/lib/<roleId>.js` under repo root. For read_file, the module exports `readFile(options)` and is invoked with `{ path, encoding?, repoRoot? }`.
+- The runner sets only the **molecule node** in the overlay; parent health is derived by calling `aggregateHealth(root, overlay)` (see Signaling above).
+
+Example:
+
+```js
+const { runPath } = require('./lib/run');
+const { aggregateHealth } = require('./lib/signaling');
+const { root, overlay, result } = runPath({ path: '.genome/mission.md' });
+// overlay['molecule:read_file'].status === 'ok'; result is file contents
+const health = aggregateHealth(root, overlay);
+// health.organism.status, health.organs
+```
+
+CLI: `node scripts/run-path.js [path]` runs the path and prints ok/failed (and a short result preview on success).
+
 ## validateGenome(genomeDir?)
 
 Validation-only: checks that required genome files exist and every role id referenced in `decomposition_rules.md` and contracts exists in the corresponding `role_library` file. Used by the loader and by `scripts/derive-expression-profiles.js`.
