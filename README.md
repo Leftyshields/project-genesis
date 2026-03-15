@@ -183,7 +183,7 @@ All of this is synchronous. No daemon, no background process. One invocation run
 - **[docs/GITHUB_SETTINGS.md](docs/GITHUB_SETTINGS.md)** — Repository governance.
 - **.cursor/commands/** — Workflow automation (capture_issue, explore, design_decisions, create_plan, execute_plan, code_review, qa_checklist, postmortem).
 
---- ’re complete; you’ll
+---
 ## License
 
 MIT
