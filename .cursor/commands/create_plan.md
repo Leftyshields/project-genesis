@@ -155,3 +155,7 @@ Rules:
 - Ask clarifying questions ONLY if critical fields are missing from context (e.g., no success criteria, no desired behavior)
 
 This plan will be used by execution agents.
+
+---
+
+**Next:** Run `/design_decisions` to document design choices before implementation. See `.cursor/commands/workflow.md` for the complete development workflow.

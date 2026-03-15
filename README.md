@@ -164,10 +164,12 @@ All of this is synchronous. No daemon, no background process. One invocation run
 
 ## Quick start
 
+**Start the workflow** — To go from an idea to a runnable organism, begin with the first step: **run the Cursor command `/capture_issue`** with your idea (goal or problem). Cursor will then guide you through each step in order: explore → create plan → design decisions → pre-implementation checklist → execute plan. When the genome is ready, Cursor will ask if you’re complete; when you confirm, the build runs and you’ll see how to run the organism. See [.cursor/commands/workflow.md](.cursor/commands/workflow.md) for the full workflow.
+
 1. **Read the blueprint** — You read [docs/BLUEPRINT.md](docs/BLUEPRINT.md) to understand the framework. The runtime loads the genome from `.genome/`, not the blueprint doc.
 2. **Run Genesis to produce a genome** — Use the design workflow (capture → explore → design → create) to author or update `.genome/`. The organism will not run until the genome meets minimum completeness (see blueprint).
 3. **Verify genome completeness** — The runtime validates on load (`loadGenome()` throws if required files or role references are missing).
-4. **Run the organism** — From repo root: `node scripts/run-path.js .genome/mission.md` or `node -e "const { runPath } = require('./lib/run'); const r = runPath({ path: '.genome/mission.md' }); console.log(r.result ? 'ok' : 'failed');"`. See [lib/README.md](lib/README.md) for options, guardrails, and repair.
+4. **Run the organism** — From repo root: `node scripts/run-path.js .genome/mission.md` or `node scripts/build.js` (validate + run path + run-the-app instructions). See [lib/README.md](lib/README.md) for options, guardrails, and repair.
 
 **Creator → Genesis → Genome → Organism.**
 

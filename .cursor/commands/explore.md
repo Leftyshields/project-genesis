@@ -75,11 +75,5 @@ Once these questions are answered, we can create a plan.
 
 **Workflow Position:** This command follows `/capture_issue` and precedes `/create_plan`.
 
-After this exploration, the next steps are:
-1. Run `/create_plan` to create an execution plan based on this exploration
-2. Run `/design_decisions` to document design choices
-3. Run `/pre_implementation_checklist` to verify readiness
-4. Run `/execute_plan` to begin implementation
-
-See `.cursor/commands/workflow.md` for the complete development workflow.
+**Next:** Run `/create_plan` to create an execution plan based on this exploration. See `.cursor/commands/workflow.md` for the complete development workflow.
 

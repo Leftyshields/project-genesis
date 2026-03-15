@@ -124,14 +124,7 @@ Is this ready to log, or do you want to tweak anything?
 
 **Workflow Position:** This is the first step in the feature development workflow.
 
-**Next Steps:**
-1. Run `/explore` to analyze requirements and constraints
-2. Run `/create_plan` to create an execution plan
-3. Run `/design_decisions` to document design choices
-4. Run `/pre_implementation_checklist` to verify readiness
-5. Run `/execute_plan` to begin implementation
-
-See `.cursor/commands/workflow.md` for the complete development workflow.
+**Next:** Run `/explore` to analyze requirements and constraints. Cursor will guide you through the rest (create_plan → design_decisions → pre_implementation_checklist → execute_plan). See `.cursor/commands/workflow.md` for the full workflow.
 
 ---
 

@@ -126,7 +126,8 @@ If using React state updates:
 - If any item cannot be checked off, stop and complete it before proceeding
 - Missing specifications at this stage will cause rework during implementation
 - It's better to spend time planning than debugging later
+- **If no execution plan file exists:** You may proceed using the implementation outline in design_decisions (e.g. User Flow, Integration Points, Resource/New files) as the execution guide; run `/create_plan` optionally for a formal step list.
 
 ---
 
-**Ready to implement?** Run `/execute_plan` to begin implementation.
+**Next:** Run `/execute_plan` to begin implementation.

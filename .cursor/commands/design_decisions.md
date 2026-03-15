@@ -66,7 +66,4 @@ End by asking:
 
 ---
 
-**Next Steps:**
-1. Review and approve design decisions
-2. Run `/pre_implementation_checklist` to verify all requirements
-3. Run `/execute_plan` to begin implementation
+**Next:** Run `/pre_implementation_checklist` to verify readiness, then `/execute_plan` to begin implementation. See `.cursor/commands/workflow.md` for the complete development workflow.
