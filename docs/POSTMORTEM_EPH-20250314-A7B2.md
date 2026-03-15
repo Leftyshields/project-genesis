@@ -78,6 +78,19 @@
 
 ---
 
+## Process for the rest of this project
+
+**Keep GitHub issues updated as we progress.**
+
+- Backlog stories 1–12 are mapped to [GitHub Issues #1–#12](https://github.com/Leftyshields/project-genesis/issues) (see [docs/GITHUB_SETTINGS.md](GITHUB_SETTINGS.md)).
+- When a backlog story is completed (or a deliverable is merged), **close the corresponding GitHub issue** (or update it: add a comment with the commit/PR, then close).
+- When starting work on a story, optionally assign the issue or add a comment that work has started.
+- This keeps the issue tracker in sync with actual progress and gives a single place (GitHub Issues) to see what’s done vs open.
+
+**Add this to future postmortems / handoffs for this repo:** “Keep GitHub issues in sync with backlog progress; close or update the matching issue when a story is done.”
+
+---
+
 ## Task closure
 
 **Status:** Closed.  

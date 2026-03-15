@@ -43,6 +43,8 @@ Result: You can push to `main`. Contributors (or you when you choose to open a P
 
 ## Backlog ↔ GitHub Issues mapping
 
+**Keep issues in sync:** When a backlog story is completed, close the corresponding GitHub issue (or add a comment with the PR/commit, then close). See [POSTMORTEM_EPH-20250314-A7B2.md](POSTMORTEM_EPH-20250314-A7B2.md) (§ Process for the rest of this project).
+
 | Backlog ID | GitHub Issue |
 |------------|--------------|
 | 1 | [#1](https://github.com/Leftyshields/project-genesis/issues/1) |
