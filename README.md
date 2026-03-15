@@ -1,12 +1,35 @@
 # Project Genesis
 
-**Can you build a product from a prompt?**
+**You're the Creator. One prompt. One app.**
 
-Yes—if the build process itself is governed like a living organism.
+Project Genesis turns a single prompt into a running system the way nature builds an organism: from the ground up. One genome holds the blueprint. Roles stack from **molecule** → **cell** → **tissue** → **organ**—primitives that compose into a whole. A runtime executes that blueprint with health checks, guardrails, and repair. One source of truth. No agent sprawl.
 
-One blueprint (a genome), a hierarchy of roles (organs → tissues → cells → molecules), and a runtime that executes that blueprint with health checks, repair, and guardrails.
+Start with intent. End with a governed build.
 
-Project Genesis is a framework for turning intent into a governed build process.
+---
+
+## Quick start
+
+**Start the workflow** — Run the Cursor command **`/capture_issue`** with your idea (goal or problem). Cursor guides you: explore → create plan → design decisions → pre-implementation checklist → execute plan. When the genome is ready, Cursor asks if you're done; when you confirm, the build runs and you get run-the-app instructions. Full workflow: [.cursor/commands/workflow.md](.cursor/commands/workflow.md).
+
+1. **Capture** — `/capture_issue` with your prompt.
+2. **Explore, design, plan** — Work through the workflow; author or generate the genome in `.genome/`.
+3. **Run the organism** — From repo root: `node scripts/run-path.js .genome/mission.md` or `node scripts/build.js`. See [lib/README.md](lib/README.md) for options, guardrails, and repair.
+
+**Creator → Genesis → Genome → Organism.**
+
+---
+
+## Instantiation
+
+**Start a new project from this repo** — To create a separate "petri dish" instead of working in this clone:
+
+1. Clone Project Genesis.
+2. Create a new directory **outside** this repo (e.g. `mkdir ~/my-organism`).
+3. Run: `./instantiate.sh /path/to/project-genesis /path/to/my-organism`
+4. `cd` into the new project and run `/capture_issue` or edit the genome and run the build.
+
+The script copies everything needed for e2e (`npm test`, `node scripts/run-path.js` work immediately). Options: `--force` (allow non-empty target), `--no-verify` (skip post-copy `npm test`).
 
 ---
 
@@ -15,7 +38,7 @@ Project Genesis is a framework for turning intent into a governed build process.
 1. **Planning phase** — You **capture intent** (goal or problem), **explore** (requirements, constraints), **design** (solution shape), and **create the plan** (execution plan and genome). In this repo that’s the Genesis workflow: capture → explore → design decisions → create plan; then you (or execute_plan) author the genome files in `.genome/`.
 2. **Build phase** — The runtime **loads the genome**, **decomposes** it into the organism hierarchy, and **runs one path** to a molecule (e.g. read a file). Guardrails and repair apply. That’s the “build.”
 
-**Does the build “take over” automatically?** Not today. There is no automatic trigger. After you have a genome, you **run the build yourself**: e.g. `node scripts/run-path.js .genome/mission.md` or call `runPath(...)` from code. So: planning is capture → explore → design → create plan (and genome); build is “you invoke the runtime.” A future version could run the build automatically when the genome is ready (e.g. a watcher or CI step).
+**Does the build “take over” automatically?** In the Cursor workflow, yes: when you confirm at the end of execute_plan, Cursor runs the build for you. There is no trigger that runs without any user action (e.g. no file watcher or CI yet). You can also **run the build yourself** anytime: e.g. `node scripts/run-path.js .genome/mission.md` or `node scripts/build.js` or call `runPath(...)` from code. So: planning is capture → explore → design → create plan (and genome); build is “you invoke the runtime.” A future version could run the build automatically when the genome is ready (e.g. a watcher or CI step).
 
 **“Builds everything”** — Today the runtime runs **one path** (one organ → one tissue → one cell → one molecule) per invocation. It doesn’t discover or run multiple paths by itself. To “build everything” you’d run the runtime once per path or add a layer that schedules multiple runs.
 
@@ -160,21 +183,7 @@ All of this is synchronous. No daemon, no background process. One invocation run
 - **[docs/GITHUB_SETTINGS.md](docs/GITHUB_SETTINGS.md)** — Repository governance.
 - **.cursor/commands/** — Workflow automation (capture_issue, explore, design_decisions, create_plan, execute_plan, code_review, qa_checklist, postmortem).
 
----
-
-## Quick start
-
-**Start the workflow** — To go from an idea to a runnable organism, begin with the first step: **run the Cursor command `/capture_issue`** with your idea (goal or problem). Cursor will then guide you through each step in order: explore → create plan → design decisions → pre-implementation checklist → execute plan. When the genome is ready, Cursor will ask if you’re complete; when you confirm, the build runs and you’ll see how to run the organism. See [.cursor/commands/workflow.md](.cursor/commands/workflow.md) for the full workflow.
-
-1. **Read the blueprint** — You read [docs/BLUEPRINT.md](docs/BLUEPRINT.md) to understand the framework. The runtime loads the genome from `.genome/`, not the blueprint doc.
-2. **Run Genesis to produce a genome** — Use the design workflow (capture → explore → design → create) to author or update `.genome/`. The organism will not run until the genome meets minimum completeness (see blueprint).
-3. **Verify genome completeness** — The runtime validates on load (`loadGenome()` throws if required files or role references are missing).
-4. **Run the organism** — From repo root: `node scripts/run-path.js .genome/mission.md` or `node scripts/build.js` (validate + run path + run-the-app instructions). See [lib/README.md](lib/README.md) for options, guardrails, and repair.
-
-**Creator → Genesis → Genome → Organism.**
-
----
-
+--- ’re complete; you’ll
 ## License
 
 MIT

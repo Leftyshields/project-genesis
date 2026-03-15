@@ -52,6 +52,6 @@ No cycles; ordering above is valid (topological order).
 
 ## Notes
 
-- Stories 1–2 are the design deliverable (this run). Stories 3–12 are implementation follow-on; they may be refined or split using the blueprint and existing workflows.
+- Stories 1–2 are the design deliverable (this run); **story 1 is complete** (GitHub [#1](https://github.com/Leftyshields/project-genesis/issues/1) closed). Stories 3–12 are implementation follow-on; they may be refined or split using the blueprint and existing workflows.
 - “Depends on” uses story IDs; “—” means no dependency.
 - Done when: short acceptance condition per story; full acceptance criteria for the epic are in .ai/context/last_explore.md.

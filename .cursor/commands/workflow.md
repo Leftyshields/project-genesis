@@ -113,6 +113,11 @@ This document outlines the recommended workflow for implementing features in Epi
     
     **Next:** Start next feature or hand off
 
+### Backlog / GitHub sync
+
+- When a backlog story is already satisfied (deliverable exists and meets “Done when”): verify the deliverable, close the corresponding GitHub issue, then run `/postmortem` if desired.
+- When a story is completed in a run: close (or update) the matching GitHub issue so the tracker stays in sync with progress.
+
 ---
 
 ## 🚀 Quick Start Workflow
