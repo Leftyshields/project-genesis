@@ -44,6 +44,49 @@ const { root } = decompose(genome);
 // ... down to molecule with roleId 'read_file', children: []
 ```
 
+## Signaling and health aggregation (story 8)
+
+Status and health flow bottom-up: use a **status overlay** (keyed by node id) to record status; the graph from `decompose()` stays read-only. Story 9 (execution) writes into the overlay; story 10 (Repair) reads via `aggregateHealth()`.
+
+### createStatusOverlay()
+
+Returns a new empty overlay (plain object) for storing status by node id. Caller owns it; typically one overlay per run.
+
+```js
+const { createStatusOverlay, setNodeStatus, aggregateHealth } = require('./lib/signaling');
+const overlay = createStatusOverlay();
+```
+
+### setNodeStatus(overlay, nodeId, payload)
+
+Records status for a node. **Payload shape:** `{ status: 'ok' | 'failed', message?: string }`. Does not validate that `nodeId` exists in the graph (v1).
+
+```js
+setNodeStatus(overlay, 'molecule:read_file', { status: 'ok' });
+setNodeStatus(overlay, 'molecule:read_file', { status: 'failed', message: 'ENOENT' });
+```
+
+### aggregateHealth(root, overlay)
+
+Walks the instance tree bottom-up: leaf nodes use the overlay entry or default `{ status: 'ok' }`; parent nodes are `failed` if any child is `failed`, else `ok`. Returns organism-level summary and organ-level health.
+
+**Returns:**
+
+- `organism`: `{ status: 'ok' | 'failed', message?, organs }` — organism-level summary; `organs` is the same array as below.
+- `organs`: array of `{ id, status, message?, childrenFailed? }` — one entry per organ node.
+
+```js
+const genome = loadGenome();
+const { root } = decompose(genome);
+const overlay = createStatusOverlay();
+setNodeStatus(overlay, 'molecule:read_file', { status: 'failed', message: 'timeout' });
+const health = aggregateHealth(root, overlay);
+// health.organism.status === 'failed'
+// health.organs[0].id === 'organ:Build', health.organs[0].status === 'failed'
+```
+
+Graph is from `decompose(loadGenome())` and is read-only; the overlay is caller-owned and in-memory only.
+
 ## validateGenome(genomeDir?)
 
 Validation-only: checks that required genome files exist and every role id referenced in `decomposition_rules.md` and contracts exists in the corresponding `role_library` file. Used by the loader and by `scripts/derive-expression-profiles.js`.

@@ -3,6 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "node --test lib/loadGenome.test.js lib/decompose.test.js scripts/derive-expression-profiles.test.js scripts/molecules-read_file.test.js"
+    "test": "node --test lib/loadGenome.test.js lib/decompose.test.js lib/signaling.test.js scripts/derive-expression-profiles.test.js scripts/molecules-read_file.test.js"
   }
 }
