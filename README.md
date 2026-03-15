@@ -4,7 +4,18 @@
 
 Project Genesis turns a single prompt into a running system the way nature builds an organism: from the ground up. One genome holds the blueprint. Roles stack from **molecule** → **cell** → **tissue** → **organ**—primitives that compose into a whole. A runtime executes that blueprint with health checks, guardrails, and repair. One source of truth. No agent sprawl.
 
-**What this is:** Project Genesis is a workflow system and runtime for building software from a governed blueprint—structured intent becomes executable software via a biological architecture model, not just prompt → code.
+**What this is:** A framework for designing and executing agentic systems using a biological architecture model. A **Creator** (human) provides intent; **Genesis** (pre-runtime workflow) turns that intent into a validated blueprint (**Genome**); an **Organism** runtime uses the blueprint to decompose work hierarchically (Organ → Tissue → Cell → Molecule), coordinate execution, and maintain health within guardrails.
+
+**What it does:**
+- **Genesis:** Converts raw human intent into a structured, validated blueprint. Does not build the system; defines what must be built.
+- **Genome:** Holds the full instruction set: mission, constraints, decomposition rules, role library, contracts, adaptation boundaries. Shared by all layers; each layer expresses only the subset relevant to its role.
+- **Organism:** Top-level runtime that executes the blueprint by orchestrating organs, tissues, cells, and molecules toward the Creator's outcome. Monitors health, handles escalation, governs adaptation.
+
+**Problems it solves:**
+- **Lost intent:** Requirements and design decisions are captured and persisted in the genome instead of ad-hoc chat or scattered docs.
+- **Unbounded agents:** Decomposition, expression profiles, and guardrails keep work aligned to the Creator's goals and prevent uncontrolled self-modification.
+- **Inconsistent execution:** One shared blueprint and role-specific expression give predictable, auditable behavior across layers.
+- **No feedback loop:** Health, signaling, and bounded adaptation allow the system to detect failure, repair, and improve within limits.
 
 **Intent → Genome → Runtime.** The runtime never sees the raw prompt; it only trusts the genome.
 
@@ -29,6 +40,17 @@ Organism Runtime
    │   │   ├─ Cells (structure)
    │   │   │   └─ Molecules (only these run as code)
 ```
+
+**Lifecycle (Creator to Organism execution):**
+1. **Creator** states goal, problem, or desired outcome.
+2. **Genesis** runs: Capture → Issue → Explore → Design → Checklist → Create → Validate → Reflect. Output: validated Genome.
+3. **Organism** may start only after Genesis output meets a minimum completeness threshold.
+4. **Organism** loads genome, decomposes into organs → tissues → cells → molecules, executes, signals, monitors health, and adapts within guardrails.
+
+**Practical use cases:**
+- **Internal tooling:** Turn "build a lightweight dashboard" into a blueprint, then an organism that coordinates intake, build, validation, and reporting.
+- **Agentic workflows:** Multi-step pipelines (research → plan → implement → validate) with clear roles, contracts, and health checks.
+- **Evolving systems:** Bounded adaptation and self-repair for long-lived processes (e.g. content pipelines, ops runbooks) without unrestricted self-modification.
 
 Start with intent. End with a governed build.
 
@@ -104,9 +126,9 @@ You can later extend the model so that higher layers invoke sub-runs or agents; 
 
 ## Why organism, why biology?
 
-The world is full of executive agent teams and angel/devil agent debates that attempt to coordinate builds from intent.
+Biology provides a proven pattern: one genome, many cell types, hierarchical specialization, signaling, and homeostasis. We reuse that *structure* (shared blueprint, expression by role, decomposition, feedback), not the literal mechanisms. Benefits: scalable decomposition, clear boundaries, inspectable state, and natural limits on mutation and proliferation.
 
-Biology already solved the coordination problem.
+The world is full of executive agent teams and angel/devil agent debates that attempt to coordinate builds from intent. Biology already solved the coordination problem.
 
 One genome drives every cell, but each role expresses only the instructions it needs. Hierarchy is built in: organism → organ → tissue → cell → molecule. Failure triggers repair or escalation. Mutation is bounded.
 
