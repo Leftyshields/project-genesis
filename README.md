@@ -1,39 +1,46 @@
 # Project Genesis
 
-**Turn your intent into a blueprint, then into an organism that runs it—with one shared genome, clear roles, and guardrails.**
+**Can you build a product from a prompt?** Yes—by treating the build as an **organism**. One blueprint (a genome), a hierarchy of roles (organs → tissues → cells → molecules), and a process that executes it with health, repair, and guardrails. That process is what we sell: **creation governed like biology.**
 
-Project Genesis is a biologically inspired framework for designing and running agentic systems. You (the **Creator**) state what you want; the framework helps you capture that as a validated blueprint (**Genome**) and, optionally, run it as an **Organism**: a hierarchy of organs → tissues → cells → molecules that execute your plan, report health, and stay within rules you define.
+---
+
+## Why organism, why biology?
+
+The world is full of **executive agent teams** and **angel/devil agents** that debate and build. Different governance, same question: how do you go from intent to a real thing without chaos?
+
+Biology is the oldest and most proven **creation governance** there is. One genome (DNA) drives every cell; expression varies by role (liver vs neuron); hierarchy is built in (organism → organ → tissue → cell → molecule); failure triggers repair or escalation; mutation is bounded. We’re not simulating biology—we’re **inspired by it**. Same idea: one source of truth, role-based expression, decomposition, health, and guardrails so the system builds what you asked for and doesn’t drift.
+
+**What better expert to create things than the process that already created us?**
 
 ---
 
 ## What this project does
 
-- **Captures intent** — Your goal or problem becomes a structured, validated blueprint instead of scattered notes or ad-hoc prompts.
-- **One shared genome** — Mission, constraints, decomposition rules, roles, and contracts live in one place (`.genome/`). Every layer of the organism reads from it; nothing runs without meeting your minimum bar.
-- **Runs an organism** — Load the genome, decompose it into organs/tissues/cells/molecules, run one path end-to-end (e.g. Build → Implementation → Worker → read_file), see status and health, and optionally retry or escalate on failure (Repair) and block out-of-scope actions (Guardrails).
-- **Keeps things bounded** — Guardrails enforce what paths and actions are allowed; violations are blocked and audited. No silent self-modification.
+- **Prompt → blueprint** — Your intent (a prompt, a goal, a problem) becomes a **validated genome**: mission, constraints, decomposition rules, role library, contracts. No scattered chats; one canonical spec.
+- **Blueprint → organism** — The genome is loaded and **decomposed** into a live hierarchy: organism → organs → tissues → cells → molecules. Each layer only “sees” what its role allows (expression). One path runs end-to-end (e.g. Build → Implementation → Worker → read_file); you get result, status, and health.
+- **Governance built in** — **Guardrails** block out-of-scope paths and actions; violations are audited. **Repair** retries or escalates on failure per policy. No silent self-modification; no unbounded agent behavior. The organism builds within the rules you defined.
 
-So: **you get a single source of truth (the genome) and a minimal runtime that executes it with health, repair, and guardrails.**
+So: **you get a process to build a product from a prompt—by running that product as an organism with one genome and biological-style governance.**
 
 ---
 
 ## How a creator uses it
 
-1. **Define your goal** — What do you want the system to do? That’s your mission. You (or a Genesis workflow) turn it into a blueprint: mission, constraints, decomposition rules, role library, contracts.
-2. **Author or generate the genome** — The genome is a set of files (e.g. in `.genome/`): `mission.md`, `constraints.md`, `decomposition_rules`, role library, handoff contracts. The blueprint in [docs/BLUEPRINT.md](docs/BLUEPRINT.md) defines the full shape; the backlog in [docs/backlog.md](docs/backlog.md) drives implementation.
-3. **Run the organism** — Use the runtime: load genome → decompose into a graph → run a path (e.g. `runPath({ path: '.genome/mission.md' })`). You get back the result, status overlay, and health. Guardrails block disallowed paths; repair can retry or escalate per policy.
-4. **Validate and iterate** — Use the validation checklist ([docs/VALIDATION_STORY_12.md](docs/VALIDATION_STORY_12.md)) to confirm deliverables and guardrails match the design. Adjust the genome or runtime as needed.
+1. **State your intent** — “Build X,” “Solve Y,” “Product that does Z.” That’s the prompt. Genesis (or you) turns it into a structured blueprint: mission, constraints, how work decomposes, which roles exist, what’s allowed.
+2. **Author or generate the genome** — The genome lives in `.genome/`: `mission.md`, `constraints.md`, `decomposition_rules`, role library, handoff contracts. [docs/BLUEPRINT.md](docs/BLUEPRINT.md) defines the full shape; [docs/backlog.md](docs/backlog.md) drives implementation.
+3. **Run the organism** — Load genome → decompose into the graph → run a path (`runPath({ path: '.genome/mission.md' })` or via scripts). You get result, status overlay, and health. Guardrails block disallowed paths; repair handles failure. The organism *builds* from the genome.
+4. **Validate and iterate** — Use [docs/VALIDATION_STORY_12.md](docs/VALIDATION_STORY_12.md) to confirm deliverables and guardrails match the design. Extend the genome (new organs, tissues, cells, molecules) as the product grows.
 
-**In short:** You create or generate a genome; the framework validates it and can run it in a structured, auditable way with health and guardrails.
+**In short:** Prompt → genome → organism. The process of building-as-organism is the product.
 
 ---
 
 ## What you get out of it
 
-- **Clarity** — One blueprint (genome) instead of lost intent across chats or docs.
-- **Control** — Guardrails and constraints so the organism doesn’t do things you didn’t allow.
-- **Observability** — Status and health per run; repair and escalation when something fails.
-- **Reuse** — Same genome, same decomposition model; add organs, tissues, cells, or molecules by extending the genome and the runtime.
+- **A product from a prompt** — One genome that encodes what to build; the organism executes it in a structured, auditable way.
+- **Governance, not just agents** — Guardrails and constraints so the build stays in scope; repair and escalation when things fail. Creation governed, not ad-hoc.
+- **Biology as the model** — One blueprint, role-based expression, hierarchy, health, bounded adaptation. The same creation governance that scales from a cell to an ecosystem.
+- **Reuse and extend** — Same genome format; add organs, tissues, cells, or molecules by extending the genome and the runtime.
 
 ---
 
