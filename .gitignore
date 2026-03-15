@@ -1,2 +1,5 @@
 # Workflow context (optional: remove to commit context files)
 .ai/context/
+
+# Test temp dir (molecule library tests)
+.tmp-molecules-test/
