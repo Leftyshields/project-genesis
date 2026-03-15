@@ -3,3 +3,6 @@
 
 # Test temp dir (molecule library tests)
 .tmp-molecules-test/
+
+# Runtime logs (audit, guardrails)
+.logs/

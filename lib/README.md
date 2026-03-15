@@ -7,7 +7,7 @@ Shared modules for organism loader, genome validation, and decomposition engine 
 Loads the genome from disk, validates minimum completeness, and returns an object of raw file contents (strings). Use this when you need a validated genome in memory (e.g. decomposition engine, defense organ).
 
 - **Options:** `{ genomeDir?: string }` — optional. If omitted, uses `process.env.GENOME_DIR` or `.genome` under the current working directory.
-- **Returns:** `{ mission, constraints, decomposition_rules, role_library: { organs, tissues, cells, molecules }, contracts: { handoffs } }` (all string values).
+- **Returns:** `{ mission, constraints, decomposition_rules, role_library: { organs, tissues, cells, molecules }, contracts: { handoffs } }` (all string values). May also include `repair_policy` (when `.genome/repair_policy.md` exists) and `guardrails` (when `.genome/guardrails.md` exists).
 - **Throws:** If required files are missing or validation fails (referenced role ids not found in role_library). Message lists missing files and/or missing role ids.
 
 Example:
@@ -92,7 +92,7 @@ Graph is from `decompose(loadGenome())` and is read-only; the overlay is caller-
 Runs one full path: load genome → decompose → create overlay → walk to leaf molecule → resolve implementation → invoke molecule → set molecule node status in overlay. Returns `{ root, overlay, result? }`.
 
 - **Options:** `{ genomeDir?: string, path?: string, encoding?: string, repoRoot?: string }`. `genomeDir` passed to loadGenome. For the read_file molecule: `path` (file to read; default `.genome/mission.md`), `encoding`, `repoRoot` (default `process.cwd()`).
-- **Returns:** `{ root, overlay, result? }` — `root` is the organism node; `overlay` is the status overlay (molecule node set to ok/failed); `result` is the molecule return value (e.g. file contents) or undefined if invocation failed.
+- **Returns:** `{ root, overlay, result? }` — `root` is the organism node; `overlay` is the status overlay (molecule node set to ok/failed); `result` is the molecule return value (e.g. file contents) or undefined if invocation failed. When the run is **blocked by guardrails** (story 11), the return also includes `blocked: true` and `violationReason`; the molecule node is set to failed and no molecule is invoked.
 - **RoleId → implementation:** Molecule roleId (e.g. `read_file`) maps to `.molecules/lib/<roleId>.js` under repo root. For read_file, the module exports `readFile(options)` and is invoked with `{ path, encoding?, repoRoot? }`.
 - The runner sets only the **molecule node** in the overlay; parent health is derived by calling `aggregateHealth(root, overlay)` (see Signaling above).
 
@@ -108,6 +108,15 @@ const health = aggregateHealth(root, overlay);
 ```
 
 CLI: `node scripts/run-path.js [path]` runs the path and prints ok/failed (and a short result preview on success).
+
+## Guardrails (story 11)
+
+Guardrails run at the **start of runPath** (after loadGenome, before path execution). Requests are checked against genome-derived policy; violations are blocked and audited. No Defense node in the graph—guardrails are a lib flow (like Repair).
+
+- **Request (checked):** runPath options: `path`, `genomeDir`, `repoRoot`. The `path` option (resolved against `repoRoot`) must be under the repo root and under one of the **allowed path prefixes**.
+- **Path allowlist:** Default when `.genome/guardrails.md` is missing: only paths under `.genome/` are allowed. Optional **`.genome/guardrails.md`**: one line `allowed_path_prefix: .genome/,.molecules/` (comma-separated prefixes). The loader attaches `genome.guardrails` when the file exists; otherwise the guardrails module uses the default allowlist in code.
+- **When blocked:** `runPath` returns `{ root, overlay, result: undefined, blocked: true, violationReason }`; the molecule node is set to failed in the overlay; the molecule is not invoked. Each violation is appended to **`.logs/guardrails.log`** in the form: `violation=<constraint_id> request_summary=<short> reason=<short> ts=<ISO8601>`.
+- **runPathWithRepair:** Uses the same `runPath`, so each attempt is checked by guardrails; a blocked request returns that result (retries will hit the same check).
 
 ## Repair policy and runPathWithRepair (story 10)
 
