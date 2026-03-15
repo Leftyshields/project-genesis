@@ -109,6 +109,30 @@ const health = aggregateHealth(root, overlay);
 
 CLI: `node scripts/run-path.js [path]` runs the path and prints ok/failed (and a short result preview on success).
 
+## Repair policy and runPathWithRepair (story 10)
+
+Repair is a **lib flow** (no Repair organ/tissue in the decomposition graph). When the path fails, the repair flow can retry `runPath` up to a genome-defined limit, then escalate (return value only).
+
+### Repair policy (optional)
+
+- **Location:** `.genome/repair_policy.md` (optional). If missing, no retries (single run).
+- **Format:** Plain text with one key per line: `max_retries: <number>`, `delay_ms: <number>`. Order irrelevant. Missing keys default to 0. Parsed via `parseRepairPolicy` (in `lib/repairPolicy.js`); loader attaches `genome.repair_policy` as `{ maxRetries, delayMs }` when the file exists.
+- **Validation:** Optional. If `validateGenome` runs and the file exists, it may validate non-negative values; errors are appended but do not set `valid: false`.
+
+### runPathWithRepair(options?)
+
+Runs one path with repair: calls `runPath(options)`; if `aggregateHealth(root, overlay).organism.status === 'failed'` and policy allows, retries up to `maxRetries` (with optional `delayMs` between attempts), then returns. Escalation is via return value only (`escalated: true`); no throw, file write, or callback.
+
+- **Options:** Same as `runPath`: `{ genomeDir?, path?, encoding?, repoRoot? }`. Passed to each `runPath` call.
+- **Returns:** Same as `runPath` (`root`, `overlay`, `result?`) plus: `repaired?` (true if at least one retry was attempted), `escalated?` (true when retries exhausted and still failed), `attemptCount?`, `message?` (e.g. when escalated).
+- **Health used:** `aggregateHealth(root, overlay).organism.status` only (organ-level).
+
+```js
+const { runPathWithRepair } = require('./lib/repair');
+const out = runPathWithRepair({ path: '.genome/mission.md' });
+// out.root, out.overlay, out.result; out.repaired, out.escalated, out.attemptCount
+```
+
 ## validateGenome(genomeDir?)
 
 Validation-only: checks that required genome files exist and every role id referenced in `decomposition_rules.md` and contracts exists in the corresponding `role_library` file. Used by the loader and by `scripts/derive-expression-profiles.js`.
