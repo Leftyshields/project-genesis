@@ -22,6 +22,10 @@ Finally, propose updates to:
 
 **Workflow Position:** Run this after feature deployment to reflect on the process and improve future workflows.
 
+**Then — Close issue and ship:**
+- Close the issue (e.g. create or update a closure doc such as `docs/CLOSURE_EPH-*.md`, or close the GitHub issue if applicable).
+- Stage deliverable and postmortem; commit with a message that references the issue (e.g. `Story 6 / EPH-20250314-0007` or `Closes #6`); push.
+
 **Next Steps:**
 1. Implement suggested documentation updates
 2. Update workflow commands based on findings

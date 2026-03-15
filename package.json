@@ -1,0 +1,8 @@
+{
+  "name": "project-genesis",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "node --test lib/loadGenome.test.js scripts/derive-expression-profiles.test.js scripts/molecules-read_file.test.js"
+  }
+}

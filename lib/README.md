@@ -1,0 +1,36 @@
+# lib — Runtime support
+
+Shared modules for organism loader and genome validation (story 6 and downstream).
+
+## loadGenome(options?)
+
+Loads the genome from disk, validates minimum completeness, and returns an object of raw file contents (strings). Use this when you need a validated genome in memory (e.g. decomposition engine, defense organ).
+
+- **Options:** `{ genomeDir?: string }` — optional. If omitted, uses `process.env.GENOME_DIR` or `.genome` under the current working directory.
+- **Returns:** `{ mission, constraints, decomposition_rules, role_library: { organs, tissues, cells, molecules }, contracts: { handoffs } }` (all string values).
+- **Throws:** If required files are missing or validation fails (referenced role ids not found in role_library). Message lists missing files and/or missing role ids.
+
+Example:
+
+```js
+const { loadGenome } = require('./lib/loadGenome');
+const genome = loadGenome();
+// or: loadGenome({ genomeDir: '/path/to/.genome' });
+```
+
+## validateGenome(genomeDir?)
+
+Validation-only: checks that required genome files exist and every role id referenced in `decomposition_rules.md` and contracts exists in the corresponding `role_library` file. Used by the loader and by `scripts/derive-expression-profiles.js`.
+
+- **Argument:** Optional `genomeDir`. If omitted, uses `process.env.GENOME_DIR` or `path.join(process.cwd(), '.genome')`.
+- **Returns:** `{ valid: boolean, errors: string[] }`.
+
+Required files under the genome directory:
+
+- `mission.md`, `constraints.md`, `decomposition_rules.md`
+- `role_library/organs.md`, `role_library/tissues.md`, `role_library/cells.md`, `role_library/molecules.md`
+- `contracts/handoffs.md`
+
+## GENOME_DIR
+
+Set `GENOME_DIR` to point at a genome directory (e.g. for tests or alternate genomes). Same convention as `scripts/derive-expression-profiles.js`.
