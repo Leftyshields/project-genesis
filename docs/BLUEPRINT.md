@@ -1,6 +1,5 @@
 # Architecture Blueprint: Biologically Inspired Workflow Framework
 
-**Issue:** EPH-20250314-A7B2  
 **Version:** 1 (design only; no runtime implementation in scope)
 
 ---

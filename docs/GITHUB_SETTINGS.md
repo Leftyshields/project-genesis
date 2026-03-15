@@ -43,21 +43,4 @@ Result: You can push to `main`. Contributors (or you when you choose to open a P
 
 ## Backlog ↔ GitHub Issues mapping
 
-**Keep issues in sync:** When a backlog story is completed, close the corresponding GitHub issue (or add a comment with the PR/commit, then close). See [POSTMORTEM_EPH-20250314-A7B2.md](POSTMORTEM_EPH-20250314-A7B2.md) (§ Process for the rest of this project).
-
-| Backlog ID | GitHub Issue |
-|------------|--------------|
-| 1 | [#1](https://github.com/Leftyshields/project-genesis/issues/1) |
-| 2 | [#2](https://github.com/Leftyshields/project-genesis/issues/2) |
-| 3 | [#3](https://github.com/Leftyshields/project-genesis/issues/3) |
-| 4 | [#4](https://github.com/Leftyshields/project-genesis/issues/4) |
-| 5 | [#5](https://github.com/Leftyshields/project-genesis/issues/5) |
-| 6 | [#6](https://github.com/Leftyshields/project-genesis/issues/6) |
-| 7 | [#7](https://github.com/Leftyshields/project-genesis/issues/7) |
-| 8 | [#8](https://github.com/Leftyshields/project-genesis/issues/8) |
-| 9 | [#9](https://github.com/Leftyshields/project-genesis/issues/9) |
-| 10 | [#10](https://github.com/Leftyshields/project-genesis/issues/10) |
-| 11 | [#11](https://github.com/Leftyshields/project-genesis/issues/11) |
-| 12 | [#12](https://github.com/Leftyshields/project-genesis/issues/12) |
-
-Each issue body includes **Done when**, **Depends on** (linked to other issues), and a link to `docs/backlog.md`.
+**Keep issues in sync:** When a backlog story is completed, close the corresponding GitHub issue if you use one (or add a comment with the PR/commit, then close). Issue bodies can include **Done when**, **Depends on**, and a link to `docs/backlog.md`.
