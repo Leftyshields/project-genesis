@@ -9,7 +9,8 @@ A framework that turns human intent into a validated blueprint (Genesis) and an 
 ## Contents
 
 - **[docs/BLUEPRINT.md](docs/BLUEPRINT.md)** — Full 18-section architecture blueprint (system overview, Genesis, Genome, expression model, organism/organs/tissues/cells/molecules, decomposition engine, signaling, self-healing, project structure, walkthrough, MVP plan, guardrails).
-- **[docs/backlog.md](docs/backlog.md)** — One epic with dependency-ordered stories (design + optional implementation).
+- **[docs/backlog.md](docs/backlog.md)** — One epic with dependency-ordered stories (design + optional implementation). Mapped to [GitHub Issues #1–#12](https://github.com/Leftyshields/project-genesis/issues).
+- **[docs/GITHUB_SETTINGS.md](docs/GITHUB_SETTINGS.md)** — PR/branch protection settings (require review, exclude PR author; owner can push to main).
 - **.cursor/commands/** — Cursor IDE workflow commands (capture_issue, explore, design_decisions, create_plan, execute_plan, code_review, qa_checklist, postmortem, etc.).
 
 ## Quick start
