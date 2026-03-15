@@ -1,66 +1,175 @@
 # Project Genesis
 
-**Can you build a product from a prompt?** Yes—by treating the build as an **organism**. One blueprint (a genome), a hierarchy of roles (organs → tissues → cells → molecules), and a process that executes it with health, repair, and guardrails. That process is what we sell: **creation governed like biology.**
+**Can you build a product from a prompt?**
+
+Yes—if the build process itself is governed like a living organism.
+
+One blueprint (a genome), a hierarchy of roles (organs → tissues → cells → molecules), and a runtime that executes that blueprint with health checks, repair, and guardrails.
+
+Project Genesis is a framework for turning intent into a governed build process.
+
+---
+
+## The process (simple)
+
+1. **Planning phase** — You **capture intent** (goal or problem), **explore** (requirements, constraints), **design** (solution shape), and **create the plan** (execution plan and genome). In this repo that’s the Genesis workflow: capture → explore → design decisions → create plan; then you (or execute_plan) author the genome files in `.genome/`.
+2. **Build phase** — The runtime **loads the genome**, **decomposes** it into the organism hierarchy, and **runs one path** to a molecule (e.g. read a file). Guardrails and repair apply. That’s the “build.”
+
+**Does the build “take over” automatically?** Not today. There is no automatic trigger. After you have a genome, you **run the build yourself**: e.g. `node scripts/run-path.js .genome/mission.md` or call `runPath(...)` from code. So: planning is capture → explore → design → create plan (and genome); build is “you invoke the runtime.” A future version could run the build automatically when the genome is ready (e.g. a watcher or CI step).
+
+**“Builds everything”** — Today the runtime runs **one path** (one organ → one tissue → one cell → one molecule) per invocation. It doesn’t discover or run multiple paths by itself. To “build everything” you’d run the runtime once per path or add a layer that schedules multiple runs.
+
+---
+
+## Concrete: what you give, when the build runs, what actually runs
+
+**What does the creator provide?**
+
+1. **A prompt (intent)** — A goal or problem in plain language. Example: "Build a dashboard that shows X" or "Solve Y."
+2. **A genome** — The runtime does not read your prompt. It reads a **genome**: a set of files in `.genome/` that you (or a Genesis workflow) author. Those files are:
+   - `mission.md` — What this organism is for; objectives and success criteria.
+   - `constraints.md` — Rules and limits (e.g. no mutation without review).
+   - `decomposition_rules.md` — How work is split: which organ → tissue → cell → molecule. Contains an **Example chain** (e.g. **Organ:** Build, **Tissue:** Implementation, **Cell:** Worker, **Molecule:** read_file).
+   - `role_library/` — Definitions for organs, tissues, cells, molecules (one file per layer).
+   - `contracts/handoffs.md` — Handoffs between layers.
+   - Optional: `repair_policy.md`, `guardrails.md` — Retry/escalation and path allowlist.
+
+So the creator provides the prompt first; then they (or Genesis) provide the genome files. The runtime only ever sees the genome.
+
+**When does the build process take over?**
+
+When you call the runtime: `runPath(...)` or `runPathWithRepair(...)`. Up to that point, everything is **authoring** (capture, explore, design, writing files into `.genome/`). There is no build until you invoke the runtime. The runtime then: loads the genome from disk, validates it, decomposes it into a graph, walks one path to a leaf molecule, and invokes that molecule (e.g. read a file). The build is that single path execution; the runtime does not ask for more input until the run returns.
+
+**Are organs, tissues, cells, and molecules "agents"?**
+
+No. In this codebase they are **not** autonomous agents, not LLMs, not separate processes. They are **roles in a static hierarchy** produced from the genome:
+
+- The runtime parses the genome and builds a **tree of nodes** (organism → organ → tissue → cell → molecule). Each node has an id, a layer, and a roleId; it is data, not a running process.
+- Only the **molecule** at the end of the chosen path is **executed**: the runtime looks up an implementation (e.g. `.molecules/lib/read_file.js`) and calls it with options (e.g. which file to read). Organs, tissues, and cells do not "run"—they structure the work and the path. So: hierarchy = structure; molecule = the only thing that runs as code.
+
+You can later extend the model so that higher layers invoke sub-runs or agents; out of the box, the organism is one path to one molecule call, with guardrails and repair around it.
 
 ---
 
 ## Why organism, why biology?
 
-The world is full of **executive agent teams** and **angel/devil agents** that debate and build. Different governance, same question: how do you go from intent to a real thing without chaos?
+The world is full of executive agent teams and angel/devil agent debates that attempt to coordinate builds from intent.
 
-Biology is the oldest and most proven **creation governance** there is. One genome (DNA) drives every cell; expression varies by role (liver vs neuron); hierarchy is built in (organism → organ → tissue → cell → molecule); failure triggers repair or escalation; mutation is bounded. We’re not simulating biology—we’re **inspired by it**. Same idea: one source of truth, role-based expression, decomposition, health, and guardrails so the system builds what you asked for and doesn’t drift.
+Biology already solved the coordination problem.
 
-**What better expert to create things than the process that already created us?**
+One genome drives every cell, but each role expresses only the instructions it needs. Hierarchy is built in: organism → organ → tissue → cell → molecule. Failure triggers repair or escalation. Mutation is bounded.
+
+We are not simulating biology. We are borrowing its architectural patterns:
+
+- one source of truth
+- role-based expression
+- hierarchical decomposition
+- health monitoring
+- guardrails and repair
+
+These patterns allow complex systems to scale without losing coordination.
+
+Genesis produces a structured blueprint (the genome) and a runtime organism that executes that blueprint to build the requested product.
 
 ---
 
 ## What this project does
 
-- **Prompt → blueprint** — Your intent (a prompt, a goal, a problem) becomes a **validated genome**: mission, constraints, decomposition rules, role library, contracts. No scattered chats; one canonical spec.
-- **Blueprint → organism** — The genome is loaded and **decomposed** into a live hierarchy: organism → organs → tissues → cells → molecules. Each layer only “sees” what its role allows (expression). One path runs end-to-end (e.g. Build → Implementation → Worker → read_file); you get result, status, and health.
-- **Governance built in** — **Guardrails** block out-of-scope paths and actions; violations are audited. **Repair** retries or escalates on failure per policy. No silent self-modification; no unbounded agent behavior. The organism builds within the rules you defined.
+### Prompt → Genome
 
-So: **you get a process to build a product from a prompt—by running that product as an organism with one genome and biological-style governance.**
+You give a prompt (intent). **Genesis** is the pre-build workflow (capture → explore → design → create) that turns that into a genome: the set of files in `.genome/` listed above. The runtime never sees the raw prompt—only the genome. In this repo, Genesis is implemented via Cursor workflow commands and design docs; you (or that workflow) author or generate the genome files.
+
+### Genome → Organism (when the build runs)
+
+When you call `runPath()` or `runPathWithRepair()`, the runtime loads the genome from `.genome/` (`loadGenome()`), builds a tree of nodes from the decomposition rules (`decompose()`), walks one path to a leaf molecule, and invokes that molecule’s implementation. You get back a result (e.g. file contents), a status overlay (ok/failed per node), and optional health. Organs/tissues/cells are structure; only the molecule runs as code.
+
+### Governed execution
+
+Before the molecule runs, **guardrails** check the request (e.g. path allowlist in `.genome/guardrails.md`); violations are blocked and logged to `.logs/guardrails.log`. If the molecule fails, **repair** (`.genome/repair_policy.md`) can retry or escalate. Every run is auditable.
 
 ---
 
 ## How a creator uses it
 
-1. **State your intent** — “Build X,” “Solve Y,” “Product that does Z.” That’s the prompt. Genesis (or you) turns it into a structured blueprint: mission, constraints, how work decomposes, which roles exist, what’s allowed.
-2. **Author or generate the genome** — The genome lives in `.genome/`: `mission.md`, `constraints.md`, `decomposition_rules`, role library, handoff contracts. [docs/BLUEPRINT.md](docs/BLUEPRINT.md) defines the full shape; [docs/backlog.md](docs/backlog.md) drives implementation.
-3. **Run the organism** — Load genome → decompose into the graph → run a path (`runPath({ path: '.genome/mission.md' })` or via scripts). You get result, status overlay, and health. Guardrails block disallowed paths; repair handles failure. The organism *builds* from the genome.
-4. **Validate and iterate** — Use [docs/VALIDATION_STORY_12.md](docs/VALIDATION_STORY_12.md) to confirm deliverables and guardrails match the design. Extend the genome (new organs, tissues, cells, molecules) as the product grows.
+1. **State your intent (Prompt)** — Provide the goal or problem in words (e.g. "Build X", "Solve Y"). That is the only input the creator gives at the start.
+2. **Explore, design, create the plan** — Turn intent into a plan and a genome: run the Genesis workflow (explore → design decisions → create plan), then author the genome files in `.genome/` (mission, constraints, decomposition_rules, role_library, contracts; optionally repair_policy, guardrails). You can author the genome by hand or as the outcome of execute_plan. The runtime will not run until these files exist and pass validation.
+3. **Run the build** — Call the runtime (`runPath(...)` or `node scripts/run-path.js .genome/mission.md`). That is when the build phase runs: the runtime loads the genome, decomposes it, runs one path to a molecule, and returns result and status. You must invoke it; it does not start automatically.
+4. **Validate and iterate** — Check outputs and guardrails ([docs/VALIDATION_STORY_12.md](docs/VALIDATION_STORY_12.md)); extend the genome (e.g. new roles or molecules) as needed.
 
-**In short:** Prompt → genome → organism. The process of building-as-organism is the product.
+**Summary:** Creator provides prompt then genome; build runs when you invoke the runtime; organism elements are a role hierarchy, and only the molecule runs as code.
 
 ---
 
-## What you get out of it
+## Flow
 
-- **A product from a prompt** — One genome that encodes what to build; the organism executes it in a structured, auditable way.
-- **Governance, not just agents** — Guardrails and constraints so the build stays in scope; repair and escalation when things fail. Creation governed, not ad-hoc.
-- **Biology as the model** — One blueprint, role-based expression, hierarchy, health, bounded adaptation. The same creation governance that scales from a cell to an ecosystem.
-- **Reuse and extend** — Same genome format; add organs, tissues, cells, or molecules by extending the genome and the runtime.
+```
+Creator
+   │
+   ▼
+Genesis (intent → genome)
+   │
+   ▼
+Genome (.genome/ — blueprint the runtime loads)
+   │
+   ▼
+Organism Runtime
+   ├─ loadGenome() → decompose() → runPath() / runPathWithRepair()
+   ├─ Organs (structure)
+   │   ├─ Tissues (structure)
+   │   │   ├─ Cells (structure)
+   │   │   │   └─ Molecules (only these run as code)
+```
+
+**Do you read the blueprint?** — You (the creator) read [docs/BLUEPRINT.md](docs/BLUEPRINT.md) to understand the framework architecture. The **runtime** does not read the blueprint; it loads the **genome** from `.genome/` and executes it. Two different things: blueprint = framework design doc; genome = instance blueprint the organism runs.
+
+---
+
+## Runtime
+
+The runtime is the code that loads the genome and runs one path. It lives in `lib/` and is invoked when you call `runPath()` or `runPathWithRepair()` (or `node scripts/run-path.js`).
+
+**What it does, in order:**
+
+1. **Load** — `loadGenome()` reads `.genome/` from disk (or the path you pass). It validates that required files exist and that every role id in the decomposition rules exists in the role library. If anything is missing, it throws. Optional files (`repair_policy.md`, `guardrails.md`) are attached when present.
+2. **Decompose** — `decompose(genome)` parses the genome’s decomposition rules (e.g. the **Example chain**: Organ, Tissue, Cell, Molecule) and builds a **tree of nodes**: organism → organ → tissue → cell → molecule. Each node has an id, a layer, and a roleId. No execution yet; this is data only.
+3. **Guard** — Before running the path, the runtime calls `checkGuardrails(genome, request)`. The request is the run options (e.g. which file path to read). If the request is out of scope (e.g. path not under the allowed prefix), the run is **blocked**: the molecule is not invoked, the molecule node is marked failed in the overlay, and the violation is appended to `.logs/guardrails.log`. Return value includes `blocked: true` and `violationReason`.
+4. **Run one path** — The runtime walks the tree to the leaf molecule (today: the single path from the Example chain). It resolves the molecule’s implementation: `roleId` (e.g. `read_file`) → `.molecules/lib/<roleId>.js`, then calls that module’s export with options (e.g. `path`, `repoRoot`). It writes the molecule’s status (ok or failed) into a **status overlay** (a plain object keyed by node id) and returns the molecule’s return value as `result`.
+5. **Repair (optional)** — If you use `runPathWithRepair()` instead of `runPath()`, the runtime checks health after each run. If the organism status is failed and the genome has a `repair_policy` with `maxRetries > 0`, it retries `runPath()` up to that many times (with optional `delayMs` between attempts). When retries are exhausted, it returns with `escalated: true` and the last run’s result. No throw; escalation is in the return value.
+
+**Entry points**
+
+- **`runPath(options?)`** — One run: load → guard → decompose → run path → return `{ root, overlay, result? }` (and `blocked?`, `violationReason?` if blocked).
+- **`runPathWithRepair(options?)`** — Same, but with retry/escalation per `.genome/repair_policy.md`.
+- **`scripts/run-path.js [path]`** — CLI that calls `runPath({ path })` and prints ok/failed (and a short result preview). Default path: `.genome/mission.md`.
+
+**Supporting pieces**
+
+- **Signaling** — `createStatusOverlay()`, `setNodeStatus()`, `aggregateHealth(root, overlay)`. The overlay holds per-node status (ok/failed); health is computed bottom-up so the organism is failed if any node in the path is failed.
+- **Validation** — `validateGenome(genomeDir?)` checks file presence and role-id consistency; `loadGenome()` uses it and throws on failure.
+
+All of this is synchronous. No daemon, no background process. One invocation runs one path and returns. Full API details: [lib/README.md](lib/README.md).
 
 ---
 
 ## Contents
 
-- **[docs/BLUEPRINT.md](docs/BLUEPRINT.md)** — Full 18-section architecture: system overview, Genesis, Genome, expression model, organism/organs/tissues/cells/molecules, decomposition engine, signaling, self-healing, project structure, walkthrough, MVP plan, guardrails.
-- **[docs/backlog.md](docs/backlog.md)** — One epic with dependency-ordered stories (design + implementation). Mapped to [GitHub Issues #1–#12](https://github.com/Leftyshields/project-genesis/issues).
-- **[lib/README.md](lib/README.md)** — Runtime API: `loadGenome`, `decompose`, signaling and health, `runPath`, `runPathWithRepair`, guardrails.
-- **[docs/VALIDATION_STORY_12.md](docs/VALIDATION_STORY_12.md)** — Validation checklist (acceptance criteria and guardrails alignment).
-- **[docs/GITHUB_SETTINGS.md](docs/GITHUB_SETTINGS.md)** — PR/branch protection.
-- **.cursor/commands/** — Workflow commands (capture_issue, explore, design_decisions, create_plan, execute_plan, code_review, qa_checklist, postmortem).
+- **[docs/BLUEPRINT.md](docs/BLUEPRINT.md)** — Architecture design of the framework (Genesis, Genome, organism, guardrails).
+- **[docs/backlog.md](docs/backlog.md)** — Implementation roadmap; [GitHub Issues #1–#12](https://github.com/Leftyshields/project-genesis/issues).
+- **[lib/README.md](lib/README.md)** — Runtime API: `loadGenome`, `decompose`, signaling, `runPath`, `runPathWithRepair`, guardrails.
+- **[docs/VALIDATION_STORY_12.md](docs/VALIDATION_STORY_12.md)** — Validation checklist (acceptance criteria and guardrails).
+- **[docs/GITHUB_SETTINGS.md](docs/GITHUB_SETTINGS.md)** — Repository governance.
+- **.cursor/commands/** — Workflow automation (capture_issue, explore, design_decisions, create_plan, execute_plan, code_review, qa_checklist, postmortem).
 
 ---
 
 ## Quick start
 
-1. **Read the blueprint** — [docs/BLUEPRINT.md](docs/BLUEPRINT.md) is the single source of truth for the framework.
-2. **Use the backlog** — [docs/backlog.md](docs/backlog.md) drives implementation (stories 1–12; design and runtime).
-3. **Run Genesis before organism** — Per the blueprint, requirements → blueprint (Genesis) before any organism run; the genome must meet minimum completeness.
-4. **Run the organism** — From repo root: `node -e "const { runPath } = require('./lib/run'); runPath().then(r => console.log(r.result ? 'ok' : 'failed'));"` or use `scripts/run-path.js`. See [lib/README.md](lib/README.md) for options, guardrails, and repair.
+1. **Read the blueprint** — You read [docs/BLUEPRINT.md](docs/BLUEPRINT.md) to understand the framework. The runtime loads the genome from `.genome/`, not the blueprint doc.
+2. **Run Genesis to produce a genome** — Use the design workflow (capture → explore → design → create) to author or update `.genome/`. The organism will not run until the genome meets minimum completeness (see blueprint).
+3. **Verify genome completeness** — The runtime validates on load (`loadGenome()` throws if required files or role references are missing).
+4. **Run the organism** — From repo root: `node scripts/run-path.js .genome/mission.md` or `node -e "const { runPath } = require('./lib/run'); const r = runPath({ path: '.genome/mission.md' }); console.log(r.result ? 'ok' : 'failed');"`. See [lib/README.md](lib/README.md) for options, guardrails, and repair.
+
+**Creator → Genesis → Genome → Organism.**
 
 ---
 
