@@ -69,6 +69,7 @@ This document outlines the recommended workflow for implementing features in Epi
 7. **Code Review** (`/code_review`) — *standard*
    - Automated security check, correctness, architecture, code quality, performance
    - Review specified scope (file, recent changes, or feature)
+   - When changing README or docs that describe code (e.g. runtime steps, API order), verify step order and names against the actual source.
    
    **Next:** Fix any issues found, then run `/security_scan` (optional) or `/qa_checklist`
 
@@ -99,7 +100,12 @@ This document outlines the recommended workflow for implementing features in Epi
     - Deploy to production
     - Monitor for issues
    
-    **Next:** Run `/postmortem` to reflect on the process
+   **Next:** Run `/postmortem` to reflect on the process
+
+11b. **Ship / Push to Git**
+    - To push to GitHub, run in **your terminal**: `git add -A && git commit -m 'Description' && git push origin main`. Staging (`git add -A`) must be done before commit so your changes are included. The agent may not have access to push to your remote.
+   
+   **Next:** Verify on GitHub; then run `/postmortem` if not already done
 
 12. **Postmortem** (`/postmortem`) — *standard*
     - Analyze friction points, rework, missing docs
@@ -165,6 +171,7 @@ For smaller changes or bug fixes:
 3. **Stale Closures** - Use functional state updates when updating state based on props/state
 4. **Missing Format Conversions** - Document and implement all format conversions
 5. **Skipping Pre-Implementation Checklist** - Verify all requirements before coding
+6. **Forgetting to stage before commit** - Run `git add -A` (or `git add .`) before `git commit` when you want to include current changes; otherwise the commit can be empty and `git push` will report everything up-to-date
 
 ---
 

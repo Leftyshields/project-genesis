@@ -65,6 +65,7 @@ If a step feels unsafe or unclear, stop and ask before proceeding.
 **After completion:**
 - Review implementation against design decisions
 - Document any deviations from the plan
+- To push to remote: run in your terminal: `git add -A && git commit -m '...' && git push origin main`
 - **Last stage (genome ready to build):** When implementation is complete and the genome (or planned deliverable) is in place, **ask the user:** "Is the genome ready to build?" (or "Is this stage complete?"). If the user confirms (e.g. yes, ready), **run the build:** run `node scripts/build.js` (or validate genome then `node scripts/run-path.js .genome/mission.md`). After the build, **show run-the-app instructions:** e.g. "To run the organism: `node scripts/run-path.js .genome/mission.md`" or "See lib/README.md for runtime usage." If the user says not yet, suggest finishing edits and ask again when ready.
 - **Next step:** Run `/code_review` for automated security and quality review, then `/qa_checklist` for manual testing.
 

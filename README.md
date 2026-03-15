@@ -4,11 +4,39 @@
 
 Project Genesis turns a single prompt into a running system the way nature builds an organism: from the ground up. One genome holds the blueprint. Roles stack from **molecule** → **cell** → **tissue** → **organ**—primitives that compose into a whole. A runtime executes that blueprint with health checks, guardrails, and repair. One source of truth. No agent sprawl.
 
+**What this is:** Project Genesis is a workflow system and runtime for building software from a governed blueprint—structured intent becomes executable software via a biological architecture model, not just prompt → code.
+
+**Intent → Genome → Runtime.** The runtime never sees the raw prompt; it only trusts the genome.
+
+**Key terms:** **Genesis** = planning workflow (capture → explore → design → create plan). **Genome** = executable blueprint (files in `.genome/`). **Organism** = runtime execution. **Blueprint** = framework architecture ([docs/BLUEPRINT.md](docs/BLUEPRINT.md)).
+
+**Flow:**
+
+```
+Creator
+   │
+   ▼
+Genesis (intent → genome)
+   │
+   ▼
+Genome (.genome/ — blueprint the runtime loads)
+   │
+   ▼
+Organism Runtime
+   ├─ loadGenome() → checkGuardrails() → decompose() → runPath() / runPathWithRepair()
+   ├─ Organs (structure)
+   │   ├─ Tissues (structure)
+   │   │   ├─ Cells (structure)
+   │   │   │   └─ Molecules (only these run as code)
+```
+
 Start with intent. End with a governed build.
 
 ---
 
 ## Quick start
+
+Genesis is the planning workflow that converts a prompt into the genome the runtime executes.
 
 **Start the workflow** — Run the Cursor command **`/capture_issue`** with your idea (goal or problem). Cursor guides you: explore → create plan → design decisions → pre-implementation checklist → execute plan. When the genome is ready, Cursor asks if you're done; when you confirm, the build runs and you get run-the-app instructions. Full workflow: [.cursor/commands/workflow.md](.cursor/commands/workflow.md).
 
@@ -68,7 +96,7 @@ When you call the runtime: `runPath(...)` or `runPathWithRepair(...)`. Up to tha
 No. In this codebase they are **not** autonomous agents, not LLMs, not separate processes. They are **roles in a static hierarchy** produced from the genome:
 
 - The runtime parses the genome and builds a **tree of nodes** (organism → organ → tissue → cell → molecule). Each node has an id, a layer, and a roleId; it is data, not a running process.
-- Only the **molecule** at the end of the chosen path is **executed**: the runtime looks up an implementation (e.g. `.molecules/lib/read_file.js`) and calls it with options (e.g. which file to read). Organs, tissues, and cells do not "run"—they structure the work and the path. So: hierarchy = structure; molecule = the only thing that runs as code.
+- Only the **molecule** at the end of the chosen path is **executed**: the runtime looks up an implementation (e.g. `.molecules/lib/read_file.js`) and calls it with options (e.g. which file to read). Organs, tissues, and cells structure work and define boundaries; only molecules execute code. The hierarchy is a decomposition and governance structure—not an execution model.
 
 You can later extend the model so that higher layers invoke sub-runs or agents; out of the box, the organism is one path to one molecule call, with guardrails and repair around it.
 
@@ -108,7 +136,7 @@ When you call `runPath()` or `runPathWithRepair()`, the runtime loads the genome
 
 ### Governed execution
 
-Before the molecule runs, **guardrails** check the request (e.g. path allowlist in `.genome/guardrails.md`); violations are blocked and logged to `.logs/guardrails.log`. If the molecule fails, **repair** (`.genome/repair_policy.md`) can retry or escalate. Every run is auditable.
+Project Genesis is a **governed build architecture**: intent → planning → blueprint → governed execution, not just prompt → code. Before the molecule runs, **guardrails** check the request (e.g. path allowlist in `.genome/guardrails.md`); violations are blocked and logged to `.logs/guardrails.log`. If the molecule fails, **repair** (`.genome/repair_policy.md`) can retry or escalate. Every run is auditable.
 
 ---
 
@@ -125,23 +153,7 @@ Before the molecule runs, **guardrails** check the request (e.g. path allowlist 
 
 ## Flow
 
-```
-Creator
-   │
-   ▼
-Genesis (intent → genome)
-   │
-   ▼
-Genome (.genome/ — blueprint the runtime loads)
-   │
-   ▼
-Organism Runtime
-   ├─ loadGenome() → decompose() → runPath() / runPathWithRepair()
-   ├─ Organs (structure)
-   │   ├─ Tissues (structure)
-   │   │   ├─ Cells (structure)
-   │   │   │   └─ Molecules (only these run as code)
-```
+The flow (Creator → Genesis → Genome → Organism) is shown at the top of this README. One important distinction:
 
 **Do you read the blueprint?** — You (the creator) read [docs/BLUEPRINT.md](docs/BLUEPRINT.md) to understand the framework architecture. The **runtime** does not read the blueprint; it loads the **genome** from `.genome/` and executes it. Two different things: blueprint = framework design doc; genome = instance blueprint the organism runs.
 
@@ -154,14 +166,14 @@ The runtime is the code that loads the genome and runs one path. It lives in `li
 **What it does, in order:**
 
 1. **Load** — `loadGenome()` reads `.genome/` from disk (or the path you pass). It validates that required files exist and that every role id in the decomposition rules exists in the role library. If anything is missing, it throws. Optional files (`repair_policy.md`, `guardrails.md`) are attached when present.
-2. **Decompose** — `decompose(genome)` parses the genome’s decomposition rules (e.g. the **Example chain**: Organ, Tissue, Cell, Molecule) and builds a **tree of nodes**: organism → organ → tissue → cell → molecule. Each node has an id, a layer, and a roleId. No execution yet; this is data only.
-3. **Guard** — Before running the path, the runtime calls `checkGuardrails(genome, request)`. The request is the run options (e.g. which file path to read). If the request is out of scope (e.g. path not under the allowed prefix), the run is **blocked**: the molecule is not invoked, the molecule node is marked failed in the overlay, and the violation is appended to `.logs/guardrails.log`. Return value includes `blocked: true` and `violationReason`.
+2. **Guard** — Before decomposing or running the path, the runtime calls `checkGuardrails(genome, request)`. The request is the run options (e.g. which file path to read). If the request is out of scope (e.g. path not under the allowed prefix), the run is **blocked**: the molecule is not invoked, the molecule node is marked failed in the overlay, and the violation is appended to `.logs/guardrails.log`. Return value includes `blocked: true` and `violationReason`.
+3. **Decompose** — `decompose(genome)` parses the genome's decomposition rules (e.g. the **Example chain**: Organ, Tissue, Cell, Molecule) and builds a **tree of nodes**: organism → organ → tissue → cell → molecule. Each node has an id, a layer, and a roleId. No execution yet; this is data only.
 4. **Run one path** — The runtime walks the tree to the leaf molecule (today: the single path from the Example chain). It resolves the molecule’s implementation: `roleId` (e.g. `read_file`) → `.molecules/lib/<roleId>.js`, then calls that module’s export with options (e.g. `path`, `repoRoot`). It writes the molecule’s status (ok or failed) into a **status overlay** (a plain object keyed by node id) and returns the molecule’s return value as `result`.
 5. **Repair (optional)** — If you use `runPathWithRepair()` instead of `runPath()`, the runtime checks health after each run. If the organism status is failed and the genome has a `repair_policy` with `maxRetries > 0`, it retries `runPath()` up to that many times (with optional `delayMs` between attempts). When retries are exhausted, it returns with `escalated: true` and the last run’s result. No throw; escalation is in the return value.
 
 **Entry points**
 
-- **`runPath(options?)`** — One run: load → guard → decompose → run path → return `{ root, overlay, result? }` (and `blocked?`, `violationReason?` if blocked).
+- **`runPath(options?)`** — One run: load → guard → decompose → run path → return `{ root, overlay, result? }` (and `blocked?`, `violationReason?` if blocked). Order matches the numbered steps above.
 - **`runPathWithRepair(options?)`** — Same, but with retry/escalation per `.genome/repair_policy.md`.
 - **`scripts/run-path.js [path]`** — CLI that calls `runPath({ path })` and prints ok/failed (and a short result preview). Default path: `.genome/mission.md`.
 
@@ -170,7 +182,7 @@ The runtime is the code that loads the genome and runs one path. It lives in `li
 - **Signaling** — `createStatusOverlay()`, `setNodeStatus()`, `aggregateHealth(root, overlay)`. The overlay holds per-node status (ok/failed); health is computed bottom-up so the organism is failed if any node in the path is failed.
 - **Validation** — `validateGenome(genomeDir?)` checks file presence and role-id consistency; `loadGenome()` uses it and throws on failure.
 
-All of this is synchronous. No daemon, no background process. One invocation runs one path and returns. Full API details: [lib/README.md](lib/README.md).
+All of this is synchronous. No daemon, no background process. One invocation runs one path and returns. Execution is **deterministic** relative to the genome: same genome and options yield the same path and outcome. The design allows **scheduling multiple paths** (e.g. one per organ or mission); today one path runs per invocation. Full API details: [lib/README.md](lib/README.md).
 
 ---
 

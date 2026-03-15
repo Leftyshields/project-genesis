@@ -24,7 +24,7 @@ Finally, propose updates to:
 
 **Then — Close issue and ship:**
 - Close the issue (e.g. create or update a closure doc such as `docs/CLOSURE_EPH-*.md`, or close the GitHub issue if applicable).
-- Stage deliverable and postmortem; commit with a message that references the issue (e.g. `Story 6 / EPH-20250314-0007` or `Closes #6`); push.
+- Remind the user: to get changes on GitHub, run in **their terminal**: `git add -A && git commit -m 'Closes EPH-XXXX' && git push origin main`. The agent may not have access to push to the user's remote. Staging (`git add -A`) must be done before commit.
 
 **Next Steps:**
 1. Implement suggested documentation updates
