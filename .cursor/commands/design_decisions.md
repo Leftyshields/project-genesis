@@ -50,10 +50,26 @@ If using React:
 - Specify use of functional updates: `setState(prev => ...)` where needed
 - Reference `docs/REACT_PATTERNS.md` for patterns
 
-### 7. Local Development Parity
+### 7. Backend entry points & parity
+
 If adding API endpoints:
-- Plan to update both `functions/index.js` and `server.js`
-- Document which helper functions need to be duplicated
+
+- Create/update **`docs/ARCHITECTURE.md`** (from [ARCHITECTURE_TEMPLATE.md](docs/ARCHITECTURE_TEMPLATE.md))
+- List every HTTP entry point (local, production, preview)
+- Prefer one shared handler module imported by all entry points — avoid duplicating route tables
+- Document web client → API base URL for local and production builds
+
+### 8. Integrations & dev environment
+
+For auth, payments, email, or third-party APIs, document:
+
+- **Sandbox vs production** credentials and env vars
+- **Auth UX by environment** (e.g. OAuth popup on localhost vs redirect on hosted domain)
+- **Required one-time deploys** (e.g. hosting for auth helper, webhooks)
+- **Emulator / seed commands** and ports
+- **SSH or remote dev** constraints (authorized domains, port forwarding)
+
+Copy [DEV_RUNBOOK_TEMPLATE.md](docs/DEV_RUNBOOK_TEMPLATE.md) → `docs/DEV_RUNBOOK.md` and add rows as you learn.
 
 Rules:
 - Favor reversible decisions

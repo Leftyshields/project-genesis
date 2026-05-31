@@ -1,6 +1,8 @@
-# Epiphoric Development Workflow
+# Application Development Workflow (Project Genesis)
 
-This document outlines the recommended workflow for implementing features in Epiphoric.
+This document outlines the recommended workflow for building features in a **Genesis-instantiated application** (your product repo). It is copied from [Project Genesis](https://github.com/Leftyshields/project-genesis) via `instantiate.sh` — **customize** backend paths and doc links for your stack after instantiating.
+
+See also: [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md).
 
 ---
 
@@ -54,13 +56,13 @@ This document outlines the recommended workflow for implementing features in Epi
 6. **Execute Plan** (`/execute_plan`)
    - Follow the execution plan step-by-step
    - Reference design decisions for guidance
-   - Update both `functions/index.js` AND `server.js` for new endpoints
+   - Apply backend changes to **all documented entry points** (see `docs/ARCHITECTURE.md`)
    - Use functional state updates when updating state based on props/state
    - Implement format conversions as documented
    
    **Optional:** Run `/tdd` for complex logic (test-driven development)
    
-   **Next:** Run `/code_review` for automated review, then `/qa_checklist` for manual testing
+   **Required before next feature:** Run `/code_review`, then `/qa_checklist` (do not skip after MVP milestones)
 
 ---
 
@@ -164,24 +166,35 @@ For smaller changes or bug fixes:
 
 ---
 
+## After instantiating a new project
+
+1. Copy [docs/ARCHITECTURE_TEMPLATE.md](docs/ARCHITECTURE_TEMPLATE.md) → `docs/ARCHITECTURE.md` and fill in entry points.
+2. Copy [docs/DEV_RUNBOOK_TEMPLATE.md](docs/DEV_RUNBOOK_TEMPLATE.md) → `docs/DEV_RUNBOOK.md` as you debug.
+3. Add a **“This repo”** subsection below with your backend paths and runbook link.
+4. Read [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md).
+
+---
+
 ## ⚠️ Common Mistakes to Avoid
 
 1. **Skipping Design Decisions** - Always run `/design_decisions` before implementation
-2. **Forgetting Local Dev Parity** - Always update both `functions/index.js` and `server.js`
-3. **Stale Closures** - Use functional state updates when updating state based on props/state
-4. **Missing Format Conversions** - Document and implement all format conversions
-5. **Skipping Pre-Implementation Checklist** - Verify all requirements before coding
-6. **Forgetting to stage before commit** - Run `git add -A` (or `git add .`) before `git commit` when you want to include current changes; otherwise the commit can be empty and `git push` will report everything up-to-date
+2. **Forgetting backend parity** - Document all HTTP entry points in `docs/ARCHITECTURE.md`; update every entry point that mounts your API router (not a fixed pair of filenames)
+3. **Skipping MVP QA gate** - After `/execute_plan` on a milestone, run `/qa_checklist` and `/code_review` before the next `/capture_issue`
+4. **Confusing product mission with `.genome/mission.md`** - App goals live in capture/plan/closure docs; genome mission is framework metadata
+5. **Stale Closures** - Use functional state updates when updating state based on props/state
+6. **Missing Format Conversions** - Document and implement all format conversions
+7. **Skipping Pre-Implementation Checklist** - Verify all requirements before coding
+8. **Forgetting to stage before commit** - Run `git add -A` before `git commit` when shipping changes
 
 ---
 
-## 📚 Related Documentation
+## 📚 Related Documentation (templates — copy into your app repo)
 
-- [Data Format Reference](docs/DATA_FORMAT_REFERENCE.md) - Data structure specs
-- [React Patterns](docs/REACT_PATTERNS.md) - React best practices
-- [API Endpoints](docs/API_ENDPOINTS.md) - Backend API docs
-- [Setup Guide](docs/SETUP.md) - Development setup
+- [Architecture template](docs/ARCHITECTURE_TEMPLATE.md)
+- [Dev runbook template](docs/DEV_RUNBOOK_TEMPLATE.md)
+- [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md)
+- [Blueprint](docs/BLUEPRINT.md) — Genesis framework architecture
 
 ---
 
-**Last Updated:** 2025-02-04
+**Last Updated:** 2026-05-31

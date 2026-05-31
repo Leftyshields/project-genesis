@@ -81,6 +81,13 @@ Genesis is the planning workflow that converts a prompt into the genome the runt
 
 The script copies everything needed for e2e (`npm test`, `node scripts/run-path.js` work immediately). Options: `--force` (allow non-empty target), `--no-verify` (skip post-copy `npm test`).
 
+**After instantiate — customize for your app:**
+
+1. Copy [docs/ARCHITECTURE_TEMPLATE.md](docs/ARCHITECTURE_TEMPLATE.md) → `docs/ARCHITECTURE.md`
+2. Copy [docs/DEV_RUNBOOK_TEMPLATE.md](docs/DEV_RUNBOOK_TEMPLATE.md) → `docs/DEV_RUNBOOK.md` (fill in as you debug)
+3. Read [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md)
+4. Add a **“This repo”** section to `.cursor/commands/workflow.md` with your stack-specific backend paths
+
 ---
 
 ## The process (simple)

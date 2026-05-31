@@ -12,9 +12,9 @@ Steps (in THIS response):
 4. Identify what success looks like
 5. List constraints and risks
 6. **Architecture Check** (if backend/API changes):
-   - Identify ALL backend entry points (server.js, functions/index.js, etc.)
+   - Identify ALL backend entry points (document in `docs/ARCHITECTURE.md` — do not assume fixed filenames)
    - Document which environments each serves (local dev vs production)
-   - Note if changes must be applied to multiple files for parity
+   - Note whether a shared handler module should be updated once vs many entry points
 7. Ask clarifying questions that materially affect planning or execution
 
 Rules:

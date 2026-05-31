@@ -66,17 +66,16 @@ tags → tags → merge → tag names → tag IDs
 
 ---
 
-### 4. Local Development Parity
+### 4. Backend entry points
 
 If adding new API endpoints:
 
-- [ ] Plan includes updates to both:
-  - `functions/index.js` (Firebase Functions)
-  - `server.js` (local development server)
-- [ ] Helper functions that need to be duplicated are identified
-- [ ] Local dev testing strategy is defined
+- [ ] **`docs/ARCHITECTURE.md`** exists and lists every HTTP entry point
+- [ ] Plan updates **shared handlers** first, then each entry point that mounts them
+- [ ] Local smoke test URL documented (e.g. health check path including any `/api` prefix)
+- [ ] Production web → API base URL documented
 
-**Action:** Add checklist items to execution plan for both files
+**Action:** Use [ARCHITECTURE_TEMPLATE.md](docs/ARCHITECTURE_TEMPLATE.md) if missing
 
 **Next Step:** Continue to step 5.
 

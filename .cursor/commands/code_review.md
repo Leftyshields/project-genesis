@@ -44,7 +44,7 @@ If not specified, review all uncommitted changes.
 - [ ] No unnecessary complexity
 - [ ] Separation of concerns maintained
 - [ ] Dependencies are appropriate
-- [ ] **Backend parity:** Both `server.js` AND `functions/index.js` updated (if API changes)
+- [ ] **Backend parity:** All entry points in `docs/ARCHITECTURE.md` updated; shared handlers used (if API changes)
 
 ### 4. Code Quality
 
