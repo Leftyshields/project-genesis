@@ -100,48 +100,40 @@ Conversion Required:
 
 ## Backend File Mapping (REQUIRED for backend changes)
 
-**CRITICAL:** Any backend API or logic changes MUST be applied to ALL backend files.
+**Do not assume a fixed file pair** (e.g. `server.js` + `functions/index.js`). Each project defines its own entry points.
 
-Before writing the execution plan, identify ALL backend entry points:
+Before writing the execution plan:
 
-| Environment | File | Deployment |
-|-------------|------|------------|
-| Local Dev | `server.js` | `npm run dev` |
-| Production | `functions/index.js` | `firebase deploy --only functions` |
+1. Create or update **`docs/ARCHITECTURE.md`** from [docs/ARCHITECTURE_TEMPLATE.md](docs/ARCHITECTURE_TEMPLATE.md).
+2. List **every** environment that serves HTTP (local dev, production, preview, CI).
+3. Prefer **one shared router/handler module** imported by all entry points.
 
-**Checklist Template:**
+**Checklist template:**
 ```
-### Backend Changes (apply to BOTH files)
-- [ ] Update server.js (local dev)
-- [ ] Update functions/index.js (production)
-- [ ] Test locally via server.js
-- [ ] Deploy functions to production
-- [ ] Verify production behavior
+### Backend changes
+- [ ] Update shared handlers (single source of truth)
+- [ ] Update each entry point listed in docs/ARCHITECTURE.md
+- [ ] Local smoke test (document URL, e.g. curl …/health)
+- [ ] Production path check: web client base URL matches hosting rewrites
+- [ ] Deploy and verify production (if applicable)
 ```
 
-See `docs/ARCHITECTURE.md` for full architecture details.
+## Bootable milestone (greenfield plans)
 
-## Local Development Parity (if adding API endpoints)
+For new apps, split the execution plan:
 
-If adding new API endpoints, include checklist items for both:
-- `functions/index.js` (Firebase Cloud Functions)
-- `server.js` (local development server)
+1. **Milestone A — Bootable:** auth (if any), health/smoke endpoint, empty shell UI, `.env` documented, one vertical slice testable locally.
+2. **Milestone B+ — Features:** remaining plan phases.
 
-Both files must have:
-- Same endpoint routes
-- Same helper functions
-- Same error handling
+Include **First run verification** checklist in Milestone A:
+- [ ] All start commands documented
+- [ ] One authenticated or public API call succeeds
+- [ ] No unhandled promise rejections / server crashes on happy path
 
-Example:
-```
-### Backend
-- [ ] Add endpoint to functions/index.js
-- [ ] Add endpoint to server.js (for local dev)
-- [ ] Add helper function X to functions/index.js
-- [ ] Add helper function X to server.js
-- [ ] Test endpoint locally via server.js
-- [ ] Deploy functions: firebase deploy --only functions --project epiphoric-prod
-```
+Include **Production path check** before calling MVP done:
+- [ ] Web build API base URL correct for hosted deploy
+- [ ] Hosting rewrites / API mount paths aligned
+- [ ] Firestore rules / secrets / CORS documented
 
 # Acceptance Criteria (if `last_explore.md` exists)
 Include acceptance criteria from exploration or derive from Success Criteria.

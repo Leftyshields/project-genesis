@@ -29,7 +29,7 @@ Rules:
 - Do not introduce new scope
 - Do not refactor unrelated code
 - If you discover missing information, pause and ask
-- **When adding API endpoints: Update both `functions/index.js` AND `server.js`**
+- **When adding API endpoints:** Update every entry point in `docs/ARCHITECTURE.md`; prefer shared handlers over duplicated route files
 
 Process:
 - Implement one step at a time
@@ -43,7 +43,7 @@ Process:
   - Avoid decisions that contradict stated constraints
 
 **Special Checks:**
-- **API Endpoints:** When adding new endpoints, verify both `functions/index.js` and `server.js` are updated
+- **API Endpoints:** Shared handlers + all entry points in `docs/ARCHITECTURE.md` updated
 - **Data Formats:** When transforming data, verify format conversions match documented specs
 - **React State:** When updating state that depends on props/state, use functional updates
 - **Content Rendering:** If adding formatted content, implement rendering strategy from design decisions
