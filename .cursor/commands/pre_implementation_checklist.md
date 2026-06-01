@@ -81,7 +81,18 @@ If adding new API endpoints:
 
 ---
 
-### 5. Content Rendering Strategy
+### 5. Monorepo & local runtime
+
+- [ ] Documented whether API/services import workspace packages from **`dist/`** or **`src/`**
+- [ ] Dev workflow notes shared rebuild if applicable
+- [ ] Emulator/database: single-instance rule and port recovery in `DEV_RUNBOOK`
+- [ ] If feature needs demo data: seed script planned and wired to `package.json`
+
+**Next Step:** Continue to step 6.
+
+---
+
+### 6. Content Rendering Strategy
 
 If adding formatted content (markdown, HTML, rich text):
 
@@ -93,11 +104,11 @@ If adding formatted content (markdown, HTML, rich text):
 
 **Action:** Add to design decisions document
 
-**Next Step:** Continue to step 6.
+**Next Step:** Continue to step 7.
 
 ---
 
-### 6. React State Management Patterns
+### 7. React State Management Patterns
 
 If using React state updates:
 
@@ -125,7 +136,8 @@ If using React state updates:
 - If any item cannot be checked off, stop and complete it before proceeding
 - Missing specifications at this stage will cause rework during implementation
 - It's better to spend time planning than debugging later
-- **If no execution plan file exists:** You may proceed using the implementation outline in design_decisions (e.g. User Flow, Integration Points, Resource/New files) as the execution guide; run `/create_plan` optionally for a formal step list.
+- **`last_plan.md` issue ID must match `last_capture.md`** before `/execute_plan`
+- **If no execution plan file exists:** For features, run `/create_plan` first; design_decisions alone is only for small fixes
 
 ---
 

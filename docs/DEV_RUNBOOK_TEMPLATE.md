@@ -2,6 +2,17 @@
 
 Copy to **`docs/DEV_RUNBOOK.md`** in your instantiated project. Fill in stack-specific commands and symptom/fix rows as you debug.
 
+> **Script integrity rule:** Do not document an `npm run …` command until it exists in root `package.json`. If deferred, mark as `(planned)` — not as a hard requirement.
+
+## Terminology (customize for your stack)
+
+| Term | Example meaning |
+|------|-----------------|
+| **Local dev** | localhost frontend + API + emulators |
+| **Vendor sandbox** | Third-party test API (not production) |
+| **Seed / fixture data** | Scripts that populate local DB for demos |
+| **Staging** | Hosted pre-production environment (if you have one) |
+
 ## Start commands
 
 | Service | Command | URL / port |

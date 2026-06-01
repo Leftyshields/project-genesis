@@ -55,6 +55,14 @@ Validation (at the end):
 - Verify format conversions work as documented (if applicable)
 - Ensure no constraints were violated
 
+## Local Dev Verification (required before handoff)
+
+- [ ] If feature reads persisted user/data store: **seed script or documented integration path** exists in `package.json` (do not document scripts that are not implemented)
+- [ ] `docs/DEV_RUNBOOK.md` updated with new scripts, ports, or recovery steps
+- [ ] Agent ran `npm test` and `npm run build` for affected workspaces (or stack-equivalent)
+- [ ] Agent stated exact commands for the user to see the happy path (e.g. seed → open page)
+- [ ] If editing shared workspace packages: noted whether consumers import `dist/` or `src/` — rebuild/restart as needed
+
 If a step feels unsafe or unclear, stop and ask before proceeding.
 
 ---
