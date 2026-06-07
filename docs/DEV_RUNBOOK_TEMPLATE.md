@@ -48,7 +48,12 @@ Copy to **`docs/DEV_RUNBOOK.md`** in your instantiated project. Fill in stack-sp
 2. Run workflow manually once
 3. Confirm artifact on `main`
 4. Load public URL; verify CSS/UI (not unstyled HTML)
-5. See [GITHUB_PAGES_CHECKLIST.md](GITHUB_PAGES_CHECKLIST.md) for static sites
+5. After bot commits artifacts: verify deploy workflow ran (or dispatch manually)
+6. See [GITHUB_PAGES_CHECKLIST.md](GITHUB_PAGES_CHECKLIST.md) for static sites
+
+**Same-day re-run warning (dated output folders):**
+
+Re-running a scheduled job when `briefings/YYYY-MM-DD/` (or equivalent) already exists can change rankings (soft-dedup) or metrics (live API refresh). For prompt/format-only changes, prefer unit tests + GHA dispatch over local same-day re-run. See [WORKFLOW_COURSE.md](WORKFLOW_COURSE.md).
 
 ## Symptom → fix
 
@@ -60,6 +65,9 @@ Copy to **`docs/DEV_RUNBOOK.md`** in your instantiated project. Fill in stack-sp
 | _GitHub Pages unstyled_ | Root-absolute `/assets/…` on project site | Use relative paths; see GITHUB_PAGES_CHECKLIST |
 | _API 404 model not found_ | Deprecated provider model ID | Verify current ID in provider docs; update `.env` |
 | _git push rejected (non-fast-forward)_ | GHA bot pushed commits | `git pull --rebase origin main` then push |
+| _Same-day job reshuffled output_ | Soft-dedup penalized today's existing folder | Exclude current date from dedup or use GHA as source of truth |
+| _Output metrics ≠ snapshot_ | Later stage re-fetched live API values | Document provenance; preserve snapshot fields on merge |
+| _Public site stale after bot commit_ | Deploy workflow did not run | `gh workflow run` deploy workflow; hard-refresh URL |
 
 Add a row here whenever debugging takes more than 30 minutes.
 

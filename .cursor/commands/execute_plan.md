@@ -75,6 +75,8 @@ Skip only if the feature has **no** automated deploy and **no** public URL.
 - [ ] **GitHub Pages project sites:** asset paths are **relative** (`assets/style.css`, `../assets/style.css`) — not root-absolute `/assets/…` (see [GITHUB_PAGES_CHECKLIST.md](docs/GITHUB_PAGES_CHECKLIST.md))
 - [ ] Timezone consistency: commit messages and dated output folders use the same TZ
 - [ ] After GHA bot commits: local push may need `git pull --rebase origin main`
+- [ ] After bot commits dated artifacts (`briefings/`, reports): deploy workflow ran or was dispatched manually
+- [ ] **Same-day pipeline re-run:** If verifying prompt/output-format changes, prefer `npm test` + GHA dispatch — local re-run when today's output folder exists can reshuffle rankings or drift metrics (see [WORKFLOW_COURSE.md](docs/WORKFLOW_COURSE.md))
 
 If a step feels unsafe or unclear, stop and ask before proceeding.
 

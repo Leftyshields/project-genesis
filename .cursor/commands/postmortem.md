@@ -21,6 +21,12 @@ Finally, propose updates to:
 - Documentation
 - Workflow rules
 
+**Required outputs:**
+1. `.ai/context/postmortem_<ISSUE_ID>.md` — friction analysis (this session)
+2. `docs/CLOSURE_<ISSUE_ID>.md` — what shipped, deferred, ship commands
+3. Update `.cursor/commands/workflow.md` or related commands if lessons apply
+4. Optional upstream: contribute findings to [Project Genesis](https://github.com/Leftyshields/project-genesis) via PR or `docs/INSTANTIATED_APP_FEEDBACK.md` in your app repo
+
 ---
 
 **Workflow Position:** Run this after feature deployment to reflect on the process and improve future workflows.

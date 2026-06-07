@@ -29,14 +29,18 @@ See also: [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md).
    - Include field mappings (if data transformations)
    - Include format conversions (if needed)
    - Include local dev parity checks (if API endpoints)
+   - **Issue ID in `last_plan.md` must match `last_capture.md`**
    
-   **Next:** Run `/design_decisions` to document design choices
+   **Next:** Run `/design_decisions` (if not done) or `/pre_implementation_checklist`
 
 4. **Document Design Decisions** (`/design_decisions`)
    - Answer all open questions from planning
    - Define field update strategies
    - Specify rendering approaches (if formatted content)
    - Document integration points
+   - **For multi-source data:** document provenance (API vs seed vs manual) and reconnect cleanup
+   
+   **Note:** May run before or after `/create_plan`, but **both** must exist before `/execute_plan`.
    
    **Next:** Run `/pre_implementation_checklist` to verify readiness
 
@@ -112,6 +116,7 @@ See also: [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md).
 12. **Postmortem** (`/postmortem`) — *standard*
     - Analyze friction points, rework, missing docs
     - Document lessons learned; propose workflow/doc updates
+    - Create `docs/CLOSURE_EPH-*.md` for the issue
     
     **Next:** Run `/project_wrap_up` (optional) or start next feature
 
@@ -195,11 +200,15 @@ For smaller changes or bug fixes:
 15. **Placeholder git remote** - Replace `YOU/repo` with `gh repo create` before first push
 16. **Stale external API IDs** - Verify LLM/vendor model names at implement time; provider IDs retire
 17. **GHA bot vs local git** - Run `git pull --rebase` after Actions commits before pushing locally
+18. **Same-day pipeline re-run** - Re-running a dated job when today's output folder already exists can reshuffle rankings (soft-dedup) and drift metrics (live API refresh). Prefer tests + GHA dispatch for prompt/format verification
+19. **Stale plan on follow-on issues** - Run `/create_plan` for the new issue ID; do not reuse a closed issue's `execution_plan.md`
+20. **GHA artifact without deploy** - Bot commits to `briefings/` or `dist/` may not trigger Pages; verify deploy workflow or dispatch manually
 
 ---
 
 ## 📚 Related Documentation (templates — copy into your app repo)
 
+- [Workflow course](docs/WORKFLOW_COURSE.md) — case studies and anti-patterns
 - [Architecture template](docs/ARCHITECTURE_TEMPLATE.md)
 - [Dev runbook template](docs/DEV_RUNBOOK_TEMPLATE.md)
 - [GitHub Pages checklist](docs/GITHUB_PAGES_CHECKLIST.md)

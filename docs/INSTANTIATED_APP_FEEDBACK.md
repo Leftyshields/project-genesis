@@ -57,4 +57,31 @@ Local dev parity was documented aspirationally but not treated as part of “don
 
 ---
 
+## 2026-06-07 — AI Tastemakers (Copy + Brief Format, EPH-20260607-COPY)
+
+**Source:** Follow-on feature; design_decisions before create_plan; local same-day digest used for verification.
+
+### Friction observed
+
+| Area | Issue |
+|------|--------|
+| Planning order | Checklist blocked on stale DIG1 plan; `/create_plan` run late |
+| Verification | Same-day `npm run digest` reshuffled rankings (soft-dedup) |
+| Data provenance | Enrich overwrote snapshot star counts in digest output |
+| Deploy chain | GHA digest commit did not auto-trigger Pages deploy |
+| Scope | “Copy only” expanded to two pipeline stability fixes |
+
+### Root cause (process)
+
+**Scheduled pipeline re-runs are not idempotent** for date-stamped output. Verification strategy for prompt/format changes was undocumented.
+
+### Changes incorporated into Genesis (PR `improve/copy-postmortem-eph20260607`)
+
+- `docs/WORKFLOW_COURSE.md` — follow-on case study + idempotency section
+- `/workflow` — common mistakes 18–20; flexible design/plan order; closure doc in postmortem step
+- `DEV_RUNBOOK_TEMPLATE` — same-day re-run + post-bot deploy rows
+- `/execute_plan` — same-day pipeline warning; post-digest Pages verification
+
+---
+
 **How to add entries:** After `/postmortem` in an instantiated app, open a PR to [project-genesis](https://github.com/Leftyshields/project-genesis) or append here via PR from your app repo.

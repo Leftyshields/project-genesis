@@ -60,7 +60,7 @@ Start with intent. End with a governed build.
 
 Genesis is the planning workflow that converts a prompt into the genome the runtime executes.
 
-**Start the workflow** — Run the Cursor command **`/capture_issue`** with your idea (goal or problem). Cursor guides you: explore → create plan → design decisions → pre-implementation checklist → execute plan. When the genome is ready, Cursor asks if you're done; when you confirm, the build runs and you get run-the-app instructions. Full workflow: [.cursor/commands/workflow.md](.cursor/commands/workflow.md).
+**Start the workflow** — Run the Cursor command **`/capture_issue`** with your idea (goal or problem). Cursor guides you: explore → create plan → design decisions → pre-implementation checklist → execute plan. When the genome is ready, Cursor asks if you're done; when you confirm, the build runs and you get run-the-app instructions. Full workflow: [.cursor/commands/workflow.md](.cursor/commands/workflow.md). **Workflow course** (case studies, anti-patterns): [docs/WORKFLOW_COURSE.md](docs/WORKFLOW_COURSE.md).
 
 1. **Capture** — `/capture_issue` with your prompt.
 2. **Explore, design, plan** — Work through the workflow; author or generate the genome in `.genome/`.
