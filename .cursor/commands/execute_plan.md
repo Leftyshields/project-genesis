@@ -55,6 +55,27 @@ Validation (at the end):
 - Verify format conversions work as documented (if applicable)
 - Ensure no constraints were violated
 
+## Local Dev Verification (required before handoff)
+
+- [ ] If feature reads persisted user/data store: **seed script or documented integration path** exists in `package.json` (do not document scripts that are not implemented)
+- [ ] `docs/DEV_RUNBOOK.md` updated with new scripts, ports, or recovery steps
+- [ ] Agent ran `npm test` and `npm run build` for affected workspaces (or stack-equivalent)
+- [ ] Agent stated exact commands for the user to see the happy path (e.g. seed → open page)
+- [ ] If editing shared workspace packages: noted whether consumers import `dist/` or `src/` — rebuild/restart as needed
+
+## Deployment Verification (required when feature ships via GHA, cron, or static hosting)
+
+Skip only if the feature has **no** automated deploy and **no** public URL.
+
+- [ ] Repo secrets documented in runbook (e.g. `ANTHROPIC_API_KEY`); never committed
+- [ ] Real git remote set (`gh repo create` / `git remote set-url`) — no `YOU/repo` placeholder
+- [ ] Manual workflow dispatch succeeds (or cron path documented)
+- [ ] Expected artifact exists on remote (commit, file, or deploy output)
+- [ ] **Public URL loads correctly** (hard refresh): styled UI if applicable, not raw HTML
+- [ ] **GitHub Pages project sites:** asset paths are **relative** (`assets/style.css`, `../assets/style.css`) — not root-absolute `/assets/…` (see [GITHUB_PAGES_CHECKLIST.md](docs/GITHUB_PAGES_CHECKLIST.md))
+- [ ] Timezone consistency: commit messages and dated output folders use the same TZ
+- [ ] After GHA bot commits: local push may need `git pull --rebase origin main`
+
 If a step feels unsafe or unclear, stop and ask before proceeding.
 
 ---

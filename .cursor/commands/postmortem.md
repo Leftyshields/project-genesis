@@ -13,6 +13,9 @@ Then answer:
 2. What should change in prompts or docs
 3. How to prevent this next time
 
+**Also document:**
+- Which workflow phases were **skipped** (e.g. `/code_review`, `/qa_checklist`, `/security_scan`) and whether that is acceptable for this milestone
+
 Finally, propose updates to:
 - System instructions
 - Documentation

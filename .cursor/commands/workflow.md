@@ -172,6 +172,7 @@ For smaller changes or bug fixes:
 2. Copy [docs/DEV_RUNBOOK_TEMPLATE.md](docs/DEV_RUNBOOK_TEMPLATE.md) → `docs/DEV_RUNBOOK.md` as you debug.
 3. Add a **“This repo”** subsection below with your backend paths and runbook link.
 4. Read [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md).
+5. If shipping GitHub Pages: read [GITHUB_PAGES_CHECKLIST.md](docs/GITHUB_PAGES_CHECKLIST.md).
 
 ---
 
@@ -185,6 +186,15 @@ For smaller changes or bug fixes:
 6. **Missing Format Conversions** - Document and implement all format conversions
 7. **Skipping Pre-Implementation Checklist** - Verify all requirements before coding
 8. **Forgetting to stage before commit** - Run `git add -A` before `git commit` when shipping changes
+9. **Documenting npm scripts that don't exist** - Runbook must not require scripts missing from `package.json`
+10. **Stale `last_plan.md`** - Plan issue ID must match current capture before `/execute_plan`
+11. **Monorepo shared package drift** - Rebuild shared workspace packages after editing `src/` if consumers import `dist/`
+12. **QA-driven silent scope** - New requests during QA need a mini capture or plan note, not ad-hoc patches
+13. **Local-only “done” for scheduled products** - MVP includes secrets, GHA dispatch, and verifying the public artifact
+14. **GitHub Pages root-absolute paths** - On `username.github.io/repo/`, use relative asset paths (`assets/style.css`), not `/assets/`
+15. **Placeholder git remote** - Replace `YOU/repo` with `gh repo create` before first push
+16. **Stale external API IDs** - Verify LLM/vendor model names at implement time; provider IDs retire
+17. **GHA bot vs local git** - Run `git pull --rebase` after Actions commits before pushing locally
 
 ---
 
@@ -192,9 +202,11 @@ For smaller changes or bug fixes:
 
 - [Architecture template](docs/ARCHITECTURE_TEMPLATE.md)
 - [Dev runbook template](docs/DEV_RUNBOOK_TEMPLATE.md)
+- [GitHub Pages checklist](docs/GITHUB_PAGES_CHECKLIST.md)
 - [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md)
+- [Instantiated app feedback log](docs/INSTANTIATED_APP_FEEDBACK.md)
 - [Blueprint](docs/BLUEPRINT.md) — Genesis framework architecture
 
 ---
 
-**Last Updated:** 2026-05-31
+**Last Updated:** 2026-06-07

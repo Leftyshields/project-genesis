@@ -71,6 +71,26 @@ For auth, payments, email, or third-party APIs, document:
 
 Copy [DEV_RUNBOOK_TEMPLATE.md](docs/DEV_RUNBOOK_TEMPLATE.md) → `docs/DEV_RUNBOOK.md` and add rows as you learn.
 
+### 10. External API identifiers (verify at implement time)
+
+For LLM, payment, or vendor APIs, document:
+
+| Integration | Env var | Identifier (model, API version, etc.) | Verify at ship |
+|-------------|---------|----------------------------------------|----------------|
+| _e.g. Anthropic_ | `ANTHROPIC_API_KEY` | _e.g. `claude-sonnet-4-6`_ | _Provider docs — IDs retire_ |
+
+Rules:
+- **Do not treat design-doc model names as stable forever.** Check provider docs when implementing and in `.env.example`.
+- Note rate limits and which token works in CI (e.g. `GITHUB_TOKEN` vs PAT for Search API).
+
+### 11. Cold-start / bootstrap behavior (ranking, ML, analytics)
+
+If v1 quality depends on accumulated history (snapshots, training data, A/B baseline):
+
+- Document bootstrap fallback behavior and when “real” mode activates
+- Set user expectations in explore/capture: _“Rankings improve after ~N days of daily runs”_
+- Avoid promising full product quality on day one unless technically accurate
+
 Rules:
 - Favor reversible decisions
 - Avoid overengineering
