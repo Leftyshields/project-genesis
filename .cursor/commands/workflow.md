@@ -63,6 +63,7 @@ See also: [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md).
    - Apply backend changes to **all documented entry points** (see `docs/ARCHITECTURE.md`)
    - Use functional state updates when updating state based on props/state
    - Implement format conversions as documented
+   - **Ship local dev tooling** (seed scripts, npm scripts, runbook rows) when UI needs data to demo
    
    **Optional:** Run `/tdd` for complex logic (test-driven development)
    
@@ -86,8 +87,9 @@ See also: [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md).
    **Next:** Fix critical/high findings, then run `/qa_checklist`
 
 9. **QA Checklist** (`/qa_checklist`) — *standard*
-   - Manual testing checklist: happy path, edge cases, error handling, visual/UX
-   - Human validation only (no automated tests)
+   - **Automated:** agent runs `npm test` and builds for affected workspaces
+   - **Manual:** checklist for happy path, edge cases, error handling, visual/UX
+   - Save issue-scoped checklist to `.ai/context/qa_checklist_<feature>.md` when helpful
    
    **Next:** Fix any issues found, then run `/peer_review` (optional)
 
@@ -159,7 +161,7 @@ For smaller changes or bug fixes:
 | `/tdd` | Optional | Red–green–refactor for complex logic during implementation |
 | `/code_review` | Standard | Automated review: security, correctness, architecture, quality, performance |
 | `/security_scan` | Optional | Dedicated security pass: secrets, deps, auth, data at rest, encryption, proprietary/IP |
-| `/qa_checklist` | Standard | Human manual-test checklist (happy path, edge cases, UX) |
+| `/qa_checklist` | Standard | Automated tests + human manual-test checklist (happy path, edge cases, UX) |
 | `/peer_review` | Optional | Human review of changes; accept/reject feedback with rationale |
 | `/postmortem` | Standard | Reflect on friction and rework; improve process and docs |
 | `/project_wrap_up` | Optional | Handover: security audit, onboarding docs, next-op briefing |

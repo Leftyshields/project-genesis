@@ -97,6 +97,9 @@ Write the issue to `.ai/context/last_capture.md` using **exactly** this structur
 # Priority
 [low / medium / high]
 
+# Environment
+[optional: local-dev | staging | production | vendor-sandbox]
+
 # Open Questions
 [questions here]
 

@@ -71,6 +71,14 @@ For auth, payments, email, or third-party APIs, document:
 
 Copy [DEV_RUNBOOK_TEMPLATE.md](docs/DEV_RUNBOOK_TEMPLATE.md) → `docs/DEV_RUNBOOK.md` and add rows as you learn.
 
+### 9. Data provenance (when multiple sources)
+
+If data comes from external APIs **and** local seed/fixtures:
+
+- List sources (e.g. vendor API, seed script, manual entry)
+- UI/API field for source or inference rule
+- Cleanup behavior on reconnect/relink/re-auth
+
 ### 10. External API identifiers (verify at implement time)
 
 For LLM, payment, or vendor APIs, document:

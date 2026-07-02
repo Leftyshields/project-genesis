@@ -24,6 +24,18 @@ Changelog of workflow improvements derived from real app development (postmortem
 
 Local dev parity was documented aspirationally but not treated as part of “done.” Demoability should be a deliverable, not a QA surprise.
 
+### Changes incorporated into Genesis (PR `improve/workflow-postmortem-h3m8` — #14)
+
+- `/execute_plan` — Local Dev Verification gate
+- `/pre_implementation_checklist` — Monorepo & local runtime section; plan ID must match capture
+- `/workflow` — Flexible design/plan order; closure docs; common mistakes expanded
+- `/qa_checklist` — Automated tests + manual checklist split
+- `/postmortem` — Required closure artifact outputs
+- `/capture_issue` — Optional `# Environment` field
+- `/design_decisions` — Data provenance subsection
+- `DEV_RUNBOOK_TEMPLATE` — Script integrity rule + terminology table
+- Expression profiles — Happy-path handoff gates
+
 ---
 
 ## 2026-06-07 — AI Tastemakers (Daily Digest, EPH-20260606-DIG1)
@@ -82,6 +94,8 @@ Local dev parity was documented aspirationally but not treated as part of “don
 - `DEV_RUNBOOK_TEMPLATE` — same-day re-run + post-bot deploy rows
 - `/execute_plan` — same-day pipeline warning; post-digest Pages verification
 
+---
+
 ## 2026-07-02 — AI Tastemakers (Landing Layout v2, EPH-20260701-LAND)
 
 **Source:** [ai-tastemakers](https://github.com/Leftyshields/ai-tastemakers) — full workflow through QA close; flag-gated static layout experiment.
@@ -100,7 +114,7 @@ Local dev parity was documented aspirationally but not treated as part of “don
 
 Static HTML generators treated Tailwind class strings like JSX utilities, but Tailwind v4 content scanning does not reliably emit rules from dynamic TS template literals.
 
-### Changes incorporated into Genesis (PR `improve/tastemakers-postmortem-land`)
+### Changes incorporated into Genesis (PR `improve/tastemakers-postmortem-land` — #17)
 
 - `/explore` — partial/WIP conflicts table in snapshot
 - `/design_decisions` — static HTML generator styling section

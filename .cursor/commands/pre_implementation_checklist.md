@@ -81,7 +81,18 @@ If adding new API endpoints:
 
 ---
 
-### 5. Content Rendering Strategy
+### 5. Monorepo & local runtime
+
+- [ ] Documented whether API/services import workspace packages from **`dist/`** or **`src/`**
+- [ ] Dev workflow notes shared rebuild if applicable
+- [ ] Emulator/database: single-instance rule and port recovery in `DEV_RUNBOOK`
+- [ ] If feature needs demo data: seed script planned and wired to `package.json`
+
+**Next Step:** Continue to step 6.
+
+---
+
+### 6. Content Rendering Strategy
 
 If adding formatted content (markdown, HTML, rich text):
 
@@ -93,11 +104,11 @@ If adding formatted content (markdown, HTML, rich text):
 
 **Action:** Add to design decisions document
 
-**Next Step:** Continue to step 6.
+**Next Step:** Continue to step 7.
 
 ---
 
-### 6. React State Management Patterns
+### 7. React State Management Patterns
 
 If using React state updates:
 
