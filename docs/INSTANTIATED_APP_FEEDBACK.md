@@ -82,6 +82,42 @@ Local dev parity was documented aspirationally but not treated as part of “don
 - `DEV_RUNBOOK_TEMPLATE` — same-day re-run + post-bot deploy rows
 - `/execute_plan` — same-day pipeline warning; post-digest Pages verification
 
+## 2026-07-02 — AI Tastemakers (Landing Layout v2, EPH-20260701-LAND)
+
+**Source:** [ai-tastemakers](https://github.com/Leftyshields/ai-tastemakers) — full workflow through QA close; flag-gated static layout experiment.
+
+### Friction observed
+
+| Area | Issue |
+|------|--------|
+| Direction drift | Partial v2 implemented sidebar-heavy synthesis; revised capture required reflow-first refactor |
+| Experiment JSON | Hypothesis/`change_summary` lagged capture until mid-implementation |
+| Footer UX | Tailwind utilities in TS HTML strings did not guarantee spacing; adjacent links collided |
+| QA gap | Automated tests green; layout/footer bug found only by browser check |
+| Git | Local main behind GHA bot commits; rebase conflict on push |
+
+### Root cause (process)
+
+Static HTML generators treated Tailwind class strings like JSX utilities, but Tailwind v4 content scanning does not reliably emit rules from dynamic TS template literals.
+
+### Changes incorporated into Genesis (PR `improve/tastemakers-postmortem-land`)
+
+- `/explore` — partial/WIP conflicts table in snapshot
+- `/design_decisions` — static HTML generator styling section
+- `/qa_checklist` — automated tests + browser gate for generated HTML
+- `/execute_plan` — static HTML special check
+- `/postmortem` — Path A (app repo) + Path B (Genesis) required outputs
+- `/workflow` — common mistakes 21–24
+- `docs/WORKFLOW_COURSE.md` — case study C (LAND)
+
+### App-repo reference
+
+- Closure: [CLOSURE_EPH-20260701-LAND.md](https://github.com/Leftyshields/ai-tastemakers/blob/main/docs/CLOSURE_EPH-20260701-LAND.md)
+- Shipped: `d8c3492`, QA closed: `160da7c`
+
 ---
 
-**How to add entries:** After `/postmortem` in an instantiated app, open a PR to [project-genesis](https://github.com/Leftyshields/project-genesis) or append here via PR from your app repo.
+## How to add entries (after `/postmortem`)
+
+1. **App repo (Path A):** Append a dated section above; update `docs/CLOSURE_<ISSUE_ID>.md` and workflow commands as needed; open PR or push.
+2. **Genesis (Path B):** When templates should change, open a PR here updating `.cursor/commands/` and `docs/`; link the app-repo feedback entry and add a **Changes incorporated into Genesis** line with the PR branch name.

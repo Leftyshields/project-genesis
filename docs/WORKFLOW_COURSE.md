@@ -117,6 +117,25 @@ See [Scheduled pipeline idempotency](#scheduled-pipeline-idempotency) below.
 
 ---
 
+
+## Case study C — Static layout refactor (AI Tastemakers LAND)
+
+**Profile:** Flag-gated homepage reflow (`SITE_LANDING_LAYOUT_V2=1`); build-time HTML generator + Tailwind; experiment queued behind prior A/B test.
+
+| Lesson | What went wrong | Fix in workflow |
+|--------|-----------------|-----------------|
+| Direction drift | Partial v2 code matched *old* experiment brief (sidebar synthesis), not revised capture (main-column reflow) | `/explore` **Conflicts with existing code** table before planning |
+| Styling contract | Footer links visually collided despite Tailwind classes in TS strings | Component CSS in scanned `input.css` + explicit `&middot;` separators |
+| QA blind spot | 150+ unit tests passed; spacing bug visible only in browser | `/qa_checklist` browser gate after `build:pages` |
+| Experiment JSON | Hypothesis described superseded layout until mid-implementation | Update experiment metadata in same milestone as layout refactor |
+| Ship | Local branch 11 commits behind GHA bot; rebase conflict | `git pull --rebase` before push (common mistake #17) |
+
+**Takeaway:** For **generated static HTML**, treat spacing like email templates — never rely on utility-class strings alone in TS template literals. Verification = rebuild + browser at desktop and mobile widths.
+
+**App-repo closure:** [EPH-20260701-LAND](https://github.com/Leftyshields/ai-tastemakers/blob/main/docs/CLOSURE_EPH-20260701-LAND.md)
+
+---
+
 ## Scheduled pipeline idempotency
 
 Applies to jobs that write **date-stamped folders** (digests, reports, snapshots).
@@ -172,4 +191,4 @@ After `/postmortem` in any instantiated app:
 
 ---
 
-**Last updated:** 2026-06-07 (EPH-20260607-COPY postmortem)
+**Last updated:** 2026-07-02 (EPH-20260701-LAND postmortem)

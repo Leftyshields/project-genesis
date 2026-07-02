@@ -47,6 +47,7 @@ Process:
 - **Data Formats:** When transforming data, verify format conversions match documented specs
 - **React State:** When updating state that depends on props/state, use functional updates
 - **Content Rendering:** If adding formatted content, implement rendering strategy from design decisions
+- **Static HTML generators:** Layout/spacing uses component CSS in scanned `input.css` (or equivalent), not Tailwind utility strings alone in TS templates; rebuild + browser-check footers/nav rows before calling UI done
 
 Validation (at the end):
 - Validate implemented behavior against `last_explore.md` Success Criteria (if exists)

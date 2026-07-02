@@ -83,7 +83,16 @@ Rules:
 - **Do not treat design-doc model names as stable forever.** Check provider docs when implementing and in `.env.example`.
 - Note rate limits and which token works in CI (e.g. `GITHUB_TOKEN` vs PAT for Search API).
 
-### 11. Cold-start / bootstrap behavior (ranking, ML, analytics)
+### 11. Static HTML generators (Tailwind, build-time templates)
+
+If UI is generated as HTML strings (e.g. `scripts/*-pages.ts`, email templates, static site builders):
+
+- **Layout-critical spacing** (nav rows, footers, inline link groups): use **component classes** in a scanned CSS entry file (e.g. `site/assets/input.css`), not Tailwind utility strings alone inside TS template literals
+- **Inline link rows:** add explicit HTML separators (`&middot;`, `<span aria-hidden>`) or flex `gap` via component CSS — adjacent `<a>` tags collapse without them
+- **Tailwind v4 content scanning:** utilities in dynamic TS strings may not emit CSS; verify after `npm run build:pages` (or your compile step) + browser refresh
+- Document which generator functions own which components
+
+### 12. Cold-start / bootstrap behavior (ranking, ML, analytics)
 
 If v1 quality depends on accumulated history (snapshots, training data, A/B baseline):
 

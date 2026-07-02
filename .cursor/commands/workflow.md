@@ -203,6 +203,10 @@ For smaller changes or bug fixes:
 18. **Same-day pipeline re-run** - Re-running a dated job when today's output folder already exists can reshuffle rankings (soft-dedup) and drift metrics (live API refresh). Prefer tests + GHA dispatch for prompt/format verification
 19. **Stale plan on follow-on issues** - Run `/create_plan` for the new issue ID; do not reuse a closed issue's `execution_plan.md`
 20. **GHA artifact without deploy** - Bot commits to `briefings/` or `dist/` may not trigger Pages; verify deploy workflow or dispatch manually
+21. **Tailwind in HTML generators** - Spacing/layout in TS string templates must use **component classes in scanned CSS** (e.g. `site/assets/input.css`), not utility strings alone; add explicit HTML separators for inline link rows; verify with rebuild + browser refresh
+22. **Partial implementations vs revised capture** - Before `/execute_plan`, reconcile flag-gated or WIP code against capture; update experiment JSON and design doc in the same milestone when direction changes
+23. **Automated tests ≠ layout UX** - Unit/integration green does not verify footer spacing, column balance, or mobile order; `/qa_checklist` must include browser checks for static HTML layout changes
+24. **Overwriting `last_capture.md`** - Do not start a new issue capture until the prior issue has a closure doc (or use issue-scoped capture filenames)
 
 ---
 
@@ -218,4 +222,4 @@ For smaller changes or bug fixes:
 
 ---
 
-**Last Updated:** 2026-06-07
+**Last Updated:** 2026-07-02

@@ -1,15 +1,32 @@
-Create a manual QA checklist for this feature.
+Create a QA checklist for this feature.
 
-Include:
+## Automated (agent runs first)
+
+- Run `npm test` (root or affected workspaces)
+- Run `npm run build` (or affected workspace builds, e.g. `npm run build:pages`)
+- Report pass/fail counts in chat
+
+## Manual (human validation)
+
+Create a checklist the tester can follow. Include:
 - Happy path
 - Common edge cases
 - Failure states
 - Visual / UX checks
 
-Format as a simple checklist that a human can follow.
+Save to `.ai/context/qa_checklist_<feature-slug>.md` when the feature is non-trivial.
 
-Do not write automated tests here.
-This is for human validation only.
+Format as simple `- [ ]` items with pre-flight section.
+
+### Static site / generated HTML (when layout or CSS changes)
+
+After rebuild, **open the affected pages in a browser** (local static server or staging URL). Automated tests rarely catch:
+
+- Footer/nav link spacing and wrapping
+- Column balance and mobile stack order
+- Missing Tailwind rules from TS template literals
+
+Check desktop and at least one narrow viewport (e.g. 390px).
 
 ---
 
