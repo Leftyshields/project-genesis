@@ -47,6 +47,7 @@ Process:
 - **Data Formats:** When transforming data, verify format conversions match documented specs
 - **React State:** When updating state that depends on props/state, use functional updates
 - **Content Rendering:** If adding formatted content, implement rendering strategy from design decisions
+- **Static HTML generators:** Layout/spacing uses component CSS in scanned `input.css` (or equivalent), not Tailwind utility strings alone in TS templates; rebuild + browser-check footers/nav rows before calling UI done
 
 Validation (at the end):
 - Validate implemented behavior against `last_explore.md` Success Criteria (if exists)
@@ -62,6 +63,21 @@ Validation (at the end):
 - [ ] Agent ran `npm test` and `npm run build` for affected workspaces (or stack-equivalent)
 - [ ] Agent stated exact commands for the user to see the happy path (e.g. seed → open page)
 - [ ] If editing shared workspace packages: noted whether consumers import `dist/` or `src/` — rebuild/restart as needed
+
+## Deployment Verification (required when feature ships via GHA, cron, or static hosting)
+
+Skip only if the feature has **no** automated deploy and **no** public URL.
+
+- [ ] Repo secrets documented in runbook (e.g. `ANTHROPIC_API_KEY`); never committed
+- [ ] Real git remote set (`gh repo create` / `git remote set-url`) — no `YOU/repo` placeholder
+- [ ] Manual workflow dispatch succeeds (or cron path documented)
+- [ ] Expected artifact exists on remote (commit, file, or deploy output)
+- [ ] **Public URL loads correctly** (hard refresh): styled UI if applicable, not raw HTML
+- [ ] **GitHub Pages project sites:** asset paths are **relative** (`assets/style.css`, `../assets/style.css`) — not root-absolute `/assets/…` (see [GITHUB_PAGES_CHECKLIST.md](docs/GITHUB_PAGES_CHECKLIST.md))
+- [ ] Timezone consistency: commit messages and dated output folders use the same TZ
+- [ ] After GHA bot commits: local push may need `git pull --rebase origin main`
+- [ ] After bot commits dated artifacts (`briefings/`, reports): deploy workflow ran or was dispatched manually
+- [ ] **Same-day pipeline re-run:** If verifying prompt/output-format changes, prefer `npm test` + GHA dispatch — local re-run when today's output folder exists can reshuffle rankings or drift metrics (see [WORKFLOW_COURSE.md](docs/WORKFLOW_COURSE.md))
 
 If a step feels unsafe or unclear, stop and ask before proceeding.
 

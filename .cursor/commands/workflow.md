@@ -179,6 +179,7 @@ For smaller changes or bug fixes:
 2. Copy [docs/DEV_RUNBOOK_TEMPLATE.md](docs/DEV_RUNBOOK_TEMPLATE.md) → `docs/DEV_RUNBOOK.md` as you debug.
 3. Add a **“This repo”** subsection below with your backend paths and runbook link.
 4. Read [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md).
+5. If shipping GitHub Pages: read [GITHUB_PAGES_CHECKLIST.md](docs/GITHUB_PAGES_CHECKLIST.md).
 
 ---
 
@@ -196,17 +197,31 @@ For smaller changes or bug fixes:
 10. **Stale `last_plan.md`** - Plan issue ID must match current capture before `/execute_plan`
 11. **Monorepo shared package drift** - Rebuild shared workspace packages after editing `src/` if consumers import `dist/`
 12. **QA-driven silent scope** - New requests during QA need a mini capture or plan note, not ad-hoc patches
+13. **Local-only “done” for scheduled products** - MVP includes secrets, GHA dispatch, and verifying the public artifact
+14. **GitHub Pages root-absolute paths** - On `username.github.io/repo/`, use relative asset paths (`assets/style.css`), not `/assets/`
+15. **Placeholder git remote** - Replace `YOU/repo` with `gh repo create` before first push
+16. **Stale external API IDs** - Verify LLM/vendor model names at implement time; provider IDs retire
+17. **GHA bot vs local git** - Run `git pull --rebase` after Actions commits before pushing locally
+18. **Same-day pipeline re-run** - Re-running a dated job when today's output folder already exists can reshuffle rankings (soft-dedup) and drift metrics (live API refresh). Prefer tests + GHA dispatch for prompt/format verification
+19. **Stale plan on follow-on issues** - Run `/create_plan` for the new issue ID; do not reuse a closed issue's `execution_plan.md`
+20. **GHA artifact without deploy** - Bot commits to `briefings/` or `dist/` may not trigger Pages; verify deploy workflow or dispatch manually
+21. **Tailwind in HTML generators** - Spacing/layout in TS string templates must use **component classes in scanned CSS** (e.g. `site/assets/input.css`), not utility strings alone; add explicit HTML separators for inline link rows; verify with rebuild + browser refresh
+22. **Partial implementations vs revised capture** - Before `/execute_plan`, reconcile flag-gated or WIP code against capture; update experiment JSON and design doc in the same milestone when direction changes
+23. **Automated tests ≠ layout UX** - Unit/integration green does not verify footer spacing, column balance, or mobile order; `/qa_checklist` must include browser checks for static HTML layout changes
+24. **Overwriting `last_capture.md`** - Do not start a new issue capture until the prior issue has a closure doc (or use issue-scoped capture filenames)
 
 ---
 
 ## 📚 Related Documentation (templates — copy into your app repo)
 
+- [Workflow course](docs/WORKFLOW_COURSE.md) — case studies and anti-patterns
 - [Architecture template](docs/ARCHITECTURE_TEMPLATE.md)
 - [Dev runbook template](docs/DEV_RUNBOOK_TEMPLATE.md)
+- [GitHub Pages checklist](docs/GITHUB_PAGES_CHECKLIST.md)
 - [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md)
 - [Instantiated app feedback log](docs/INSTANTIATED_APP_FEEDBACK.md)
 - [Blueprint](docs/BLUEPRINT.md) — Genesis framework architecture
 
 ---
 
-**Last Updated:** 2026-05-31
+**Last Updated:** 2026-07-02

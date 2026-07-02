@@ -138,6 +138,7 @@ If using React state updates:
 - It's better to spend time planning than debugging later
 - **`last_plan.md` issue ID must match `last_capture.md`** before `/execute_plan`
 - **If no execution plan file exists:** For features, run `/create_plan` first; design_decisions alone is only for small fixes
+- **Scheduled/dated output products:** Document verification path in design decisions — test-only vs GHA dispatch vs local pipeline re-run (see [WORKFLOW_COURSE.md](docs/WORKFLOW_COURSE.md))
 
 ---
 

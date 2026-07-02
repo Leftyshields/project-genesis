@@ -60,7 +60,7 @@ Start with intent. End with a governed build.
 
 Genesis is the planning workflow that converts a prompt into the genome the runtime executes.
 
-**Start the workflow** — Run the Cursor command **`/capture_issue`** with your idea (goal or problem). Cursor guides you: explore → create plan → design decisions → pre-implementation checklist → execute plan. When the genome is ready, Cursor asks if you're done; when you confirm, the build runs and you get run-the-app instructions. Full workflow: [.cursor/commands/workflow.md](.cursor/commands/workflow.md).
+**Start the workflow** — Run the Cursor command **`/capture_issue`** with your idea (goal or problem). Cursor guides you: explore → create plan → design decisions → pre-implementation checklist → execute plan. When the genome is ready, Cursor asks if you're done; when you confirm, the build runs and you get run-the-app instructions. Full workflow: [.cursor/commands/workflow.md](.cursor/commands/workflow.md). **Workflow course** (case studies, anti-patterns): [docs/WORKFLOW_COURSE.md](docs/WORKFLOW_COURSE.md).
 
 1. **Capture** — `/capture_issue` with your prompt.
 2. **Explore, design, plan** — Work through the workflow; author or generate the genome in `.genome/`.
@@ -87,6 +87,23 @@ The script copies everything needed for e2e (`npm test`, `node scripts/run-path.
 2. Copy [docs/DEV_RUNBOOK_TEMPLATE.md](docs/DEV_RUNBOOK_TEMPLATE.md) → `docs/DEV_RUNBOOK.md` (fill in as you debug)
 3. Read [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md)
 4. Add a **“This repo”** section to `.cursor/commands/workflow.md` with your stack-specific backend paths
+
+**Post-instantiate — git and GitHub (recommended before first feature ship):**
+
+```bash
+cd /path/to/my-organism
+git init
+git add .
+git commit -m "chore: instantiate from project-genesis"
+gh repo create MY-USER/MY-REPO --public --source=. --remote=origin --push
+# Or: git remote add origin git@github.com:MY-USER/MY-REPO.git && git push -u origin main
+```
+
+- Never use placeholder remotes like `YOU/repo`
+- Add `.env` to `.gitignore`; copy `.env.example` → `.env` locally only
+- If using GitHub Actions or Pages: set secrets, run one manual workflow dispatch, verify public URL
+
+See [docs/GITHUB_PAGES_CHECKLIST.md](docs/GITHUB_PAGES_CHECKLIST.md) for static site hosting.
 
 ---
 
@@ -222,6 +239,8 @@ All of this is synchronous. No daemon, no background process. One invocation run
 - **[lib/README.md](lib/README.md)** — Runtime API: `loadGenome`, `decompose`, signaling, `runPath`, `runPathWithRepair`, guardrails.
 - **[docs/VALIDATION_STORY_12.md](docs/VALIDATION_STORY_12.md)** — Validation checklist (acceptance criteria and guardrails).
 - **[docs/GITHUB_SETTINGS.md](docs/GITHUB_SETTINGS.md)** — Repository governance.
+- **[docs/GITHUB_PAGES_CHECKLIST.md](docs/GITHUB_PAGES_CHECKLIST.md)** — Static site hosting on `username.github.io/repo/`.
+- **[docs/INSTANTIATED_APP_FEEDBACK.md](docs/INSTANTIATED_APP_FEEDBACK.md)** — Postmortem learnings from instantiated apps.
 - **.cursor/commands/** — Workflow automation (capture_issue, explore, design_decisions, create_plan, execute_plan, code_review, qa_checklist, postmortem).
 
 ---
