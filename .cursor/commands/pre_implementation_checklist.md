@@ -125,7 +125,9 @@ If using React state updates:
 - If any item cannot be checked off, stop and complete it before proceeding
 - Missing specifications at this stage will cause rework during implementation
 - It's better to spend time planning than debugging later
-- **If no execution plan file exists:** You may proceed using the implementation outline in design_decisions (e.g. User Flow, Integration Points, Resource/New files) as the execution guide; run `/create_plan` optionally for a formal step list.
+- **`last_plan.md` issue ID must match `last_capture.md`** before `/execute_plan`
+- **If no execution plan file exists:** For features, run `/create_plan` first; design_decisions alone is only for small fixes
+- **Scheduled/dated output products:** Document verification path in design decisions — test-only vs GHA dispatch vs local pipeline re-run (see [WORKFLOW_COURSE.md](docs/WORKFLOW_COURSE.md))
 
 ---
 

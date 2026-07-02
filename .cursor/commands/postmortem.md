@@ -13,10 +13,20 @@ Then answer:
 2. What should change in prompts or docs
 3. How to prevent this next time
 
+**Also document:**
+- Which workflow phases were **skipped** (e.g. `/code_review`, `/qa_checklist`, `/security_scan`) and whether that is acceptable for this milestone
+
 Finally, propose updates to:
 - System instructions
 - Documentation
 - Workflow rules
+
+**Required outputs:**
+1. `.ai/context/postmortem_<ISSUE_ID>.md` — friction analysis (this session)
+2. `docs/CLOSURE_<ISSUE_ID>.md` — what shipped, deferred, ship commands
+3. Update `.cursor/commands/workflow.md` or related commands if lessons apply
+4. **Path A (app repo):** Append a section to `docs/INSTANTIATED_APP_FEEDBACK.md` and open a PR (or push) from your app repo
+5. **Path B (Genesis upstream, when templates should change):** Open a PR to [Project Genesis](https://github.com/Leftyshields/project-genesis) updating commands/templates; link the app-repo feedback entry. See **How to add entries** in `docs/INSTANTIATED_APP_FEEDBACK.md`
 
 ---
 

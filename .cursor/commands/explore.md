@@ -11,11 +11,15 @@ Steps (in THIS response):
 3. Describe current behavior and desired behavior
 4. Identify what success looks like
 5. List constraints and risks
-6. **Architecture Check** (if backend/API changes):
+6. **Partial implementation / WIP check** (if flag-gated code, open PRs, or experiment branches already exist):
+   - Compare capture **desired behavior** to what is already implemented
+   - Document a **Conflicts with existing code** table: file/area | current behavior | capture says | action (keep / refactor / supersede)
+   - Note stale experiment JSON, design docs, or plans that describe the old direction
+7. **Architecture Check** (if backend/API changes):
    - Identify ALL backend entry points (document in `docs/ARCHITECTURE.md` — do not assume fixed filenames)
    - Document which environments each serves (local dev vs production)
    - Note whether a shared handler module should be updated once vs many entry points
-7. Ask clarifying questions that materially affect planning or execution
+8. Ask clarifying questions that materially affect planning or execution
 
 Rules:
 - Challenge unclear assumptions
@@ -49,6 +53,11 @@ After completing the exploration snapshot (including open questions), you MUST p
 
 # Risks / Unknowns
 [risks and unknowns, bullet list]
+
+# Conflicts with Existing Code (if partial/WIP exists)
+| Area | Current | Capture desired | Action |
+|------|---------|-----------------|--------|
+| _e.g. layout v2 flag_ | _sidebar-heavy_ | _main-column reflow_ | _refactor in place_ |
 
 # Architecture Impact (if backend changes)
 [List all files that need changes and their environments]
