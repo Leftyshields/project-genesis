@@ -129,6 +129,8 @@ If `run_config.json` has `mode: "autonomous"`:
 
 If interactive: ask "Are these the correct design boundaries for v1?" and wait for confirmation.
 
+**Mid-run `--autonomous`:** If the user message includes `--autonomous`, run `npm run genesis:run -- init --autonomous`, then continue remaining steps per [genesis_run.md](genesis_run.md) Agent behavior §1.
+
 ---
 
 **Next:** Run `/create_plan` to create the execution plan, then `/pre_implementation_checklist` before `/execute_plan`. See `.cursor/commands/workflow.md` for the complete development workflow.

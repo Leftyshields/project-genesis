@@ -156,6 +156,8 @@ If `run_config.json` has `mode: "autonomous"`: write plan to `.ai/context/last_p
 
 Always persist the plan to `.ai/context/last_plan.md` (not chat-only).
 
+**Mid-run `--autonomous`:** If the user message includes `--autonomous`, run `npm run genesis:run -- init --autonomous`, then continue remaining steps per [genesis_run.md](genesis_run.md) Agent behavior §1.
+
 ---
 
 **Next:** Run `/pre_implementation_checklist` to verify readiness, then `/execute_plan` to begin implementation. See `.cursor/commands/workflow.md` for the complete development workflow.

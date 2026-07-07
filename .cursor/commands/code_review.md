@@ -173,3 +173,5 @@ When `run_config.json` has `mode: "autonomous"`:
 
 **Auto-fix:** style, hygiene, obvious correctness, unambiguous test fixes.  
 **Manual only:** security, business logic, architecture tradeoffs.
+
+**Mid-run `--autonomous`:** If the user message includes `--autonomous`, run `npm run genesis:run -- init --autonomous`, then continue remaining steps per [genesis_run.md](genesis_run.md) Agent behavior §1.

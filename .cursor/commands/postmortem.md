@@ -55,6 +55,8 @@ If `run_config.json` has `reflect: true`, **immediately** continue with `/reflec
 
 If `mode` is `autonomous`, this is the final mandatory step — summarize the full run; do not ask the user to confirm or run another command.
 
+**Mid-run `--autonomous`:** If the user message includes `--autonomous`, run `npm run genesis:run -- init --autonomous`, then continue remaining steps per [genesis_run.md](genesis_run.md) Agent behavior §1.
+
 ---
 
 **Workflow Position:** Run this after feature deployment to reflect on the process and improve future workflows.

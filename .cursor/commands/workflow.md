@@ -22,7 +22,7 @@ Mandatory order for Interactive and Autonomous modes (only pause behavior differ
 | 8 | QA | `/qa_checklist` |
 | 9 | Postmortem | `/postmortem` |
 
-**Entry:** `/genesis_run` (interactive) or `/genesis_run --autonomous` (or `GENESIS_AUTONOMOUS=true`). Optional after step 9: `/reflection` (documentation handoff), `/security_scan`, `/peer_review`, deploy.
+**Entry:** `/genesis_run` (interactive) or `/genesis_run --autonomous` (or `GENESIS_AUTONOMOUS=true`). Add **`--autonomous` on any step** to upgrade mid-run and finish remaining steps hands-off. Optional after step 9: `/reflection` (documentation handoff), `/security_scan`, `/peer_review`, deploy.
 
 | Optional | Command | When |
 |----------|---------|------|
@@ -238,8 +238,9 @@ For smaller changes or bug fixes:
 23. **Automated tests ≠ layout UX** - Unit/integration green does not verify footer spacing, column balance, or mobile order; `/qa_checklist` must include browser checks for static HTML layout changes
 24. **Overwriting `last_capture.md`** - Do not start a new issue capture until the prior issue has a closure doc (or use issue-scoped capture filenames)
 25. **Forgetting `step-complete`** - In `/genesis_run` flows, call `node scripts/genesis-run.js step-complete <step>` after each step in interactive mode; otherwise `validate-gate` and QA will fail on step order
-26. **Mode switch without reset** - `run_config.json` mode is fixed at init; delete `.ai/context/run_config.json` before `init --autonomous` (or `--interactive`) to switch modes
-27. **Expecting autonomous without the flag** - `/genesis_run` alone is interactive; pass `--autonomous` (or set `GENESIS_AUTONOMOUS=true`) for end-to-end without pause prompts; the agent should ask which mode you want if the flag is omitted
+26. **Mode switch without reset** - `init --autonomous` upgrades interactive mid-run (keeps steps); delete `run_config.json` only for a fresh run or autonomous → interactive downgrade
+27. **Expecting autonomous without the flag** - `/genesis_run` alone is interactive; pass `--autonomous` (or set `GENESIS_AUTONOMOUS=true`) for end-to-end; the agent should ask which mode you want if the flag is omitted on `/genesis_run` entry
+28. **Mid-run takeover** - Append `--autonomous` to any step command (`/explore --autonomous`) after starting interactive; agent runs `init --autonomous` and completes remaining steps without pause
 
 ---
 

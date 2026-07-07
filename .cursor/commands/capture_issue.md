@@ -158,3 +158,5 @@ If `mode` is `autonomous`:
 - Intake-only code restrictions still apply for this step (no codebase exploration during capture).
 
 If `run_config.json` is missing, this command runs **standalone interactive** intake only.
+
+**Mid-run `--autonomous`:** If the user message includes `--autonomous`, run `npm run genesis:run -- init --autonomous`, then continue remaining steps per [genesis_run.md](genesis_run.md) Agent behavior §1.

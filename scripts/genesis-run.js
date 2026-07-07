@@ -10,7 +10,8 @@
  *   4. default: interactive
  *
  * Re-init: same mode updates issue_id (from capture) and reflect (--reflect only).
- * Delete .ai/context/run_config.json to start a fresh run with a different mode.
+ * Mid-run takeover: `init --autonomous` upgrades an interactive run (preserves steps).
+ * Delete .ai/context/run_config.json to start fresh or downgrade autonomous → interactive.
  *
  * Usage:
  *   node scripts/genesis-run.js init [--autonomous|--interactive] [--reflect]
@@ -176,8 +177,20 @@ function initRun(repoRoot, options = {}) {
   const existing = readRunConfig(repoRoot);
 
   if (existing && existing.mode !== mode) {
+    if (existing.mode === 'interactive' && mode === 'autonomous' && !existing.halted) {
+      existing.mode = 'autonomous';
+      existing.mode_engaged_at = new Date().toISOString();
+      const issueId =
+        options.issueId !== undefined ? options.issueId : parseIssueIdFromCapture(repoRoot);
+      if (issueId != null) existing.issue_id = issueId;
+      if (options.reflect === true) existing.reflect = true;
+      writeRunConfig(repoRoot, existing);
+      return existing;
+    }
     throw new Error(
-      `Run already initialized with mode "${existing.mode}"; cannot change to "${mode}". Delete .ai/context/run_config.json to start fresh.`
+      `Run already initialized with mode "${existing.mode}"; cannot change to "${mode}". ` +
+        'From interactive, use `init --autonomous` for mid-run takeover. ' +
+        'Delete .ai/context/run_config.json to reset.'
     );
   }
 
@@ -346,7 +359,8 @@ function printUsage() {
 Environment:
   GENESIS_AUTONOMOUS=true|1|yes  Enable autonomous mode when CLI flag omitted
 
-Re-init: same mode updates issue_id and --reflect. Delete run_config.json to reset mode.`);
+Re-init: same mode updates issue_id and --reflect.
+Mid-run: init --autonomous upgrades interactive (keeps steps). Delete run_config.json to reset.`);
 }
 
 /** @param {string[]} argv */

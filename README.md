@@ -62,7 +62,7 @@ Genesis is the planning workflow that converts a prompt into the genome the runt
 
 **Start the workflow** — Run **`/genesis_run`** (full loop) or **`/capture_issue`** (step-by-step). Cursor guides you: explore → design decisions → create plan → pre-implementation checklist → execute plan → code review → qa → postmortem. Full workflow: [.cursor/commands/workflow.md](.cursor/commands/workflow.md). **Workflow course** (case studies, anti-patterns): [docs/WORKFLOW_COURSE.md](docs/WORKFLOW_COURSE.md).
 
-> **`--autonomous` flag** — `/genesis_run` alone runs **interactive** mode (pause after every step). For end-to-end without confirmation prompts, use **`/genesis_run --autonomous`** or set `GENESIS_AUTONOMOUS=true`. If you omit the flag, the agent will ask which mode you want before starting.
+> **`--autonomous` flag** — `/genesis_run` alone runs **interactive** mode (pause after every step). For end-to-end without confirmation prompts, use **`/genesis_run --autonomous`** or set `GENESIS_AUTONOMOUS=true`. You can also add **`--autonomous` at any step** (e.g. `/explore --autonomous`) to upgrade mid-run and finish the remaining steps hands-off. If you omit the flag on `/genesis_run`, the agent will ask which mode you want before starting.
 
 ### Workflow modes
 
@@ -84,7 +84,7 @@ npm run genesis:run -- step-complete <step> [--artifacts paths]
 npm run genesis:run -- test
 ```
 
-In **interactive** mode, call `step-complete` after each step before pausing. **Mode is fixed at init** — to switch interactive ↔ autonomous, delete `.ai/context/run_config.json` and run `init` again.
+In **interactive** mode, call `step-complete` after each step before pausing. **Engage autonomous anytime:** `npm run genesis:run -- init --autonomous` (preserves completed steps). Delete `run_config.json` only to start a **fresh** run.
 
 **Nine steps (both modes):** capture → explore → design → create plan → pre-implementation → execute → code review → qa → postmortem. Optional after postmortem: `/reflection` (documentation handoff).
 
@@ -99,8 +99,11 @@ In **interactive** mode, call `step-complete` after each step before pausing. **
 
 # Autonomous end-to-end — pass the flag explicitly
 /genesis_run --autonomous
+
+# Mid-run takeover — started interactive, engage autonomous from any step
+/explore --autonomous
+/execute_plan --autonomous
 GENESIS_AUTONOMOUS=true npm run genesis:run -- init --autonomous
-/genesis_run --autonomous Your issue description here…
 ```
 
 1. **Capture** — `/capture_issue` or `/genesis_run --autonomous` with your prompt.

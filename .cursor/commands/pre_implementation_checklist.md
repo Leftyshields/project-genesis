@@ -151,3 +151,5 @@ If using React state updates:
 On completion, write `.ai/context/pre_implementation_result.md` with pass/fail checklist and timestamp.
 
 If `run_config.json` has `mode: "autonomous"`: auto-verify items from context files; run `step-complete pre_implementation_checklist`; **immediately** continue with `/execute_plan` logic in the same session.
+
+**Mid-run `--autonomous`:** If the user message includes `--autonomous`, run `npm run genesis:run -- init --autonomous`, then continue remaining steps per [genesis_run.md](genesis_run.md) Agent behavior §1.

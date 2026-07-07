@@ -14,9 +14,17 @@ Master entry for the nine-step Genesis pipeline. Initializes run state via `scri
 |--------|------|
 | `--autonomous` in message, or `GENESIS_AUTONOMOUS=true` / `1` / `yes` | **autonomous** |
 | `--interactive` in message | **interactive** |
-| Neither | **ask user** (see below) — do not `init` until answered |
+| Neither (new `/genesis_run` only) | **ask user** (see §1b) — do not `init` until answered |
+| Neither (mid-run step command) | keep current `run_config.json` mode |
 
-### 1b. Mode unclear — ask immediately (before `init`)
+**Mid-run `--autonomous` takeover (any step):** If the user adds `--autonomous` to **any** step command (`/explore --autonomous`, `/execute_plan --autonomous`, "continue --autonomous", etc.):
+
+1. `npm run genesis:run -- init --autonomous` — upgrades interactive → autonomous; **preserves** completed `steps`.
+2. `npm run genesis:run -- status` — read `steps` and `expectedNextStep`; continue from the **next incomplete** step.
+3. Run that step and **all remaining steps** autonomously in this session (no pause prompts).
+4. Do **not** restart from capture unless no run exists.
+
+### 1b. Mode unclear — ask immediately (before `init`) — `/genesis_run` entry only
 
 If the message has **no** `--autonomous`, **no** `--interactive`, and env is not set to autonomous:
 
@@ -43,11 +51,12 @@ npm run genesis:run -- init [--autonomous|--interactive] [--reflect]
 npm run genesis:run -- status
 ```
 
-Confirm `mode` in `run_config.json` matches intent. If wrong, delete `.ai/context/run_config.json` and re-init.
+Confirm `mode` in `run_config.json` matches intent. To **engage autonomous mid-run**, `init --autonomous` is enough (no need to delete `run_config.json`). Delete `run_config.json` only to start a **fresh** run or downgrade autonomous → interactive.
 
-### 3. Autonomous — run all nine steps in ONE session
+### 3. Autonomous — run remaining steps in ONE session
 
-- Execute steps **1 → 9** in order in **this conversation** (multiple tool calls OK; **zero** user confirmation prompts).
+- If mid-run takeover: use `status` to find the next incomplete step; do **not** restart from capture.
+- Execute from next step through **9** in order in **this conversation** (multiple tool calls OK; **zero** user confirmation prompts).
 - After each step: `npm run genesis:run -- step-complete <step> [--artifacts paths]`, then **immediately** continue with the next step's logic — do **not** tell the user to run the next slash command.
 - **NEVER** ask: "Is this ready to log?", "Reply go", "when you're ready", "want to tweak?", "shall I proceed?"
 - Open questions from `/explore`: record in `last_explore.md`; **do not wait** for answers.
@@ -67,12 +76,12 @@ When the user includes issue text with `/genesis_run`, treat it as **step 1 (cap
 
 ## Modes
 
-Set **once** at run start (immutable for the run):
+Set at run start; **upgrade anytime** from interactive → autonomous with `--autonomous` (see Agent behavior §1).
 
 | Mode | How to invoke |
 |------|----------------|
 | **Interactive** (default) | `/genesis_run` or `npm run genesis:run -- init` |
-| **Autonomous** | `/genesis_run --autonomous` or `GENESIS_AUTONOMOUS=true npm run genesis:run -- init --autonomous` |
+| **Autonomous** | `/genesis_run --autonomous`, `init --autonomous`, or **`--autonomous` on any step** mid-run |
 
 **Flag precedence:** CLI `--autonomous` / `--interactive` > `GENESIS_AUTONOMOUS` env (`true`/`1`/`yes`) > default interactive.
 
@@ -112,7 +121,7 @@ Writes `.ai/context/run_config.json` (`mode`, `issue_id`, `steps`, `halted`, …
 
 If `last_capture.md` exists, `issue_id` is copied from its `# Issue ID` header.
 
-**Re-init:** Calling `init` again with the **same mode** updates `issue_id` (from capture) and `--reflect`. To switch modes, delete `.ai/context/run_config.json` first.
+**Re-init:** Same mode updates `issue_id` and `--reflect`. **Mid-run takeover:** `init --autonomous` upgrades interactive runs (preserves `steps`). Delete `run_config.json` to start fresh.
 
 ---
 
@@ -167,7 +176,7 @@ Halt immediately:
 node scripts/genesis-run.js halt <step> "<reason>"
 ```
 
-Do not advance. Examples: missing Node/npm, cannot write `.ai/context/`, unparseable capture, mode change mid-run, missing `npm test` script.
+Do not advance. Examples: missing Node/npm, cannot write `.ai/context/`, unparseable capture, missing `npm test` script.
 
 ---
 

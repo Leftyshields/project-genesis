@@ -82,6 +82,8 @@ Run `/postmortem` (step 9). Optional: `/reflection` if documentation handoff is 
 
 The **build phase takes over after QA**, not after `/execute_plan`. Tests and manual checks gate the runtime invocation.
 
+**Mid-run `--autonomous`:** If the user message includes `--autonomous`, run `npm run genesis:run -- init --autonomous`, then continue remaining steps per [genesis_run.md](genesis_run.md) Agent behavior §1.
+
 ---
 
 **Workflow Position:** Run this after `/code_review` (automated review).

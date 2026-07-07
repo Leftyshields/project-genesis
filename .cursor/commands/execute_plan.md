@@ -92,6 +92,8 @@ If `.ai/context/run_config.json` has `mode: "autonomous"`:
 
 If interactive: wait for confirmation before `/code_review`. Do not prompt for build at this step.
 
+**Mid-run `--autonomous`:** If the user message includes `--autonomous`, run `npm run genesis:run -- init --autonomous`, then continue remaining steps per [genesis_run.md](genesis_run.md) Agent behavior §1.
+
 ---
 
 **During implementation (optional):**

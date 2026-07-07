@@ -65,12 +65,30 @@ test('initRun writes run_config.json and reads issue id from capture', () => {
   }
 });
 
-test('initRun rejects conflicting mode re-init', () => {
+test('initRun upgrades interactive to autonomous mid-run (preserves steps)', () => {
   const root = mkdtemp();
   try {
+    writeCapture(root);
     initRun(root, { mode: 'interactive' });
+    stepComplete(root, 'capture', ['.ai/context/last_capture.md'], { skipGateCheck: true });
+    stepComplete(root, 'explore', ['.ai/context/last_explore.md'], { skipGateCheck: true });
+
+    const upgraded = initRun(root, { mode: 'autonomous' });
+    assert.strictEqual(upgraded.mode, 'autonomous');
+    assert.ok(upgraded.mode_engaged_at);
+    assert.strictEqual(upgraded.steps.length, 2);
+    assert.strictEqual(expectedNextStep(upgraded), 'design_decisions');
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('initRun rejects autonomous to interactive downgrade', () => {
+  const root = mkdtemp();
+  try {
+    initRun(root, { mode: 'autonomous' });
     assert.throws(
-      () => initRun(root, { mode: 'autonomous' }),
+      () => initRun(root, { mode: 'interactive' }),
       /cannot change/
     );
   } finally {
@@ -246,6 +264,26 @@ test('parseIssueIdFromCapture returns null when missing', () => {
   const root = mkdtemp();
   try {
     assert.strictEqual(parseIssueIdFromCapture(root), null);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('CLI init --autonomous upgrades interactive mid-run', () => {
+  const root = mkdtemp();
+  try {
+    writeCapture(root);
+    initRun(root, { mode: 'interactive' });
+    stepComplete(root, 'capture', ['.ai/context/last_capture.md'], { skipGateCheck: true });
+
+    const out = execSync(`node "${cliPath}" init --autonomous`, {
+      cwd: root,
+      encoding: 'utf-8',
+    });
+    const config = JSON.parse(out);
+    assert.strictEqual(config.mode, 'autonomous');
+    assert.strictEqual(config.steps.length, 1);
+    assert.strictEqual(expectedNextStep(config), 'explore');
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }

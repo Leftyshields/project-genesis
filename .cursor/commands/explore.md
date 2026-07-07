@@ -93,6 +93,8 @@ If `mode` is `autonomous`:
 
 If interactive or no run config: end with "Once these questions are answered, we can create a plan."
 
+**Mid-run `--autonomous`:** If the user message includes `--autonomous`, run `npm run genesis:run -- init --autonomous`, then continue remaining steps per [genesis_run.md](genesis_run.md) Agent behavior §1.
+
 ---
 
 **Workflow Position:** This command follows `/capture_issue` and precedes `/design_decisions`.
