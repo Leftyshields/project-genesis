@@ -119,4 +119,15 @@ End by asking:
 
 ---
 
-**Next:** Run `/pre_implementation_checklist` to verify readiness, then `/execute_plan` to begin implementation. See `.cursor/commands/workflow.md` for the complete development workflow.
+## Run mode
+
+If `run_config.json` has `mode: "autonomous"`:
+- Include `Rationale:` for each major decision.
+- Skip the confirmation question; proceed to `/create_plan`.
+- Run `node scripts/genesis-run.js step-complete design_decisions --artifacts .ai/context/design_decisions.md`
+
+If interactive: ask "Are these the correct design boundaries for v1?" and wait for confirmation.
+
+---
+
+**Next:** Run `/create_plan` to create the execution plan, then `/pre_implementation_checklist` before `/execute_plan`. See `.cursor/commands/workflow.md` for the complete development workflow.

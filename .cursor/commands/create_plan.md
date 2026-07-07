@@ -150,4 +150,12 @@ This plan will be used by execution agents.
 
 ---
 
-**Next:** Run `/design_decisions` to document design choices before implementation. See `.cursor/commands/workflow.md` for the complete development workflow.
+## Run mode
+
+If `run_config.json` has `mode: "autonomous"`: write plan to `.ai/context/last_plan.md` with `# Issue ID` matching capture, then proceed to `/pre_implementation_checklist` without stopping.
+
+Always persist the plan to `.ai/context/last_plan.md` (not chat-only).
+
+---
+
+**Next:** Run `/pre_implementation_checklist` to verify readiness, then `/execute_plan` to begin implementation. See `.cursor/commands/workflow.md` for the complete development workflow.

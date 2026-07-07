@@ -143,3 +143,13 @@ If using React state updates:
 ---
 
 **Next:** Run `/execute_plan` to begin implementation.
+
+---
+
+## Run mode
+
+On completion, write `.ai/context/pre_implementation_result.md` with pass/fail checklist and timestamp.
+
+If `run_config.json` has `mode: "autonomous"`: auto-verify items from context files; proceed to `/execute_plan` without user gate.
+
+Run `node scripts/genesis-run.js step-complete pre_implementation_checklist --artifacts .ai/context/pre_implementation_result.md`

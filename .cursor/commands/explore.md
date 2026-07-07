@@ -82,7 +82,15 @@ Once these questions are answered, we can create a plan.
 
 ---
 
-**Workflow Position:** This command follows `/capture_issue` and precedes `/create_plan`.
+## Run mode
 
-**Next:** Run `/create_plan` to create an execution plan based on this exploration. See `.cursor/commands/workflow.md` for the complete development workflow.
+If `run_config.json` has `mode: "autonomous"`: persist the snapshot and proceed to `/design_decisions` without waiting for user answers to open questions.
+
+If interactive or no run config: end with "Once these questions are answered, we can create a plan."
+
+---
+
+**Workflow Position:** This command follows `/capture_issue` and precedes `/design_decisions`.
+
+**Next:** Run `/design_decisions` to document design choices before creating the plan. See `.cursor/commands/workflow.md` for the complete development workflow.
 

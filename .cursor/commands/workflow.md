@@ -6,6 +6,33 @@ See also: [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md).
 
 ---
 
+## 🔄 Genesis Nine-Step Loop (`/genesis_run`)
+
+Mandatory order for Interactive and Autonomous modes (only pause behavior differs):
+
+| # | Step | Command |
+|---|------|---------|
+| 1 | Capture | `/capture_issue` |
+| 2 | Explore | `/explore` |
+| 3 | Design | `/design_decisions` |
+| 4 | Create Plan | `/create_plan` |
+| 5 | Pre-Implementation | `/pre_implementation_checklist` |
+| 6 | Execute | `/execute_plan` |
+| 7 | Code Review | `/code_review` |
+| 8 | QA | `/qa_checklist` |
+| 9 | Postmortem | `/postmortem` |
+
+**Entry:** `/genesis_run` (interactive) or `/genesis_run --autonomous` (or `GENESIS_AUTONOMOUS=true`). Optional after step 9: `/reflection` (documentation handoff), `/security_scan`, `/peer_review`, deploy.
+
+| Optional | Command | When |
+|----------|---------|------|
+| Reflection | `/reflection` | Hand off **updated documentation** (README, workflow, runbooks) — not required every run |
+| Security | `/security_scan` | Sensitive data, pre-release |
+| Peer review | `/peer_review` | Complex/high-impact changes |
+| Wrap-up | `/project_wrap_up` | Full repo handover audit |
+
+---
+
 ## 🔄 Complete Feature Development Workflow
 
 ### Phase 1: Planning & Design
@@ -22,25 +49,23 @@ See also: [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md).
    - Identify constraints and risks
    - List open questions
    
-   **Next:** Run `/create_plan` to create execution plan
+   **Next:** Run `/design_decisions` to document design choices
 
-3. **Create Execution Plan** (`/create_plan`)
-   - Generate detailed implementation plan
-   - Include field mappings (if data transformations)
-   - Include format conversions (if needed)
-   - Include local dev parity checks (if API endpoints)
-   - **Issue ID in `last_plan.md` must match `last_capture.md`**
-   
-   **Next:** Run `/design_decisions` (if not done) or `/pre_implementation_checklist`
-
-4. **Document Design Decisions** (`/design_decisions`)
+3. **Document Design Decisions** (`/design_decisions`)
    - Answer all open questions from planning
    - Define field update strategies
    - Specify rendering approaches (if formatted content)
    - Document integration points
    - **For multi-source data:** document provenance (API vs seed vs manual) and reconnect cleanup
    
-   **Note:** May run before or after `/create_plan`, but **both** must exist before `/execute_plan`.
+   **Next:** Run `/create_plan` to create execution plan
+
+4. **Create Execution Plan** (`/create_plan`)
+   - Generate detailed implementation plan
+   - Include field mappings (if data transformations)
+   - Include format conversions (if needed)
+   - Include local dev parity checks (if API endpoints)
+   - **Issue ID in `last_plan.md` must match `last_capture.md`**
    
    **Next:** Run `/pre_implementation_checklist` to verify readiness
 
@@ -89,9 +114,10 @@ See also: [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md).
 9. **QA Checklist** (`/qa_checklist`) — *standard*
    - **Automated:** agent runs `npm test` and builds for affected workspaces
    - **Manual:** checklist for happy path, edge cases, error handling, visual/UX
+   - **Build handoff:** after QA, run organism build when genome/runtime changed (`node scripts/build.js`) — see qa_checklist completion response
    - Save issue-scoped checklist to `.ai/context/qa_checklist_<feature>.md` when helpful
    
-   **Next:** Fix any issues found, then run `/peer_review` (optional)
+   **Next:** Run `/postmortem` (and optional build before postmortem when `.genome/` changed)
 
 10. **Peer Review** (`/peer_review`) — *optional*
    - Human code review for complex or high-impact changes
@@ -152,6 +178,7 @@ For smaller changes or bug fixes:
 
 | Step | Type | What it does |
 |------|------|----------------|
+| `/genesis_run` | Standard | Master entry: nine-step loop; interactive or `--autonomous` |
 | `/capture_issue` | Standard | Log the problem, current/desired behavior, priority; get issue ID |
 | `/explore` | Standard | Deep-dive requirements, constraints, risks; persist exploration snapshot |
 | `/create_plan` | Standard | Turn exploration into atomic implementation steps |
@@ -163,7 +190,8 @@ For smaller changes or bug fixes:
 | `/security_scan` | Optional | Dedicated security pass: secrets, deps, auth, data at rest, encryption, proprietary/IP |
 | `/qa_checklist` | Standard | Automated tests + human manual-test checklist (happy path, edge cases, UX) |
 | `/peer_review` | Optional | Human review of changes; accept/reject feedback with rationale |
-| `/postmortem` | Standard | Reflect on friction and rework; improve process and docs |
+| `/postmortem` | Standard | Reflect on friction and rework; closure doc; improve process and docs |
+| `/reflection` | Optional | **Documentation handoff** — update README, workflow, runbooks, command prompts for the next contributor |
 | `/project_wrap_up` | Optional | Handover: security audit, onboarding docs, next-op briefing |
 | `/learning_opportunity` | Optional | Capture insights anytime |
 | `/show_context` | Utility | Show current context files |
@@ -209,6 +237,8 @@ For smaller changes or bug fixes:
 22. **Partial implementations vs revised capture** - Before `/execute_plan`, reconcile flag-gated or WIP code against capture; update experiment JSON and design doc in the same milestone when direction changes
 23. **Automated tests ≠ layout UX** - Unit/integration green does not verify footer spacing, column balance, or mobile order; `/qa_checklist` must include browser checks for static HTML layout changes
 24. **Overwriting `last_capture.md`** - Do not start a new issue capture until the prior issue has a closure doc (or use issue-scoped capture filenames)
+25. **Forgetting `step-complete`** - In `/genesis_run` flows, call `node scripts/genesis-run.js step-complete <step>` after each step in interactive mode; otherwise `validate-gate` and QA will fail on step order
+26. **Mode switch without reset** - `run_config.json` mode is fixed at init; delete `.ai/context/run_config.json` before `init --autonomous` (or `--interactive`) to switch modes
 
 ---
 

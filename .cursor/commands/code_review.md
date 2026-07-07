@@ -126,13 +126,13 @@ If not specified, review all uncommitted changes.
 
 ## Integration with Workflow
 
-This command fits after implementation:
+Run **after** `/execute_plan`, **before** `/qa_checklist`.
 
-1. `/execute_plan` - Implement feature
-2. `/tdd` - Test-driven development (if complex logic)
-3. `/code_review` - Automated review (this command)
-4. `/qa_checklist` - Manual testing
-5. `/peer_review` - Human review (if needed)
+1. `/execute_plan` — Implement feature
+2. `/tdd` — Test-driven development (optional, complex logic)
+3. `/code_review` — Automated review (this command)
+4. `/qa_checklist` — Automated tests + manual validation
+5. `/peer_review` — Human review (optional)
 
 ---
 
@@ -146,3 +146,29 @@ This command fits after implementation:
 ---
 
 **Note:** This automated review complements but doesn't replace human review for complex changes.
+
+---
+
+## Run mode (autonomous)
+
+When `run_config.json` has `mode: "autonomous"`:
+
+1. Review uncommitted changes as usual.
+2. **Auto-fix** safe issues (style, dead code, obvious typos, clear test failures) directly in the repo.
+3. Write `.ai/context/code_review_changelog.md`:
+
+```markdown
+# Code Review Changelog
+
+## Auto-fixes
+- [file] summary — category
+
+## manual_review_needed
+- [file] issue — reason (security / business logic / architecture)
+```
+
+4. Do **not** halt on manual-review items; proceed to `/qa_checklist`.
+5. Run `node scripts/genesis-run.js step-complete code_review --artifacts .ai/context/code_review_changelog.md`
+
+**Auto-fix:** style, hygiene, obvious correctness, unambiguous test fixes.  
+**Manual only:** security, business logic, architecture tradeoffs.

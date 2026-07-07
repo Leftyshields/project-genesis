@@ -18,17 +18,19 @@ A practical guide to the **Creator → Genesis → Ship** loop in instantiated a
 ```mermaid
 flowchart LR
   A["/capture_issue"] --> B["/explore"]
-  B --> C["/create_plan"]
-  C --> D["/design_decisions"]
+  B --> C["/design_decisions"]
+  C --> D["/create_plan"]
   D --> E["/pre_implementation_checklist"]
   E --> F["/execute_plan"]
   F --> G["/code_review"]
   G --> H["/qa_checklist"]
-  H --> I["Deploy"]
-  I --> J["/postmortem"]
+  H --> I["/postmortem"]
+  I --> J["/reflection optional"]
 ```
 
-**Flexible order:** `/design_decisions` may run before or after `/create_plan`, but **both** must exist and **`last_plan.md` issue ID must match `last_capture.md`** before `/execute_plan`.
+**Entry:** `/genesis_run` (interactive or `--autonomous`) or individual commands.
+
+**Strict order for `/genesis_run`:** capture → explore → **design_decisions** → **create_plan** → pre_implementation → execute → code_review → qa → postmortem. Optional after postmortem: `/reflection` (documentation handoff).
 
 ---
 
@@ -38,8 +40,8 @@ flowchart LR
 |---------|--------|----------------|
 | `/capture_issue` | `.ai/context/last_capture.md` | Vague desired behavior |
 | `/explore` | `.ai/context/last_explore.md` | Skipping constraints / non-goals |
-| `/create_plan` | `.ai/context/last_plan.md` | **Reusing closed issue’s `execution_plan.md`** |
 | `/design_decisions` | `.ai/context/design_decisions.md` | Missing rendering strategy for formatted output |
+| `/create_plan` | `.ai/context/last_plan.md` | **Reusing closed issue’s plan** |
 | `/pre_implementation_checklist` | Gate before code | Proceeding with mismatched issue IDs |
 
 **Rule:** Follow-on issues (v1.1, copy tweaks) still need a **new** plan file — not the previous closure’s plan.
@@ -164,6 +166,34 @@ After a GitHub Actions bot commits artifacts:
 2. `gh run list --workflow="Deploy GitHub Pages"` (or your deploy workflow)
 3. If missing: `gh workflow run "Deploy GitHub Pages"`
 4. Hard-refresh public URL — new content + CSS
+
+---
+
+## Case study: Autonomous loop mode (`/genesis_run --autonomous`)
+
+**When to use:** Repeatable features on a validated workflow — not first greenfield exploration.
+
+**Setup:**
+
+```bash
+GENESIS_AUTONOMOUS=true npm run genesis:run -- init --autonomous
+/genesis_run --autonomous
+# include issue text in the same message for step 1 capture
+```
+
+**What differs from interactive:**
+
+| Step | Autonomous behavior |
+|------|---------------------|
+| Design | Auto-generated with `Rationale:`; no confirmation gate |
+| Code review | Auto-fix safe issues → `code_review_changelog.md` |
+| QA | `genesis-run.js test`; one remediation retry; manual UX deferred |
+| Postmortem | Run summary sections + closure doc |
+| Reflection | Optional (`--reflect`) — update README/workflow for handoff |
+
+**Orchestrator:** `scripts/genesis-run.js` owns `run_config.json`, test runs, and halt. Cursor commands remain the LLM steps.
+
+**Anti-pattern:** Running autonomous on a novel product shape without prior interactive validation — design and plan quality suffer.
 
 ---
 

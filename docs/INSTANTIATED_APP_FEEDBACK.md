@@ -131,6 +131,39 @@ Static HTML generators treated Tailwind class strings like JSX utilities, but Ta
 
 ---
 
+## 2026-07-06 — Project Genesis (Autonomous Loop Mode, EPH-20260702-AL01)
+
+**Source:** Meta-workflow feature in Genesis upstream; full nine-step loop (capture → postmortem).
+
+### Friction observed
+
+| Area | Issue |
+|------|--------|
+| Step naming | Early drafts used "Reflection" as step 9; corrected to postmortem + optional `/reflection` |
+| Hybrid orchestration | Interactive pauses skipped `step-complete` until QA batched steps 1–8 |
+| Mode switch | `init --autonomous` rejected without deleting `run_config.json` |
+| Dogfooding | Feature shipped in interactive mode; autonomous e2e in Cursor not validated |
+| Meta-workflow rework | Build handoff moved to after QA; multiple command files updated |
+
+### Root cause (process)
+
+Defining the workflow while implementing it; hybrid state (JSON + LLM steps) made gate recording easy to defer.
+
+### Changes incorporated into Genesis (this PR)
+
+- `scripts/genesis-run.js` + tests — orchestrator for run state, gates, tests
+- `.cursor/commands/genesis_run.md`, `reflection.md` — master entry + optional doc handoff
+- Nine command files — mode-awareness and step chain
+- `README.md` — workflow modes, orchestrator CLI, mode-reset note
+- `/workflow` — common mistakes 25–26 (`step-complete`, mode reset)
+- `docs/CLOSURE_EPH-20260702-AL01.md`, `postmortem_EPH-20260702-AL01.md`
+
+### Reference
+
+- Closure: [docs/CLOSURE_EPH-20260702-AL01.md](CLOSURE_EPH-20260702-AL01.md)
+
+---
+
 ## How to add entries (after `/postmortem`)
 
 1. **App repo (Path A):** Append a dated section above; update `docs/CLOSURE_<ISSUE_ID>.md` and workflow commands as needed; open PR or push.

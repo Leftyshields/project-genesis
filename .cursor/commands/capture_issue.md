@@ -127,8 +127,17 @@ Is this ready to log, or do you want to tweak anything?
 
 **Workflow Position:** This is the first step in the feature development workflow.
 
-**Next:** Run `/explore` to analyze requirements and constraints. Cursor will guide you through the rest (create_plan → design_decisions → pre_implementation_checklist → execute_plan). See `.cursor/commands/workflow.md` for the full workflow.
+**Next:** Run `/explore` to analyze requirements and constraints. Cursor will guide you through the rest (design_decisions → create_plan → pre_implementation_checklist → execute_plan → code_review → qa_checklist → postmortem). See `.cursor/commands/workflow.md` for the full workflow.
 
 ---
 
 This version is strict, deterministic, cheap to execute, and safe for Cursor and remote SSH environments.
+
+---
+
+## Run mode
+
+If `.ai/context/run_config.json` exists and `mode` is `autonomous`:
+- You are inside a `/genesis_run --autonomous` loop — write capture as part of step 1; do not block on standalone intake restrictions.
+
+If `run_config.json` is missing, this command runs standalone (interactive intake only).

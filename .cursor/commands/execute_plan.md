@@ -83,6 +83,17 @@ If a step feels unsafe or unclear, stop and ask before proceeding.
 
 ---
 
+## Run mode
+
+If `.ai/context/run_config.json` has `mode: "autonomous"`:
+- Do not run organism build here; build runs after `/qa_checklist` when applicable.
+- Proceed to `/code_review` when implementation matches the plan.
+- Run `node scripts/genesis-run.js step-complete execute_plan` when done.
+
+If interactive: wait for confirmation before `/code_review`. Do not prompt for build at this step.
+
+---
+
 **During implementation (optional):**
 - Run `/tdd` for complex logic requiring test-driven development
 
@@ -90,7 +101,7 @@ If a step feels unsafe or unclear, stop and ask before proceeding.
 - Review implementation against design decisions
 - Document any deviations from the plan
 - To push to remote: run in your terminal: `git add -A && git commit -m '...' && git push origin main`
-- **Last stage (genome ready to build):** When implementation is complete and the genome (or planned deliverable) is in place, **ask the user:** "Is the genome ready to build?" (or "Is this stage complete?"). If the user confirms (e.g. yes, ready), **run the build:** run `node scripts/build.js` (or validate genome then `node scripts/run-path.js .genome/mission.md`). After the build, **show run-the-app instructions:** e.g. "To run the organism: `node scripts/run-path.js .genome/mission.md`" or "See lib/README.md for runtime usage." If the user says not yet, suggest finishing edits and ask again when ready.
-- **Next step:** Run `/code_review` for automated security and quality review, then `/qa_checklist` for manual testing.
+- **Do not run the organism build here.** Build runs **after `/qa_checklist`** when tests pass and the genome/runtime deliverable changed (see qa_checklist.md **Build handoff**).
+- **Next step:** Run `/code_review`, then `/qa_checklist`.
 
-**Next:** When implementation is done, Cursor will ask "Is the genome ready to build?"; after you confirm, the build runs and you get run-the-app instructions. Then run `/code_review` and `/qa_checklist`. See `.cursor/commands/workflow.md` for the full workflow.
+**Next:** When implementation is done, run `/code_review` then `/qa_checklist`. After QA, run the build if applicable (`node scripts/build.js`), then `/postmortem`. See `.cursor/commands/workflow.md` for the full workflow.

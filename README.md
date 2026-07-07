@@ -60,10 +60,46 @@ Start with intent. End with a governed build.
 
 Genesis is the planning workflow that converts a prompt into the genome the runtime executes.
 
-**Start the workflow** — Run the Cursor command **`/capture_issue`** with your idea (goal or problem). Cursor guides you: explore → create plan → design decisions → pre-implementation checklist → execute plan. When the genome is ready, Cursor asks if you're done; when you confirm, the build runs and you get run-the-app instructions. Full workflow: [.cursor/commands/workflow.md](.cursor/commands/workflow.md). **Workflow course** (case studies, anti-patterns): [docs/WORKFLOW_COURSE.md](docs/WORKFLOW_COURSE.md).
+**Start the workflow** — Run **`/genesis_run`** (full loop) or **`/capture_issue`** (step-by-step). Cursor guides you: explore → design decisions → create plan → pre-implementation checklist → execute plan → code review → qa → postmortem. Full workflow: [.cursor/commands/workflow.md](.cursor/commands/workflow.md). **Workflow course** (case studies, anti-patterns): [docs/WORKFLOW_COURSE.md](docs/WORKFLOW_COURSE.md).
 
-1. **Capture** — `/capture_issue` with your prompt.
-2. **Explore, design, plan** — Work through the workflow; author or generate the genome in `.genome/`.
+### Workflow modes
+
+| Mode | Invoke | Behavior |
+|------|--------|----------|
+| **Interactive** (default) | `/genesis_run` or individual `/capture_issue`, … | Pause after each step; confirm before continuing |
+| **Autonomous** | `/genesis_run --autonomous` or `GENESIS_AUTONOMOUS=true` | All nine steps in one session; auto-fix code review; automated QA with one remediation retry |
+
+Initialize run state: `npm run genesis:run -- init [--autonomous]`. See [.cursor/commands/genesis_run.md](.cursor/commands/genesis_run.md).
+
+**Orchestrator CLI** (tracks run state in `.ai/context/run_config.json`):
+
+```bash
+npm run genesis:run -- status
+npm run genesis:run -- validate-gate <step>
+npm run genesis:run -- step-complete <step> [--artifacts paths]
+npm run genesis:run -- test
+```
+
+In **interactive** mode, call `step-complete` after each step before pausing. **Mode is fixed at init** — to switch interactive ↔ autonomous, delete `.ai/context/run_config.json` and run `init` again.
+
+**Nine steps (both modes):** capture → explore → design → create plan → pre-implementation → execute → code review → qa → postmortem. Optional after postmortem: `/reflection` (documentation handoff).
+
+**Limits:** Autonomous mode is for validated workflows on known project shapes — not first-time greenfield. Auto-fix covers style/obvious bugs only; security and business logic need manual review. QA runs `npm test`; manual UX checks may be deferred in autonomous runs.
+
+**Examples:**
+
+```bash
+# Interactive (default)
+/capture_issue
+# … confirm after each step …
+
+# Autonomous end-to-end
+GENESIS_AUTONOMOUS=true npm run genesis:run -- init --autonomous
+/genesis_run --autonomous
+```
+
+1. **Capture** — `/capture_issue` or `/genesis_run --autonomous` with your prompt.
+2. **Explore, design, plan** — explore → design decisions → create plan; author or generate the genome in `.genome/`.
 3. **Run the organism** — From repo root: `node scripts/run-path.js .genome/mission.md` or `node scripts/build.js`. See [lib/README.md](lib/README.md) for options, guardrails, and repair.
 
 **Creator → Genesis → Genome → Organism.**
@@ -112,7 +148,7 @@ See [docs/GITHUB_PAGES_CHECKLIST.md](docs/GITHUB_PAGES_CHECKLIST.md) for static 
 1. **Planning phase** — You **capture intent** (goal or problem), **explore** (requirements, constraints), **design** (solution shape), and **create the plan** (execution plan and genome). In this repo that’s the Genesis workflow: capture → explore → design decisions → create plan; then you (or execute_plan) author the genome files in `.genome/`.
 2. **Build phase** — The runtime **loads the genome**, **decomposes** it into the organism hierarchy, and **runs one path** to a molecule (e.g. read a file). Guardrails and repair apply. That’s the “build.”
 
-**Does the build “take over” automatically?** In the Cursor workflow, yes: when you confirm at the end of execute_plan, Cursor runs the build for you. There is no trigger that runs without any user action (e.g. no file watcher or CI yet). You can also **run the build yourself** anytime: e.g. `node scripts/run-path.js .genome/mission.md` or `node scripts/build.js` or call `runPath(...)` from code. So: planning is capture → explore → design → create plan (and genome); build is “you invoke the runtime.” A future version could run the build automatically when the genome is ready (e.g. a watcher or CI step).
+**Does the build “take over” automatically?** After **`/qa_checklist`** passes (and the genome or runtime deliverable changed), the agent asks **“Ready to run the organism build?”** in interactive mode—or runs `node scripts/build.js` automatically in autonomous mode. You can also run the build yourself anytime: `node scripts/run-path.js .genome/mission.md` or `node scripts/build.js`. There is no file watcher or CI trigger yet.
 
 **“Builds everything”** — Today the runtime runs **one path** (one organ → one tissue → one cell → one molecule) per invocation. It doesn’t discover or run multiple paths by itself. To “build everything” you’d run the runtime once per path or add a layer that schedules multiple runs.
 
@@ -241,7 +277,7 @@ All of this is synchronous. No daemon, no background process. One invocation run
 - **[docs/GITHUB_SETTINGS.md](docs/GITHUB_SETTINGS.md)** — Repository governance.
 - **[docs/GITHUB_PAGES_CHECKLIST.md](docs/GITHUB_PAGES_CHECKLIST.md)** — Static site hosting on `username.github.io/repo/`.
 - **[docs/INSTANTIATED_APP_FEEDBACK.md](docs/INSTANTIATED_APP_FEEDBACK.md)** — Postmortem learnings from instantiated apps.
-- **.cursor/commands/** — Workflow automation (capture_issue, explore, design_decisions, create_plan, execute_plan, code_review, qa_checklist, postmortem).
+- **.cursor/commands/** — Workflow automation (`genesis_run`, `capture_issue`, `explore`, `design_decisions`, `create_plan`, `execute_plan`, `code_review`, `qa_checklist`, `postmortem`, `reflection`).
 
 ---
 ## License

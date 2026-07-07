@@ -28,6 +28,31 @@ Finally, propose updates to:
 4. **Path A (app repo):** Append a section to `docs/INSTANTIATED_APP_FEEDBACK.md` and open a PR (or push) from your app repo
 5. **Path B (Genesis upstream, when templates should change):** Open a PR to [Project Genesis](https://github.com/Leftyshields/project-genesis) updating commands/templates; link the app-repo feedback entry. See **How to add entries** in `docs/INSTANTIATED_APP_FEEDBACK.md`
 
+### Autonomous run summary (when `run_config.json` mode is autonomous)
+
+Add these sections to `postmortem_<ISSUE_ID>.md`:
+
+```markdown
+## Run Summary
+- Mode, run_id, issue_id from run_config.json
+
+## Design Decisions
+- Key decisions + rationale (from design_decisions.md)
+
+## Code Review Fixes
+- From code_review_changelog.md
+
+## QA / Tests
+- From test_results.json (pass/fail, remediation)
+
+## Manual Review Items
+- From code_review_changelog manual_review_needed + deferred QA items
+```
+
+Run `node scripts/genesis-run.js step-complete postmortem --artifacts .ai/context/postmortem_<ISSUE_ID>.md,docs/CLOSURE_<ISSUE_ID>.md`
+
+If `run_config.json` has `reflect: true`, proceed to `/reflection` after postmortem.
+
 ---
 
 **Workflow Position:** Run this after feature deployment to reflect on the process and improve future workflows.
@@ -40,5 +65,6 @@ Finally, propose updates to:
 1. Implement suggested documentation updates
 2. Update workflow commands based on findings
 3. Apply lessons learned to next feature development
+4. **Optional:** Run `/reflection` when the deliverable includes updated documentation for handoff (README, workflow, runbooks)
 
 See `.cursor/commands/workflow.md` for the complete development workflow.
