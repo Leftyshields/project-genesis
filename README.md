@@ -67,7 +67,9 @@ Genesis is the planning workflow that converts a prompt into the genome the runt
 | Mode | Invoke | Behavior |
 |------|--------|----------|
 | **Interactive** (default) | `/genesis_run` or individual `/capture_issue`, … | Pause after each step; confirm before continuing |
-| **Autonomous** | `/genesis_run --autonomous` or `GENESIS_AUTONOMOUS=true` | All nine steps in one session; auto-fix code review; automated QA with one remediation retry |
+| **Autonomous** | `/genesis_run --autonomous` or `GENESIS_AUTONOMOUS=true` | All nine steps in one session; **no** confirmation prompts between steps |
+
+**Important:** `/genesis_run` without `--autonomous` defaults to **interactive** (pause after each step). For end-to-end, you must pass `--autonomous` explicitly.
 
 Initialize run state: `npm run genesis:run -- init [--autonomous]`. See [.cursor/commands/genesis_run.md](.cursor/commands/genesis_run.md).
 

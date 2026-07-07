@@ -49,9 +49,11 @@ Add these sections to `postmortem_<ISSUE_ID>.md`:
 - From code_review_changelog manual_review_needed + deferred QA items
 ```
 
-Run `node scripts/genesis-run.js step-complete postmortem --artifacts .ai/context/postmortem_<ISSUE_ID>.md,docs/CLOSURE_<ISSUE_ID>.md`
+Run `npm run genesis:run -- step-complete postmortem --artifacts .ai/context/postmortem_<ISSUE_ID>.md,docs/CLOSURE_<ISSUE_ID>.md`
 
-If `run_config.json` has `reflect: true`, proceed to `/reflection` after postmortem.
+If `run_config.json` has `reflect: true`, **immediately** continue with `/reflection` in the same session.
+
+If `mode` is `autonomous`, this is the final mandatory step — summarize the full run; do not ask the user to confirm or run another command.
 
 ---
 

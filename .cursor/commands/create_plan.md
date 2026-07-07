@@ -152,7 +152,7 @@ This plan will be used by execution agents.
 
 ## Run mode
 
-If `run_config.json` has `mode: "autonomous"`: write plan to `.ai/context/last_plan.md` with `# Issue ID` matching capture, then proceed to `/pre_implementation_checklist` without stopping.
+If `run_config.json` has `mode: "autonomous"`: write plan to `.ai/context/last_plan.md` with `# Issue ID` matching capture; run `step-complete create_plan`; **immediately** continue with `/pre_implementation_checklist` logic in the same session.
 
 Always persist the plan to `.ai/context/last_plan.md` (not chat-only).
 

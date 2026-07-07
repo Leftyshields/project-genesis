@@ -123,8 +123,9 @@ End by asking:
 
 If `run_config.json` has `mode: "autonomous"`:
 - Include `Rationale:` for each major decision.
-- Skip the confirmation question; proceed to `/create_plan`.
-- Run `node scripts/genesis-run.js step-complete design_decisions --artifacts .ai/context/design_decisions.md`
+- Skip the confirmation question.
+- Run `npm run genesis:run -- step-complete design_decisions --artifacts .ai/context/design_decisions.md`.
+- **Immediately** continue with `/create_plan` logic in the same session.
 
 If interactive: ask "Are these the correct design boundaries for v1?" and wait for confirmation.
 

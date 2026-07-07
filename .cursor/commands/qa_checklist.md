@@ -13,8 +13,9 @@ When `run_config.json` has `mode: "autonomous"`:
 3. Log unresolved failures; **do not** halt — proceed to `/postmortem`.
 4. Manual checklist items: save as deferred in `.ai/context/qa_checklist_<feature-slug>.md` with `- [ ] (deferred autonomous)` prefix.
 5. If `.genome/` changed or plan requires runtime verification: run `node scripts/build.js` when tests pass.
-6. Run `node scripts/genesis-run.js step-complete qa --artifacts .ai/context/test_results.json,.ai/context/qa_checklist_<feature-slug>.md`
+6. Run `npm run genesis:run -- step-complete qa --artifacts .ai/context/test_results.json,.ai/context/qa_checklist_<feature-slug>.md`
 7. Include **Build handoff** section in QA completion response (see below).
+8. **Immediately** continue with `/postmortem` logic in the same session — do not wait for user confirmation.
 
 ## Manual (human validation)
 

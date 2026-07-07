@@ -167,8 +167,9 @@ When `run_config.json` has `mode: "autonomous"`:
 - [file] issue — reason (security / business logic / architecture)
 ```
 
-4. Do **not** halt on manual-review items; proceed to `/qa_checklist`.
-5. Run `node scripts/genesis-run.js step-complete code_review --artifacts .ai/context/code_review_changelog.md`
+4. Do **not** halt on manual-review items.
+5. Run `npm run genesis:run -- step-complete code_review --artifacts .ai/context/code_review_changelog.md`.
+6. **Immediately** continue with `/qa_checklist` logic in the same session.
 
 **Auto-fix:** style, hygiene, obvious correctness, unambiguous test fixes.  
 **Manual only:** security, business logic, architecture tradeoffs.

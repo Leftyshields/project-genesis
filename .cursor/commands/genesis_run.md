@@ -4,6 +4,47 @@ Master entry for the nine-step Genesis pipeline. Initializes run state via `scri
 
 ---
 
+## Agent behavior (MANDATORY)
+
+**Read this first on every `/genesis_run` invocation.**
+
+### 1. Detect mode from the user message (and env)
+
+| Signal | Mode |
+|--------|------|
+| `--autonomous` in message, or `GENESIS_AUTONOMOUS=true` / `1` / `yes` | **autonomous** |
+| `--interactive` in message | **interactive** |
+| Neither | **interactive** (default) |
+
+### 2. Initialize (first shell action)
+
+```bash
+npm run genesis:run -- init [--autonomous|--interactive] [--reflect]
+npm run genesis:run -- status
+```
+
+Confirm `mode` in `run_config.json` matches intent. If wrong, delete `.ai/context/run_config.json` and re-init.
+
+### 3. Autonomous — run all nine steps in ONE session
+
+- Execute steps **1 → 9** in order in **this conversation** (multiple tool calls OK; **zero** user confirmation prompts).
+- After each step: `npm run genesis:run -- step-complete <step> [--artifacts paths]`, then **immediately** continue with the next step's logic — do **not** tell the user to run the next slash command.
+- **NEVER** ask: "Is this ready to log?", "Reply go", "when you're ready", "want to tweak?", "shall I proceed?"
+- Open questions from `/explore`: record in `last_explore.md`; **do not wait** for answers.
+- Halt only on unrecoverable errors (`npm run genesis:run -- halt <step> "reason"`).
+
+### 4. Interactive — one step, then stop
+
+- Execute **only the current** step.
+- `step-complete`, summarize, then **pause** for user confirmation before the next step.
+- Do **not** auto-run `/explore` or later steps.
+
+### 5. Issue text in the same message
+
+When the user includes issue text with `/genesis_run`, treat it as **step 1 (capture)** input — write `last_capture.md` without a separate `/capture_issue` invocation.
+
+---
+
 ## Modes
 
 Set **once** at run start (immutable for the run):
@@ -125,6 +166,8 @@ npm run genesis:run -- halt explore "missing last_capture.md"
 
 **Workflow Position:** Entry point for the full nine-step loop. Alternative: run individual step commands manually (interactive ad-hoc).
 
-**Next (interactive):** Step 1 — `/capture_issue` with your issue text.
+**Next:**
+- **Autonomous:** execute steps 1–9 in this session per **Agent behavior** above — do not pause.
+- **Interactive:** Step 1 only — capture issue text, then wait for user confirmation.
 
 See [.cursor/commands/workflow.md](workflow.md) for the complete development workflow.

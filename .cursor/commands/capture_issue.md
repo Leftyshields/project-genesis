@@ -117,11 +117,24 @@ After writing the file, respond in chat **exactly**:
 WROTE .ai/context/last_capture.md
 ```
 
+### Interactive (default)
+
 Then ask:
 
 ```
 Is this ready to log, or do you want to tweak anything?
 ```
+
+Do **not** run `/explore` until the user confirms.
+
+### Autonomous (`run_config.json` → `mode: "autonomous"`)
+
+- **Skip** the "ready to log?" question entirely.
+- Run:
+  ```bash
+  npm run genesis:run -- step-complete capture --artifacts .ai/context/last_capture.md
+  ```
+- **Immediately** continue with step 2 (`/explore` logic) in the **same session** — do not wait for user input.
 
 ---
 
@@ -137,7 +150,11 @@ This version is strict, deterministic, cheap to execute, and safe for Cursor and
 
 ## Run mode
 
-If `.ai/context/run_config.json` exists and `mode` is `autonomous`:
-- You are inside a `/genesis_run --autonomous` loop — write capture as part of step 1; do not block on standalone intake restrictions.
+Read `.ai/context/run_config.json` before choosing confirmation behavior.
 
-If `run_config.json` is missing, this command runs standalone (interactive intake only).
+If `mode` is `autonomous`:
+- You are inside `/genesis_run --autonomous` — write capture as step 1.
+- Follow **Autonomous** confirmation above (no pause; `step-complete`; continue to explore).
+- Intake-only code restrictions still apply for this step (no codebase exploration during capture).
+
+If `run_config.json` is missing, this command runs **standalone interactive** intake only.

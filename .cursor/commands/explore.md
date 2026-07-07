@@ -84,7 +84,12 @@ Once these questions are answered, we can create a plan.
 
 ## Run mode
 
-If `run_config.json` has `mode: "autonomous"`: persist the snapshot and proceed to `/design_decisions` without waiting for user answers to open questions.
+Read `.ai/context/run_config.json` before the closing message.
+
+If `mode` is `autonomous`:
+- Persist the snapshot; run `npm run genesis:run -- step-complete explore --artifacts .ai/context/last_explore.md`.
+- **Immediately** continue with `/design_decisions` logic in the same session.
+- Do **not** end with "Once these questions are answered, we can create a plan."
 
 If interactive or no run config: end with "Once these questions are answered, we can create a plan."
 

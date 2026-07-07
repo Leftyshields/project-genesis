@@ -87,8 +87,8 @@ If a step feels unsafe or unclear, stop and ask before proceeding.
 
 If `.ai/context/run_config.json` has `mode: "autonomous"`:
 - Do not run organism build here; build runs after `/qa_checklist` when applicable.
-- Proceed to `/code_review` when implementation matches the plan.
-- Run `node scripts/genesis-run.js step-complete execute_plan` when done.
+- Run `npm run genesis:run -- step-complete execute_plan` when done.
+- **Immediately** continue with `/code_review` logic in the same session.
 
 If interactive: wait for confirmation before `/code_review`. Do not prompt for build at this step.
 

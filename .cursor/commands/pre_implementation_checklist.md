@@ -150,6 +150,4 @@ If using React state updates:
 
 On completion, write `.ai/context/pre_implementation_result.md` with pass/fail checklist and timestamp.
 
-If `run_config.json` has `mode: "autonomous"`: auto-verify items from context files; proceed to `/execute_plan` without user gate.
-
-Run `node scripts/genesis-run.js step-complete pre_implementation_checklist --artifacts .ai/context/pre_implementation_result.md`
+If `run_config.json` has `mode: "autonomous"`: auto-verify items from context files; run `step-complete pre_implementation_checklist`; **immediately** continue with `/execute_plan` logic in the same session.
