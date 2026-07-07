@@ -239,7 +239,7 @@ For smaller changes or bug fixes:
 24. **Overwriting `last_capture.md`** - Do not start a new issue capture until the prior issue has a closure doc (or use issue-scoped capture filenames)
 25. **Forgetting `step-complete`** - In `/genesis_run` flows, call `node scripts/genesis-run.js step-complete <step>` after each step in interactive mode; otherwise `validate-gate` and QA will fail on step order
 26. **Mode switch without reset** - `run_config.json` mode is fixed at init; delete `.ai/context/run_config.json` before `init --autonomous` (or `--interactive`) to switch modes
-27. **Expecting autonomous without the flag** - `/genesis_run` alone is interactive; pass `--autonomous` (or set `GENESIS_AUTONOMOUS=true`) for end-to-end without pause prompts
+27. **Expecting autonomous without the flag** - `/genesis_run` alone is interactive; pass `--autonomous` (or set `GENESIS_AUTONOMOUS=true`) for end-to-end without pause prompts; the agent should ask which mode you want if the flag is omitted
 
 ---
 

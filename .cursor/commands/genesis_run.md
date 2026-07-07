@@ -14,9 +14,29 @@ Master entry for the nine-step Genesis pipeline. Initializes run state via `scri
 |--------|------|
 | `--autonomous` in message, or `GENESIS_AUTONOMOUS=true` / `1` / `yes` | **autonomous** |
 | `--interactive` in message | **interactive** |
-| Neither | **interactive** (default) |
+| Neither | **ask user** (see below) — do not `init` until answered |
 
-### 2. Initialize (first shell action)
+### 1b. Mode unclear — ask immediately (before `init`)
+
+If the message has **no** `--autonomous`, **no** `--interactive`, and env is not set to autonomous:
+
+1. **Do not** run `init`, capture, or any step yet.
+2. Ask **immediately** (first response text):
+
+```
+/genesis_run supports two modes:
+
+• **interactive** (default) — one step at a time; pause for your confirmation after each
+• **autonomous** — all 9 steps end-to-end in one session (no pause prompts)
+
+Which do you want? Reply **autonomous** or **interactive**, or re-send with `--autonomous`.
+```
+
+3. **Wait** for the user's reply.
+4. Map reply: `autonomous` / `end-to-end` / `hands-off` / `yes` (to autonomous) → `init --autonomous`; `interactive` / `step by step` / `default` → `init`.
+5. If the user re-sends with `--autonomous` or `--interactive` in the message, skip this question and use that flag.
+
+### 2. Initialize (first shell action — after mode is known)
 
 ```bash
 npm run genesis:run -- init [--autonomous|--interactive] [--reflect]

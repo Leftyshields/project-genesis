@@ -62,14 +62,16 @@ Genesis is the planning workflow that converts a prompt into the genome the runt
 
 **Start the workflow** — Run **`/genesis_run`** (full loop) or **`/capture_issue`** (step-by-step). Cursor guides you: explore → design decisions → create plan → pre-implementation checklist → execute plan → code review → qa → postmortem. Full workflow: [.cursor/commands/workflow.md](.cursor/commands/workflow.md). **Workflow course** (case studies, anti-patterns): [docs/WORKFLOW_COURSE.md](docs/WORKFLOW_COURSE.md).
 
+> **`--autonomous` flag** — `/genesis_run` alone runs **interactive** mode (pause after every step). For end-to-end without confirmation prompts, use **`/genesis_run --autonomous`** or set `GENESIS_AUTONOMOUS=true`. If you omit the flag, the agent will ask which mode you want before starting.
+
 ### Workflow modes
 
 | Mode | Invoke | Behavior |
 |------|--------|----------|
 | **Interactive** (default) | `/genesis_run` or individual `/capture_issue`, … | Pause after each step; confirm before continuing |
-| **Autonomous** | `/genesis_run --autonomous` or `GENESIS_AUTONOMOUS=true` | All nine steps in one session; **no** confirmation prompts between steps |
+| **Autonomous** | **`/genesis_run --autonomous`** or `GENESIS_AUTONOMOUS=true` | All nine steps in one session; **no** confirmation prompts between steps |
 
-**Important:** `/genesis_run` without `--autonomous` defaults to **interactive** (pause after each step). For end-to-end, you must pass `--autonomous` explicitly.
+**Use `--autonomous` for hands-off end-to-end.** Without it, you get interactive mode — the agent will ask you to confirm after capture, explore, and every subsequent step.
 
 Initialize run state: `npm run genesis:run -- init [--autonomous]`. See [.cursor/commands/genesis_run.md](.cursor/commands/genesis_run.md).
 
@@ -91,13 +93,14 @@ In **interactive** mode, call `step-complete` after each step before pausing. **
 **Examples:**
 
 ```bash
-# Interactive (default)
+# Interactive (default) — pauses after each step
+/genesis_run
 /capture_issue
-# … confirm after each step …
 
-# Autonomous end-to-end
-GENESIS_AUTONOMOUS=true npm run genesis:run -- init --autonomous
+# Autonomous end-to-end — pass the flag explicitly
 /genesis_run --autonomous
+GENESIS_AUTONOMOUS=true npm run genesis:run -- init --autonomous
+/genesis_run --autonomous Your issue description here…
 ```
 
 1. **Capture** — `/capture_issue` or `/genesis_run --autonomous` with your prompt.
