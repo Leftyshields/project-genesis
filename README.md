@@ -80,11 +80,31 @@ Or set the environment variable: `GENESIS_AUTONOMOUS=true` when using the orches
 
 The agent runs all nine steps in one session — no pauses for approval between steps. You can also **upgrade mid-run** by adding `--autonomous` to any step (e.g. `/explore --autonomous`) after starting interactively.
 
+### Recommended: ideate in capture, then go autonomous from explore
+
+If your idea still needs shaping, **don't start fully autonomous**. Use step 1 to ideate interactively, then kick off a full hands-off run from step 2 once your guiding vision is clear.
+
+1. **Step 1 — Ideate (interactive):** Run **`/capture_issue`** or **`/genesis_run`** (interactive) with a rough prompt. Iterate here — refine scope, clarify desired behavior, adjust priorities. Capture is the right place to think out loud and hone the issue before committing to a full run.
+
+2. **Step 2 — Full run (autonomous):** When you're satisfied with the capture, run **`/explore --autonomous`**. The agent upgrades the run to autonomous mode and continues through explore → design → plan → execute → review → QA → postmortem without further prompts. Explore validates and expands requirements against your capture so the rest of the run stays aligned to your vision.
+
+```
+# Step 1 — ideate interactively (back-and-forth until the vision is clear)
+/capture_issue
+
+I want something like a weekly digest of trending repos, but focused on AI dev tools...
+
+# Step 2 — full autonomous run from explore (steps 2–9, hands-off)
+/explore --autonomous
+```
+
+This hybrid pattern gives you creative control up front and hands-off execution once the idea is locked in.
+
 ### Nine steps (autonomous and interactive)
 
 | # | Step | Command | What happens |
 |---|------|---------|--------------|
-| 1 | Capture | `/capture_issue` | Document problem, current/desired behavior, priority |
+| 1 | Capture | `/capture_issue` | Document problem, current/desired behavior, priority — **best step to ideate interactively** |
 | 2 | Explore | `/explore` | Analyze requirements, constraints, risks, success criteria |
 | 3 | Design | `/design_decisions` | Lock design choices, field mappings, integration points |
 | 4 | Create Plan | `/create_plan` | Generate atomic implementation plan |
@@ -124,13 +144,17 @@ In **interactive** mode, call `step-complete` after each step before pausing. **
 ### Autonomous mode examples
 
 ```
-# Full autonomous end-to-end — include your prompt after the command
+# Full autonomous end-to-end — when you already have a clear prompt
 /genesis_run --autonomous
 
 Add user authentication with email/password login and a protected dashboard route.
 
-# Started interactive, take over from any step (no new prompt needed)
+# Recommended hybrid — ideate in capture, then full run from explore
+/capture_issue
+<rough idea — iterate until your guiding vision is clear>
 /explore --autonomous
+
+# Mid-run takeover from any other step (no new prompt needed)
 /execute_plan --autonomous
 GENESIS_AUTONOMOUS=true npm run genesis:run -- init --autonomous
 ```
@@ -147,19 +171,25 @@ After **`/qa_checklist`** passes (and the genome or runtime deliverable changed)
 
 Genesis is the planning workflow that converts a prompt into the genome the runtime executes.
 
-**Interactive (step-by-step):** Run **`/genesis_run`** or start with **`/capture_issue`**. Cursor guides you through each step with confirmation pauses.
+**Interactive (step-by-step):** Run **`/genesis_run`** or start with **`/capture_issue`**. Cursor guides you through each step with confirmation pauses. **Use capture to ideate** — refine your idea before moving on.
 
-**Autonomous (hands-off):** Run **`/genesis_run --autonomous`** and include your prompt in the same message:
+**Autonomous (hands-off):** Run **`/genesis_run --autonomous`** with your prompt when the vision is already clear, **or** run **`/explore --autonomous`** after interactive capture to finish steps 2–9 hands-off:
 
 ```
+# Clear vision already — full autonomous from the start
 /genesis_run --autonomous
 
 <your prompt goes here>
+
+# Still shaping the idea — ideate first, then autonomous from explore
+/capture_issue
+<rough idea — iterate until ready>
+/explore --autonomous
 ```
 
-All nine steps above run in sequence without confirmation prompts.
+All nine steps run in sequence without confirmation prompts once autonomous mode is engaged.
 
-1. **Capture** — Your prompt in the `/genesis_run --autonomous` message, or `/capture_issue` in interactive mode.
+1. **Capture** — Ideate interactively with `/capture_issue`, or include your prompt in `/genesis_run --autonomous` when ready for a full hands-off run.
 2. **Explore, design, plan** — explore → design decisions → create plan; author or generate the genome in `.genome/`.
 3. **Run the organism** — From repo root: `node scripts/run-path.js .genome/mission.md` or `node scripts/build.js`. See [lib/README.md](lib/README.md) for options, guardrails, and repair.
 
