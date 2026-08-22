@@ -2,14 +2,14 @@
 
 **You're the Creator. One prompt. One app.**
 
-Project Genesis turns a single prompt into a running system the way nature builds an organism: from the ground up. One genome holds the blueprint. Roles stack from **molecule** → **cell** → **tissue** → **organ**—primitives that compose into a whole. A runtime executes that blueprint with health checks, guardrails, and repair. One source of truth. No agent sprawl.
+Project Genesis turns a single prompt into a running system through a governed workflow: capture intent, produce a validated blueprint, then execute with guardrails and repair. One genome holds the blueprint. A runtime decomposes work into hierarchical layers and runs it with health checks. One source of truth. No agent sprawl.
 
-**What this is:** A framework for designing and executing agentic systems using a biological architecture model. A **Creator** (human) provides intent; **Genesis** (pre-runtime workflow) turns that intent into a validated blueprint (**Genome**); an **Organism** runtime uses the blueprint to decompose work hierarchically (Organ → Tissue → Cell → Molecule), coordinate execution, and maintain health within guardrails.
+**What this is:** A framework for designing and executing agentic systems with a layered architecture. A **Creator** (human) provides intent; **Genesis** (pre-runtime workflow) turns that intent into a validated blueprint (**Genome**); the **Organism** runtime uses the blueprint to decompose work, coordinate execution, and maintain health within guardrails.
 
 **What it does:**
 - **Genesis:** Converts raw human intent into a structured, validated blueprint. Does not build the system; defines what must be built.
 - **Genome:** Holds the full instruction set: mission, constraints, decomposition rules, role library, contracts, adaptation boundaries. Shared by all layers; each layer expresses only the subset relevant to its role.
-- **Organism:** Top-level runtime that executes the blueprint by orchestrating organs, tissues, cells, and molecules toward the Creator's outcome. Monitors health, handles escalation, governs adaptation.
+- **Organism:** Top-level runtime that executes the blueprint by orchestrating layers toward the Creator's outcome. Monitors health, handles escalation, governs adaptation.
 
 **Problems it solves:**
 - **Lost intent:** Requirements and design decisions are captured and persisted in the genome instead of ad-hoc chat or scattered docs.
@@ -43,12 +43,12 @@ Organism Runtime
 
 **Lifecycle (Creator to Organism execution):**
 1. **Creator** states goal, problem, or desired outcome.
-2. **Genesis** runs: Capture → Issue → Explore → Design → Checklist → Create → Validate → Reflect. Output: validated Genome.
+2. **Genesis** runs the nine-step workflow (see below). Output: validated Genome.
 3. **Organism** may start only after Genesis output meets a minimum completeness threshold.
-4. **Organism** loads genome, decomposes into organs → tissues → cells → molecules, executes, signals, monitors health, and adapts within guardrails.
+4. **Organism** loads genome, decomposes into layers, executes, signals, monitors health, and adapts within guardrails.
 
 **Practical use cases:**
-- **Internal tooling:** Turn "build a lightweight dashboard" into a blueprint, then an organism that coordinates intake, build, validation, and reporting.
+- **Internal tooling:** Turn "build a lightweight dashboard" into a blueprint, then a runtime that coordinates intake, build, validation, and reporting.
 - **Agentic workflows:** Multi-step pipelines (research → plan → implement → validate) with clear roles, contracts, and health checks.
 - **Evolving systems:** Bounded adaptation and self-repair for long-lived processes (e.g. content pipelines, ops runbooks) without unrestricted self-modification.
 
@@ -56,55 +56,86 @@ Start with intent. End with a governed build.
 
 ---
 
-## Quick start
+## Autonomous workflow (hands-off end-to-end)
 
-Genesis is the planning workflow that converts a prompt into the genome the runtime executes.
+For end-to-end execution without confirmation prompts between steps, use **autonomous mode**:
 
-**Start the workflow** — Run **`/genesis_run`** (full loop) or **`/capture_issue`** (step-by-step). Cursor guides you: explore → design decisions → create plan → pre-implementation checklist → execute plan → code review → qa → postmortem. Full workflow: [.cursor/commands/workflow.md](.cursor/commands/workflow.md). **Workflow course** (case studies, anti-patterns): [docs/WORKFLOW_COURSE.md](docs/WORKFLOW_COURSE.md).
+```bash
+/genesis_run --autonomous
+```
 
-> **`--autonomous` flag** — `/genesis_run` alone runs **interactive** mode (pause after every step). For end-to-end without confirmation prompts, use **`/genesis_run --autonomous`** or set `GENESIS_AUTONOMOUS=true`. You can also add **`--autonomous` at any step** (e.g. `/explore --autonomous`) to upgrade mid-run and finish the remaining steps hands-off. If you omit the flag on `/genesis_run`, the agent will ask which mode you want before starting.
+Or set the environment variable: `GENESIS_AUTONOMOUS=true`.
+
+The agent runs all nine steps in one session — no pauses for approval between steps. You can also **upgrade mid-run** by adding `--autonomous` to any step (e.g. `/explore --autonomous`) after starting interactively.
+
+### Nine steps (autonomous and interactive)
+
+| # | Step | Command | What happens |
+|---|------|---------|--------------|
+| 1 | Capture | `/capture_issue` | Document problem, current/desired behavior, priority |
+| 2 | Explore | `/explore` | Analyze requirements, constraints, risks, success criteria |
+| 3 | Design | `/design_decisions` | Lock design choices, field mappings, integration points |
+| 4 | Create Plan | `/create_plan` | Generate atomic implementation plan |
+| 5 | Pre-Implementation | `/pre_implementation_checklist` | Gate: verify plan and design are complete |
+| 6 | Execute | `/execute_plan` | Implement step-by-step per plan |
+| 7 | Code Review | `/code_review` | Automated security, architecture, correctness review |
+| 8 | QA | `/qa_checklist` | Run tests, build, manual checklist; triggers organism build when genome changed |
+| 9 | Postmortem | `/postmortem` | Reflect on friction, document lessons, create closure doc |
+
+**Optional after step 9:** `/reflection` (documentation handoff), `/security_scan`, `/peer_review`.
+
+Full workflow details: [.cursor/commands/workflow.md](.cursor/commands/workflow.md). **Workflow course** (case studies, anti-patterns): [docs/WORKFLOW_COURSE.md](docs/WORKFLOW_COURSE.md).
 
 ### Workflow modes
 
 | Mode | Invoke | Behavior |
 |------|--------|----------|
-| **Interactive** (default) | `/genesis_run` or individual `/capture_issue`, … | Pause after each step; confirm before continuing |
 | **Autonomous** | **`/genesis_run --autonomous`** or `GENESIS_AUTONOMOUS=true` | All nine steps in one session; **no** confirmation prompts between steps |
+| **Interactive** (default) | `/genesis_run` or individual step commands | Pause after each step; confirm before continuing |
 
-**Use `--autonomous` for hands-off end-to-end.** Without it, you get interactive mode — the agent will ask you to confirm after capture, explore, and every subsequent step.
+> **`/genesis_run` alone** runs **interactive** mode. For hands-off end-to-end, pass **`--autonomous`** explicitly. If you omit the flag, the agent will ask which mode you want before starting.
 
-Initialize run state: `npm run genesis:run -- init [--autonomous]`. See [.cursor/commands/genesis_run.md](.cursor/commands/genesis_run.md).
+### Orchestrator CLI
 
-**Orchestrator CLI** (tracks run state in `.ai/context/run_config.json`):
+Tracks run state in `.ai/context/run_config.json`:
 
 ```bash
-npm run genesis:run -- status
-npm run genesis:run -- validate-gate <step>
+npm run genesis:run -- init [--autonomous]   # start or upgrade to autonomous
+npm run genesis:run -- status              # show current step and mode
+npm run genesis:run -- validate-gate <step>  # check prerequisites before a step
 npm run genesis:run -- step-complete <step> [--artifacts paths]
 npm run genesis:run -- test
 ```
 
-In **interactive** mode, call `step-complete` after each step before pausing. **Engage autonomous anytime:** `npm run genesis:run -- init --autonomous` (preserves completed steps). Delete `run_config.json` only to start a **fresh** run.
+In **interactive** mode, call `step-complete` after each step before pausing. **Upgrade mid-run:** `npm run genesis:run -- init --autonomous` (preserves completed steps). Delete `run_config.json` only to start a **fresh** run.
 
-**Nine steps (both modes):** capture → explore → design → create plan → pre-implementation → execute → code review → qa → postmortem. Optional after postmortem: `/reflection` (documentation handoff).
-
-**Limits:** Autonomous mode is for validated workflows on known project shapes — not first-time greenfield. Auto-fix covers style/obvious bugs only; security and business logic need manual review. QA runs `npm test`; manual UX checks may be deferred in autonomous runs.
-
-**Examples:**
+### Autonomous mode examples
 
 ```bash
-# Interactive (default) — pauses after each step
-/genesis_run
-/capture_issue
-
-# Autonomous end-to-end — pass the flag explicitly
+# Full autonomous end-to-end
 /genesis_run --autonomous
 
-# Mid-run takeover — started interactive, engage autonomous from any step
+# Started interactive, take over from any step
 /explore --autonomous
 /execute_plan --autonomous
 GENESIS_AUTONOMOUS=true npm run genesis:run -- init --autonomous
 ```
+
+### Autonomous mode limits
+
+Autonomous mode is for validated workflows on known project shapes — not first-time greenfield. Auto-fix covers style/obvious bugs only; security and business logic need manual review. QA runs `npm test`; manual UX checks may be deferred in autonomous runs.
+
+After **`/qa_checklist`** passes (and the genome or runtime deliverable changed), autonomous mode runs `node scripts/build.js` automatically. Interactive mode asks **"Ready to run the organism build?"** instead.
+
+---
+
+## Quick start
+
+Genesis is the planning workflow that converts a prompt into the genome the runtime executes.
+
+**Interactive (step-by-step):** Run **`/genesis_run`** or start with **`/capture_issue`**. Cursor guides you through each step with confirmation pauses.
+
+**Autonomous (hands-off):** Run **`/genesis_run --autonomous`**. All nine steps above run in sequence without prompts.
 
 1. **Capture** — `/capture_issue` or `/genesis_run --autonomous` with your prompt.
 2. **Explore, design, plan** — explore → design decisions → create plan; author or generate the genome in `.genome/`.
@@ -116,11 +147,11 @@ GENESIS_AUTONOMOUS=true npm run genesis:run -- init --autonomous
 
 ## Instantiation
 
-**Start a new project from this repo** — To create a separate "petri dish" instead of working in this clone:
+**Start a new project from this repo** — To create a separate project instead of working in this clone:
 
 1. Clone Project Genesis.
-2. Create a new directory **outside** this repo (e.g. `mkdir ~/my-organism`).
-3. Run: `./instantiate.sh /path/to/project-genesis /path/to/my-organism`
+2. Create a new directory **outside** this repo (e.g. `mkdir ~/my-project`).
+3. Run: `./instantiate.sh /path/to/project-genesis /path/to/my-project`
 4. `cd` into the new project and run `/capture_issue` or edit the genome and run the build.
 
 The script copies everything needed for e2e (`npm test`, `node scripts/run-path.js` work immediately). Options: `--force` (allow non-empty target), `--no-verify` (skip post-copy `npm test`).
@@ -130,12 +161,12 @@ The script copies everything needed for e2e (`npm test`, `node scripts/run-path.
 1. Copy [docs/ARCHITECTURE_TEMPLATE.md](docs/ARCHITECTURE_TEMPLATE.md) → `docs/ARCHITECTURE.md`
 2. Copy [docs/DEV_RUNBOOK_TEMPLATE.md](docs/DEV_RUNBOOK_TEMPLATE.md) → `docs/DEV_RUNBOOK.md` (fill in as you debug)
 3. Read [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md)
-4. Add a **“This repo”** section to `.cursor/commands/workflow.md` with your stack-specific backend paths
+4. Add a **"This repo"** section to `.cursor/commands/workflow.md` with your stack-specific backend paths
 
 **Post-instantiate — git and GitHub (recommended before first feature ship):**
 
 ```bash
-cd /path/to/my-organism
+cd /path/to/my-project
 git init
 git add .
 git commit -m "chore: instantiate from project-genesis"
@@ -153,12 +184,12 @@ See [docs/GITHUB_PAGES_CHECKLIST.md](docs/GITHUB_PAGES_CHECKLIST.md) for static 
 
 ## The process (simple)
 
-1. **Planning phase** — You **capture intent** (goal or problem), **explore** (requirements, constraints), **design** (solution shape), and **create the plan** (execution plan and genome). In this repo that’s the Genesis workflow: capture → explore → design decisions → create plan; then you (or execute_plan) author the genome files in `.genome/`.
-2. **Build phase** — The runtime **loads the genome**, **decomposes** it into the organism hierarchy, and **runs one path** to a molecule (e.g. read a file). Guardrails and repair apply. That’s the “build.”
+1. **Planning phase** — You **capture intent** (goal or problem), **explore** (requirements, constraints), **design** (solution shape), and **create the plan** (execution plan and genome). In this repo that's the Genesis workflow: capture → explore → design decisions → create plan; then you (or execute_plan) author the genome files in `.genome/`.
+2. **Build phase** — The runtime **loads the genome**, **decomposes** it into the layer hierarchy, and **runs one path** to a molecule (e.g. read a file). Guardrails and repair apply. That's the "build."
 
-**Does the build “take over” automatically?** After **`/qa_checklist`** passes (and the genome or runtime deliverable changed), the agent asks **“Ready to run the organism build?”** in interactive mode—or runs `node scripts/build.js` automatically in autonomous mode. You can also run the build yourself anytime: `node scripts/run-path.js .genome/mission.md` or `node scripts/build.js`. There is no file watcher or CI trigger yet.
+**Does the build "take over" automatically?** After **`/qa_checklist`** passes (and the genome or runtime deliverable changed), the agent asks **"Ready to run the organism build?"** in interactive mode—or runs `node scripts/build.js` automatically in autonomous mode. You can also run the build yourself anytime: `node scripts/run-path.js .genome/mission.md` or `node scripts/build.js`. There is no file watcher or CI trigger yet.
 
-**“Builds everything”** — Today the runtime runs **one path** (one organ → one tissue → one cell → one molecule) per invocation. It doesn’t discover or run multiple paths by itself. To “build everything” you’d run the runtime once per path or add a layer that schedules multiple runs.
+**"Builds everything"** — Today the runtime runs **one path** (one organ → one tissue → one cell → one molecule) per invocation. It doesn't discover or run multiple paths by itself. To "build everything" you'd run the runtime once per path or add a layer that schedules multiple runs.
 
 ---
 
@@ -192,25 +223,17 @@ You can later extend the model so that higher layers invoke sub-runs or agents; 
 
 ---
 
-## Why organism, why biology?
+## Architecture layers
 
-Biology provides a proven pattern: one genome, many cell types, hierarchical specialization, signaling, and homeostasis. We reuse that *structure* (shared blueprint, expression by role, decomposition, feedback), not the literal mechanisms. Benefits: scalable decomposition, clear boundaries, inspectable state, and natural limits on mutation and proliferation.
+The framework uses a layered hierarchy (organ → tissue → cell → molecule) as a decomposition model — not a simulation of biological systems. The pattern provides:
 
-The world is full of executive agent teams and angel/devil agent debates that attempt to coordinate builds from intent. Biology already solved the coordination problem.
+- **One source of truth** — a shared genome every layer reads from
+- **Role-based expression** — each layer uses only the instructions relevant to its role
+- **Hierarchical decomposition** — work splits predictably from coarse to fine
+- **Health monitoring** — status overlays and aggregation across the tree
+- **Guardrails and repair** — bounded retry, escalation, and mutation limits
 
-One genome drives every cell, but each role expresses only the instructions it needs. Hierarchy is built in: organism → organ → tissue → cell → molecule. Failure triggers repair or escalation. Mutation is bounded.
-
-We are not simulating biology. We are borrowing its architectural patterns:
-
-- one source of truth
-- role-based expression
-- hierarchical decomposition
-- health monitoring
-- guardrails and repair
-
-These patterns allow complex systems to scale without losing coordination.
-
-Genesis produces a structured blueprint (the genome) and a runtime organism that executes that blueprint to build the requested product.
+Genesis produces a structured blueprint (the genome) and a runtime that executes that blueprint to build the requested product.
 
 ---
 
@@ -222,7 +245,7 @@ You give a prompt (intent). **Genesis** is the pre-build workflow (capture → e
 
 ### Genome → Organism (when the build runs)
 
-When you call `runPath()` or `runPathWithRepair()`, the runtime loads the genome from `.genome/` (`loadGenome()`), builds a tree of nodes from the decomposition rules (`decompose()`), walks one path to a leaf molecule, and invokes that molecule’s implementation. You get back a result (e.g. file contents), a status overlay (ok/failed per node), and optional health. Organs/tissues/cells are structure; only the molecule runs as code.
+When you call `runPath()` or `runPathWithRepair()`, the runtime loads the genome from `.genome/` (`loadGenome()`), builds a tree of nodes from the decomposition rules (`decompose()`), walks one path to a leaf molecule, and invokes that molecule's implementation. You get back a result (e.g. file contents), a status overlay (ok/failed per node), and optional health. Organs/tissues/cells are structure; only the molecule runs as code.
 
 ### Governed execution
 
@@ -233,11 +256,11 @@ Project Genesis is a **governed build architecture**: intent → planning → bl
 ## How a creator uses it
 
 1. **State your intent (Prompt)** — Provide the goal or problem in words (e.g. "Build X", "Solve Y"). That is the only input the creator gives at the start.
-2. **Explore, design, create the plan** — Turn intent into a plan and a genome: run the Genesis workflow (explore → design decisions → create plan), then author the genome files in `.genome/` (mission, constraints, decomposition_rules, role_library, contracts; optionally repair_policy, guardrails). You can author the genome by hand or as the outcome of execute_plan. The runtime will not run until these files exist and pass validation.
-3. **Run the build** — Call the runtime (`runPath(...)` or `node scripts/run-path.js .genome/mission.md`). That is when the build phase runs: the runtime loads the genome, decomposes it, runs one path to a molecule, and returns result and status. You must invoke it; it does not start automatically.
+2. **Run the workflow** — Use `/genesis_run --autonomous` for hands-off or `/genesis_run` for step-by-step. The nine steps produce a plan and genome files in `.genome/`.
+3. **Run the build** — Call the runtime (`runPath(...)` or `node scripts/run-path.js .genome/mission.md`). That is when the build phase runs: the runtime loads the genome, decomposes it, runs one path to a molecule, and returns result and status. In autonomous mode, this may happen automatically after QA.
 4. **Validate and iterate** — Check outputs and guardrails ([docs/VALIDATION_STORY_12.md](docs/VALIDATION_STORY_12.md)); extend the genome (e.g. new roles or molecules) as needed.
 
-**Summary:** Creator provides prompt then genome; build runs when you invoke the runtime; organism elements are a role hierarchy, and only the molecule runs as code.
+**Summary:** Creator provides prompt then genome; build runs when you invoke the runtime (or automatically after QA in autonomous mode); hierarchy elements are roles, and only the molecule runs as code.
 
 ---
 
@@ -258,8 +281,8 @@ The runtime is the code that loads the genome and runs one path. It lives in `li
 1. **Load** — `loadGenome()` reads `.genome/` from disk (or the path you pass). It validates that required files exist and that every role id in the decomposition rules exists in the role library. If anything is missing, it throws. Optional files (`repair_policy.md`, `guardrails.md`) are attached when present.
 2. **Guard** — Before decomposing or running the path, the runtime calls `checkGuardrails(genome, request)`. The request is the run options (e.g. which file path to read). If the request is out of scope (e.g. path not under the allowed prefix), the run is **blocked**: the molecule is not invoked, the molecule node is marked failed in the overlay, and the violation is appended to `.logs/guardrails.log`. Return value includes `blocked: true` and `violationReason`.
 3. **Decompose** — `decompose(genome)` parses the genome's decomposition rules (e.g. the **Example chain**: Organ, Tissue, Cell, Molecule) and builds a **tree of nodes**: organism → organ → tissue → cell → molecule. Each node has an id, a layer, and a roleId. No execution yet; this is data only.
-4. **Run one path** — The runtime walks the tree to the leaf molecule (today: the single path from the Example chain). It resolves the molecule’s implementation: `roleId` (e.g. `read_file`) → `.molecules/lib/<roleId>.js`, then calls that module’s export with options (e.g. `path`, `repoRoot`). It writes the molecule’s status (ok or failed) into a **status overlay** (a plain object keyed by node id) and returns the molecule’s return value as `result`.
-5. **Repair (optional)** — If you use `runPathWithRepair()` instead of `runPath()`, the runtime checks health after each run. If the organism status is failed and the genome has a `repair_policy` with `maxRetries > 0`, it retries `runPath()` up to that many times (with optional `delayMs` between attempts). When retries are exhausted, it returns with `escalated: true` and the last run’s result. No throw; escalation is in the return value.
+4. **Run one path** — The runtime walks the tree to the leaf molecule (today: the single path from the Example chain). It resolves the molecule's implementation: `roleId` (e.g. `read_file`) → `.molecules/lib/<roleId>.js`, then calls that module's export with options (e.g. `path`, `repoRoot`). It writes the molecule's status (ok or failed) into a **status overlay** (a plain object keyed by node id) and returns the molecule's return value as `result`.
+5. **Repair (optional)** — If you use `runPathWithRepair()` instead of `runPath()`, the runtime checks health after each run. If the organism status is failed and the genome has a `repair_policy` with `maxRetries > 0`, it retries `runPath()` up to that many times (with optional `delayMs` between attempts). When retries are exhausted, it returns with `escalated: true` and the last run's result. No throw; escalation is in the return value.
 
 **Entry points**
 
