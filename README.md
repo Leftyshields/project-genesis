@@ -58,13 +58,25 @@ Start with intent. End with a governed build.
 
 ## Autonomous workflow (hands-off end-to-end)
 
-For end-to-end execution without confirmation prompts between steps, use **autonomous mode**:
+For end-to-end execution without confirmation prompts between steps, use **autonomous mode**. In Cursor chat, send **`/genesis_run --autonomous`** followed by **your prompt on the next line** (or in the same message):
 
-```bash
+```
 /genesis_run --autonomous
+
+<your prompt goes here — describe the goal, problem, or desired outcome>
 ```
 
-Or set the environment variable: `GENESIS_AUTONOMOUS=true`.
+Example:
+
+```
+/genesis_run --autonomous
+
+Build a lightweight dashboard that shows weekly sales by region with CSV export.
+```
+
+The prompt is step 1 (capture) input — the agent writes it to `.ai/context/last_capture.md` and continues through all nine steps without asking for confirmation.
+
+Or set the environment variable: `GENESIS_AUTONOMOUS=true` when using the orchestrator CLI.
 
 The agent runs all nine steps in one session — no pauses for approval between steps. You can also **upgrade mid-run** by adding `--autonomous` to any step (e.g. `/explore --autonomous`) after starting interactively.
 
@@ -90,7 +102,7 @@ Full workflow details: [.cursor/commands/workflow.md](.cursor/commands/workflow.
 
 | Mode | Invoke | Behavior |
 |------|--------|----------|
-| **Autonomous** | **`/genesis_run --autonomous`** or `GENESIS_AUTONOMOUS=true` | All nine steps in one session; **no** confirmation prompts between steps |
+| **Autonomous** | **`/genesis_run --autonomous`** + your prompt, or `GENESIS_AUTONOMOUS=true` | All nine steps in one session; **no** confirmation prompts between steps |
 | **Interactive** (default) | `/genesis_run` or individual step commands | Pause after each step; confirm before continuing |
 
 > **`/genesis_run` alone** runs **interactive** mode. For hands-off end-to-end, pass **`--autonomous`** explicitly. If you omit the flag, the agent will ask which mode you want before starting.
@@ -111,11 +123,13 @@ In **interactive** mode, call `step-complete` after each step before pausing. **
 
 ### Autonomous mode examples
 
-```bash
-# Full autonomous end-to-end
+```
+# Full autonomous end-to-end — include your prompt after the command
 /genesis_run --autonomous
 
-# Started interactive, take over from any step
+Add user authentication with email/password login and a protected dashboard route.
+
+# Started interactive, take over from any step (no new prompt needed)
 /explore --autonomous
 /execute_plan --autonomous
 GENESIS_AUTONOMOUS=true npm run genesis:run -- init --autonomous
@@ -135,9 +149,17 @@ Genesis is the planning workflow that converts a prompt into the genome the runt
 
 **Interactive (step-by-step):** Run **`/genesis_run`** or start with **`/capture_issue`**. Cursor guides you through each step with confirmation pauses.
 
-**Autonomous (hands-off):** Run **`/genesis_run --autonomous`**. All nine steps above run in sequence without prompts.
+**Autonomous (hands-off):** Run **`/genesis_run --autonomous`** and include your prompt in the same message:
 
-1. **Capture** — `/capture_issue` or `/genesis_run --autonomous` with your prompt.
+```
+/genesis_run --autonomous
+
+<your prompt goes here>
+```
+
+All nine steps above run in sequence without confirmation prompts.
+
+1. **Capture** — Your prompt in the `/genesis_run --autonomous` message, or `/capture_issue` in interactive mode.
 2. **Explore, design, plan** — explore → design decisions → create plan; author or generate the genome in `.genome/`.
 3. **Run the organism** — From repo root: `node scripts/run-path.js .genome/mission.md` or `node scripts/build.js`. See [lib/README.md](lib/README.md) for options, guardrails, and repair.
 
@@ -256,7 +278,7 @@ Project Genesis is a **governed build architecture**: intent → planning → bl
 ## How a creator uses it
 
 1. **State your intent (Prompt)** — Provide the goal or problem in words (e.g. "Build X", "Solve Y"). That is the only input the creator gives at the start.
-2. **Run the workflow** — Use `/genesis_run --autonomous` for hands-off or `/genesis_run` for step-by-step. The nine steps produce a plan and genome files in `.genome/`.
+2. **Run the workflow** — Use `/genesis_run --autonomous` with your prompt for hands-off, or `/genesis_run` for step-by-step. The nine steps produce a plan and genome files in `.genome/`.
 3. **Run the build** — Call the runtime (`runPath(...)` or `node scripts/run-path.js .genome/mission.md`). That is when the build phase runs: the runtime loads the genome, decomposes it, runs one path to a molecule, and returns result and status. In autonomous mode, this may happen automatically after QA.
 4. **Validate and iterate** — Check outputs and guardrails ([docs/VALIDATION_STORY_12.md](docs/VALIDATION_STORY_12.md)); extend the genome (e.g. new roles or molecules) as needed.
 
