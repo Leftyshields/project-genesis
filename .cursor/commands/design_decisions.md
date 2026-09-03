@@ -4,6 +4,24 @@ Do NOT write code yet.
 
 **This document should be created BEFORE implementation begins** (`/execute_plan`).
 
+## Decision-Context Map (read only matching sections)
+
+Before locking UI, input, complexity-ownership, or **scope** choices, classify the decision and read **only** the matching section(s) of [docs/DECISION_CONTEXT_MAP.md](../../docs/DECISION_CONTEXT_MAP.md). Do not load the whole map. If you cannot classify, read the routing table only.
+
+| Decision | Section |
+|----------|---------|
+| Choice sets, menus, settings density | 1 |
+| Target size / placement | 2 |
+| Grouping, spacing, visual simplicity | 3 |
+| Emphasis, order, endings, unfinished work | 4 |
+| Perceived speed / latency | 5 |
+| Conventions, forgiving input | 6 |
+| Who owns inherent complexity | 7 |
+| Scope, prioritization, pacing (**not** pixels) | 8 |
+| Two laws conflict | 9 |
+
+Section 8 (Occam's, Pareto, Parkinson's) is for this step and `/create_plan` only — not layout. Autonomous mode: apply each law's **Default** unless a section-9 rule applies. Name both sides of a conflict; never average.
+
 Based on our discussion so far:
 
 Produce:

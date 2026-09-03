@@ -46,6 +46,21 @@ flowchart LR
 
 **Rule:** Follow-on issues (v1.1, copy tweaks) still need a **new** plan file — not the previous closure’s plan.
 
+### Decision-Context Map (read only matching sections)
+
+UX and scope choices are indexed in [DECISION_CONTEXT_MAP.md](DECISION_CONTEXT_MAP.md). Classify the decision, then read **that section only** — do not load all 15+3 laws at every step.
+
+| When | Section |
+|------|---------|
+| `/design_decisions` | Classify UI / input / complexity / **scope**; open matching section(s) |
+| `/create_plan` | Section **8** only (Occam's, Pareto, Parkinson's — scope, not pixels). Tesler's (7) if a cut would push work onto the user |
+| `/execute_plan` | Matching section if a UI, input, or complexity-ownership decision appears |
+| `/qa_checklist` | Section **5** (Doherty) when the change has interactive UI |
+
+**Anti-pattern:** Pasting the whole map into every command or averaging two conflicting laws. Name both sides and apply the section-9 rule.
+
+**New issue after a completed run:** Delete `.ai/context/run_config.json` before `init`. A finished prior run still has all nine steps marked complete; `init --autonomous` will preserve them and block the next `step-complete`.
+
 ---
 
 ## Phase 2 — Implementation
@@ -221,4 +236,4 @@ After `/postmortem` in any instantiated app:
 
 ---
 
-**Last updated:** 2026-07-02 (EPH-20260701-LAND postmortem)
+**Last updated:** 2026-09-02 (EPH-20260902-DCM1 — Decision-Context Map)

@@ -37,6 +37,8 @@ Nine steps, strict order. Full details: [.cursor/commands/workflow.md](.cursor/c
 
 Optional after step 9: `/reflection`, `/security_scan`, `/peer_review`.
 
+At **design, plan, execute, and QA**, classify the decision in front of you and read **only** the matching section of the [Decision-Context Map](docs/DECISION_CONTEXT_MAP.md). Do not load the whole catalog every step.
+
 ### How to run
 
 | Mode | Invoke | Behavior |
@@ -65,6 +67,28 @@ Build a dashboard that shows weekly sales by region with CSV export.
 **Limits:** Autonomous mode suits known project shapes, not first-time greenfield. Auto-fix covers style/obvious bugs; security and business logic need manual review. After QA passes, autonomous mode runs `node scripts/build.js` automatically.
 
 Orchestrator CLI (`npm run genesis:run -- status|init|step-complete|…`): [.cursor/commands/genesis_run.md](.cursor/commands/genesis_run.md). Case studies: [docs/WORKFLOW_COURSE.md](docs/WORKFLOW_COURSE.md).
+
+---
+
+## Decision-Context Map
+
+When a design, scope, layout, input, or QA choice appears, do **not** reread every UX heuristic. Open [docs/DECISION_CONTEXT_MAP.md](docs/DECISION_CONTEXT_MAP.md), classify the decision, and read **only** that section.
+
+The map is 15 design laws plus 3 strategy-level heuristics (deduplicated from a 20-entry source). Each law states what it says, when it governs, the **autonomous-mode default**, and any conflict it participates in. Strategy heuristics (Occam's, Pareto, Parkinson's) belong at `/design_decisions` and `/create_plan` — they are **scope, not pixels**.
+
+| Decision in front of you | Section |
+|--------------------------|---------|
+| Choice sets, menus, settings density | 1 — Hick's, Miller's |
+| Button size, tap targets, placement | 2 — Fitts's |
+| Grouping, spacing, visual simplicity | 3 — Gestalt |
+| Emphasis, list order, endings, unfinished work | 4 — attention / memory |
+| Feedback latency (sub-400ms) | 5 — Doherty |
+| Conventions, forgiving input | 6 — Jakob's, Postel's |
+| Who absorbs inherent complexity | 7 — Tesler's |
+| Feature scope, prioritization, pacing | 8 — Occam's, Pareto, Parkinson's |
+| Two laws pull opposite ways | 9 — name both; never average |
+
+In **autonomous** mode, apply the map's **Default** line unless a section-9 conflict rule applies. Instantiated apps get this file via `instantiate.sh` (`docs/` is copied). `/design_decisions`, `/create_plan`, `/execute_plan`, and `/qa_checklist` already route to it.
 
 ---
 
@@ -109,6 +133,7 @@ After instantiate: copy [ARCHITECTURE_TEMPLATE](docs/ARCHITECTURE_TEMPLATE.md) a
 - [lib/README.md](lib/README.md) — Runtime API
 - [.cursor/commands/workflow.md](.cursor/commands/workflow.md) — Full workflow reference
 - [docs/WORKFLOW_COURSE.md](docs/WORKFLOW_COURSE.md) — Case studies and anti-patterns
+- [docs/DECISION_CONTEXT_MAP.md](docs/DECISION_CONTEXT_MAP.md) — UX laws by the decision they govern (read only matching sections)
 - [docs/VALIDATION_STORY_12.md](docs/VALIDATION_STORY_12.md) — Acceptance checklist
 - [docs/backlog.md](docs/backlog.md) — Roadmap
 

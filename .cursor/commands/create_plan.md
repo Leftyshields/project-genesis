@@ -1,5 +1,13 @@
 Create a clear, minimal execution plan as a markdown file.
 
+## Decision-Context Map — strategy heuristics only
+
+Scope, prioritization, and pacing are section **8** of [docs/DECISION_CONTEXT_MAP.md](../../docs/DECISION_CONTEXT_MAP.md) (Occam's, Pareto, Parkinson's). Read **that section only** when cutting or sequencing work. These are **scope, not pixels** — do not apply them to component layout, tap targets, or styling.
+
+If a plan step would delete user-facing work, also read section **7** (Tesler's) and the Occam's/Prägnanz vs Tesler's pair in section **9**. If deleting an element pushes its work onto the user, that is not simplification.
+
+Do not read sections 1–6 unless this plan itself designs those surfaces.
+
 Before creating the plan, you MUST read these files if they exist:
 - `.ai/context/last_capture.md`
 - `.ai/context/last_explore.md`

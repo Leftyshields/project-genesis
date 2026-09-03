@@ -25,6 +25,15 @@ Create a checklist the tester can follow. Include:
 - Failure states
 - Visual / UX checks
 
+### Doherty / perceived speed (when the change has interactive UI)
+
+Classify as section **5** of [docs/DECISION_CONTEXT_MAP.md](../../docs/DECISION_CONTEXT_MAP.md). Do not load the rest of the map for this check.
+
+- [ ] Primary actions give feedback in under 400ms, **or** use honest optimistic UI / skeletons / progressive reveal (never a bare spinner as the only signal)
+- [ ] Completion is not faked; in-flight work stays visible (Doherty vs honest feedback)
+
+If this issue has **no** interactive UI (docs/commands/workflow only), mark these N/A or `(deferred autonomous)` — do not invent a timing harness.
+
 Save to `.ai/context/qa_checklist_<feature-slug>.md` when the feature is non-trivial.
 
 Format as simple `- [ ]` items with pre-flight section.

@@ -41,6 +41,8 @@ Process:
   - Check `last_explore.md` Constraints and Risks to avoid scope drift
   - Check `design_decisions.md` for documented decisions
   - Avoid decisions that contradict stated constraints
+  - If a **UI, input, or complexity-ownership** decision appears: classify it and read **only** the matching section of [docs/DECISION_CONTEXT_MAP.md](../../docs/DECISION_CONTEXT_MAP.md) (routing table at top). Apply the autonomous **Default** unless a section-9 conflict rule applies.
+  - Before deleting user-facing work in the name of simplicity, apply Tesler's test (section 7 / section 9): if the work moves onto the user, keep it in the system.
 
 **Special Checks:**
 - **API Endpoints:** Shared handlers + all entry points in `docs/ARCHITECTURE.md` updated

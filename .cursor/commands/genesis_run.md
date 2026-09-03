@@ -123,6 +123,8 @@ If `last_capture.md` exists, `issue_id` is copied from its `# Issue ID` header.
 
 **Re-init:** Same mode updates `issue_id` and `--reflect`. **Mid-run takeover:** `init --autonomous` upgrades interactive runs (preserves `steps`). Delete `run_config.json` to start fresh.
 
+**New issue after a completed run:** If `last_capture.md` has a **different** Issue ID than `run_config.json`, or the prior issue already has a closure doc and all nine steps are complete, **delete** `run_config.json` then `init`. Do not preserve completed steps from a closed issue — `expectedNextStep` will be empty and later `step-complete` calls will fail.
+
 ---
 
 ## Interactive Mode

@@ -57,6 +57,7 @@ Mandatory order for Interactive and Autonomous modes (only pause behavior differ
    - Specify rendering approaches (if formatted content)
    - Document integration points
    - **For multi-source data:** document provenance (API vs seed vs manual) and reconnect cleanup
+   - **UX / scope decisions:** classify the decision and read **only** the matching section of [docs/DECISION_CONTEXT_MAP.md](../../docs/DECISION_CONTEXT_MAP.md). Strategy heuristics (Occam's, Pareto, Parkinson's) belong here and at `/create_plan`, not at layout.
    
    **Next:** Run `/create_plan` to create execution plan
 
@@ -241,6 +242,8 @@ For smaller changes or bug fixes:
 26. **Mode switch without reset** - `init --autonomous` upgrades interactive mid-run (keeps steps); delete `run_config.json` only for a fresh run or autonomous → interactive downgrade
 27. **Expecting autonomous without the flag** - `/genesis_run` alone is interactive; pass `--autonomous` (or set `GENESIS_AUTONOMOUS=true`) for end-to-end; the agent should ask which mode you want if the flag is omitted on `/genesis_run` entry
 28. **Mid-run takeover** - Append `--autonomous` to any step command (`/explore --autonomous`) after starting interactive; agent runs `init --autonomous` and completes remaining steps without pause
+29. **Stale completed `run_config.json`** - A finished run for a *previous* issue still has all nine steps marked complete. `init --autonomous` on a new capture upgrades mode but **preserves** those steps, so `step-complete explore` fails. After a closure doc exists, **delete** `.ai/context/run_config.json` before the next issue's `init`. Do not inherit AL01 (or any closed run) into a new Issue ID.
+30. **Loading the whole Decision-Context Map** - Classify the decision first; read **only** the matching section of [docs/DECISION_CONTEXT_MAP.md](docs/DECISION_CONTEXT_MAP.md). Do not paste or reread all 15+3 laws at every step.
 
 ---
 
@@ -253,6 +256,7 @@ For smaller changes or bug fixes:
 - [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md)
 - [Instantiated app feedback log](docs/INSTANTIATED_APP_FEEDBACK.md)
 - [Blueprint](docs/BLUEPRINT.md) — Genesis framework architecture
+- [Decision-Context Map](docs/DECISION_CONTEXT_MAP.md) — UX laws by the decision they govern (read only matching sections)
 
 ---
 

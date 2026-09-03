@@ -164,6 +164,41 @@ Defining the workflow while implementing it; hybrid state (JSON + LLM steps) mad
 
 ---
 
+## 2026-09-02 — Decision-Context Map (EPH-20260902-DCM1)
+
+**Source:** Genesis upstream (this repo). Interactive capture, then `/explore --autonomous` through postmortem.
+
+### Friction observed
+
+| Area | Issue |
+|------|--------|
+| Run state | Completed AL01 `run_config.json` would preserve all nine steps on `init --autonomous`; new issue needed a delete + re-init |
+| Capture ID | `last_capture.md` still held a closed Issue ID; "reuse if present" is a same-session rule, not a lock after closure |
+| UX lookup | No decision-indexed law map; agents had nowhere to classify a design choice |
+| Doherty | Capture called 400ms an automated QA check; this repo has no UI to time |
+
+### Root cause (process)
+
+`init` preserves `steps` for mid-run mode upgrade. That is correct for an open issue and wrong when capture has already moved to a new ID after closure.
+
+### Changes incorporated into Genesis (this run / Path B)
+
+- `docs/DECISION_CONTEXT_MAP.md` — 15 design laws + 3 strategy heuristics + 6 conflict pairs
+- `/design_decisions`, `/create_plan`, `/execute_plan`, `/qa_checklist` — classify then read only matching sections
+- `/workflow` — Phase 1 pointer; common mistakes 29–30
+- `/genesis_run` — new-issue-after-completed-run reset note
+- `README.md` — Contents entry plus Decision-Context Map section (routing table)
+- `docs/WORKFLOW_COURSE.md` — Phase 1 lookup + stale `run_config` anti-pattern
+
+### Reference
+
+- Closure: [docs/CLOSURE_EPH-20260902-DCM1.md](CLOSURE_EPH-20260902-DCM1.md)
+- Postmortem: `.ai/context/postmortem_EPH-20260902-DCM1.md`
+
+This repo **is** Genesis upstream, so Path A and Path B are the same change set.
+
+---
+
 ## How to add entries (after `/postmortem`)
 
 1. **App repo (Path A):** Append a dated section above; update `docs/CLOSURE_<ISSUE_ID>.md` and workflow commands as needed; open PR or push.
