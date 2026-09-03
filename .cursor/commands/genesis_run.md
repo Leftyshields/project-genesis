@@ -144,7 +144,7 @@ If `last_capture.md` exists, `issue_id` is copied from its `# Issue ID` header.
 3. Before advancing, run `node scripts/genesis-run.js validate-gate <step>` (or let `step-complete` enforce gates).
 4. Call `step-complete` after each step.
 5. **Autonomous behaviors:**
-   - **Design:** auto-generate with `Rationale:` per decision; skip confirmation gate.
+   - **Design:** auto-generate with `Rationale:` per decision; skip confirmation gate. If the run has a user-facing surface, follow `ux-laws`: apply map Defaults, write `### UX tradeoff:` blocks, **do not** ask Socratic UX questions.
    - **Code review:** auto-fix safe issues → `code_review_changelog.md`; log manual-review items without halting.
    - **QA:** `node scripts/genesis-run.js test`; on failure, one remediation (review → fix → `test --attempt 2 --remediation`); defer manual checklist items.
    - **Postmortem:** include run summary (decisions, fixes, QA results, manual flags) + closure doc.

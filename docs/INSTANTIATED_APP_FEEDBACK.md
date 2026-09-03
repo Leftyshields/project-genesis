@@ -183,7 +183,8 @@ Defining the workflow while implementing it; hybrid state (JSON + LLM steps) mad
 
 ### Changes incorporated into Genesis (this run / Path B)
 
-- `docs/DECISION_CONTEXT_MAP.md` — 15 design laws + 3 strategy heuristics + 6 conflict pairs
+- `.cursor/skills/ux-laws/` — skill + catalog; autonomous: Default + tradeoff log, no pause
+- `docs/DECISION_CONTEXT_MAP.md` — pointer to the skill catalog
 - `/design_decisions`, `/create_plan`, `/execute_plan`, `/qa_checklist` — classify then read only matching sections
 - `/workflow` — Phase 1 pointer; common mistakes 29–30
 - `/genesis_run` — new-issue-after-completed-run reset note

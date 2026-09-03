@@ -37,7 +37,7 @@ Nine steps, strict order. Full details: [.cursor/commands/workflow.md](.cursor/c
 
 Optional after step 9: `/reflection`, `/security_scan`, `/peer_review`.
 
-At **design, plan, execute, and QA**, classify the decision in front of you and read **only** the matching section of the [Decision-Context Map](docs/DECISION_CONTEXT_MAP.md). Do not load the whole catalog every step.
+At **design, plan, execute, and QA**, the `ux-laws` skill applies: classify the decision and read **only** the matching map section. Autonomous runs apply the Default and log the tradeoff — they do not pause for a UX question.
 
 ### How to run
 
@@ -72,7 +72,7 @@ Orchestrator CLI (`npm run genesis:run -- status|init|step-complete|…`): [.cur
 
 ## Decision-Context Map
 
-When a design, scope, layout, input, or QA choice appears, do **not** reread every UX heuristic. Open [docs/DECISION_CONTEXT_MAP.md](docs/DECISION_CONTEXT_MAP.md), classify the decision, and read **only** that section.
+When a design, scope, layout, input, or QA choice appears, do **not** reread every UX heuristic. The [`ux-laws` skill](.cursor/skills/ux-laws/SKILL.md) classifies the decision and reads **only** the matching section of [the catalog](.cursor/skills/ux-laws/references/decision-context-map.md).
 
 The map is 15 design laws plus 3 strategy-level heuristics (deduplicated from a 20-entry source). Each law states what it says, when it governs, the **autonomous-mode default**, and any conflict it participates in. Strategy heuristics (Occam's, Pareto, Parkinson's) belong at `/design_decisions` and `/create_plan` — they are **scope, not pixels**.
 
@@ -88,7 +88,12 @@ The map is 15 design laws plus 3 strategy-level heuristics (deduplicated from a 
 | Feature scope, prioritization, pacing | 8 — Occam's, Pareto, Parkinson's |
 | Two laws pull opposite ways | 9 — name both; never average |
 
-In **autonomous** mode, apply the map's **Default** line unless a section-9 conflict rule applies. Instantiated apps get this file via `instantiate.sh` (`docs/` is copied). `/design_decisions`, `/create_plan`, `/execute_plan`, and `/qa_checklist` already route to it.
+| Mode | Behavior |
+|------|----------|
+| **Interactive** | Socratic — name the laws and put the tradeoff to you |
+| **Autonomous** | Apply the Default (or section-9 conflict rule), write a `### UX tradeoff:` block into `design_decisions.md`, continue — no pause |
+
+Instantiated apps get the skill via `instantiate.sh` (`.cursor/skills/` is copied). Commands route to the skill, not a second copy of the catalog.
 
 ---
 
@@ -133,7 +138,8 @@ After instantiate: copy [ARCHITECTURE_TEMPLATE](docs/ARCHITECTURE_TEMPLATE.md) a
 - [lib/README.md](lib/README.md) — Runtime API
 - [.cursor/commands/workflow.md](.cursor/commands/workflow.md) — Full workflow reference
 - [docs/WORKFLOW_COURSE.md](docs/WORKFLOW_COURSE.md) — Case studies and anti-patterns
-- [docs/DECISION_CONTEXT_MAP.md](docs/DECISION_CONTEXT_MAP.md) — UX laws by the decision they govern (read only matching sections)
+- [docs/DECISION_CONTEXT_MAP.md](docs/DECISION_CONTEXT_MAP.md) — pointer to the `ux-laws` skill
+- [`.cursor/skills/ux-laws/`](.cursor/skills/ux-laws/SKILL.md) — UX laws skill (autonomous: apply Default, log tradeoff, no pause)
 - [docs/VALIDATION_STORY_12.md](docs/VALIDATION_STORY_12.md) — Acceptance checklist
 - [docs/backlog.md](docs/backlog.md) — Roadmap
 

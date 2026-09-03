@@ -1,12 +1,10 @@
 Create a clear, minimal execution plan as a markdown file.
 
-## Decision-Context Map — strategy heuristics only
+## UX laws — strategy heuristics only
 
-Scope, prioritization, and pacing are section **8** of [docs/DECISION_CONTEXT_MAP.md](../../docs/DECISION_CONTEXT_MAP.md) (Occam's, Pareto, Parkinson's). Read **that section only** when cutting or sequencing work. These are **scope, not pixels** — do not apply them to component layout, tap targets, or styling.
+Follow [`.cursor/skills/ux-laws/SKILL.md`](../skills/ux-laws/SKILL.md). For scope, prioritization, and pacing, read **section 8 only** of `references/decision-context-map.md` (Occam's, Pareto, Parkinson's — **scope, not pixels**). If a cut would push work onto the user, also read Tesler's (section 7) and that conflict pair in section 9.
 
-If a plan step would delete user-facing work, also read section **7** (Tesler's) and the Occam's/Prägnanz vs Tesler's pair in section **9**. If deleting an element pushes its work onto the user, that is not simplification.
-
-Do not read sections 1–6 unless this plan itself designs those surfaces.
+**Autonomous:** apply the Default, log a `### UX tradeoff:` block on the plan or design artifact, do not pause. Do not read sections 1–6 unless this plan itself designs those surfaces.
 
 Before creating the plan, you MUST read these files if they exist:
 - `.ai/context/last_capture.md`

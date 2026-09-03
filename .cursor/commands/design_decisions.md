@@ -4,23 +4,15 @@ Do NOT write code yet.
 
 **This document should be created BEFORE implementation begins** (`/execute_plan`).
 
-## Decision-Context Map (read only matching sections)
+## UX laws (user-facing surfaces)
 
-Before locking UI, input, complexity-ownership, or **scope** choices, classify the decision and read **only** the matching section(s) of [docs/DECISION_CONTEXT_MAP.md](../../docs/DECISION_CONTEXT_MAP.md). Do not load the whole map. If you cannot classify, read the routing table only.
+If capture scope includes a screen, form, flow, or other human-facing surface, follow [`.cursor/skills/ux-laws/SKILL.md`](../skills/ux-laws/SKILL.md). Classify each decision; read **only** the matching section of `references/decision-context-map.md`. Skip if the run is genuinely headless.
 
-| Decision | Section |
-|----------|---------|
-| Choice sets, menus, settings density | 1 |
-| Target size / placement | 2 |
-| Grouping, spacing, visual simplicity | 3 |
-| Emphasis, order, endings, unfinished work | 4 |
-| Perceived speed / latency | 5 |
-| Conventions, forgiving input | 6 |
-| Who owns inherent complexity | 7 |
-| Scope, prioritization, pacing (**not** pixels) | 8 |
-| Two laws conflict | 9 |
+**Autonomous:** apply the map Default (or section-9 conflict rule). Do not ask which law wins. Append a `### UX tradeoff:` block per decision to this design artifact, then continue — no UX pause.
 
-Section 8 (Occam's, Pareto, Parkinson's) is for this step and `/create_plan` only — not layout. Autonomous mode: apply each law's **Default** unless a section-9 rule applies. Name both sides of a conflict; never average.
+**Interactive:** Socratic — name the laws and put the tradeoff to the Creator.
+
+Section 8 (Occam's, Pareto, Parkinson's) is scope, not pixels.
 
 Based on our discussion so far:
 
@@ -141,7 +133,8 @@ End by asking:
 
 If `run_config.json` has `mode: "autonomous"`:
 - Include `Rationale:` for each major decision.
-- Skip the confirmation question.
+- If ux-laws engaged: include `### UX tradeoff:` blocks (skill format) — Default applied, rejected alternative named, `Mode: autonomous`.
+- Skip the confirmation question **and** any Socratic UX question.
 - Run `npm run genesis:run -- step-complete design_decisions --artifacts .ai/context/design_decisions.md`.
 - **Immediately** continue with `/create_plan` logic in the same session.
 

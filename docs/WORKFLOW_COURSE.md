@@ -48,7 +48,7 @@ flowchart LR
 
 ### Decision-Context Map (read only matching sections)
 
-UX and scope choices are indexed in [DECISION_CONTEXT_MAP.md](DECISION_CONTEXT_MAP.md). Classify the decision, then read **that section only** — do not load all 15+3 laws at every step.
+UX and scope choices use the [`ux-laws` skill](../.cursor/skills/ux-laws/SKILL.md). Classify the decision, then read **that section only** of [the catalog](../.cursor/skills/ux-laws/references/decision-context-map.md). **Autonomous:** apply the Default, log a `### UX tradeoff:` block, do not pause.
 
 | When | Section |
 |------|---------|

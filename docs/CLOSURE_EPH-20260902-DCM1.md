@@ -6,10 +6,11 @@
 
 ## What shipped
 
-- Canonical lookup: [docs/DECISION_CONTEXT_MAP.md](DECISION_CONTEXT_MAP.md)
-  - Routing table + "read only matching sections"
-  - 15 design laws, 3 strategy-level heuristics, 6 conflict pairs
-  - Autonomous **Default** lines; conflict rules (never average)
+- Canonical lookup: [`.cursor/skills/ux-laws/`](../.cursor/skills/ux-laws/SKILL.md)
+  - Catalog: `references/decision-context-map.md` (15 laws + 3 heuristics + 6 conflicts)
+  - Autonomous: apply Default, write `### UX tradeoff:` blocks, do not pause
+  - Interactive: Socratic tradeoff
+  - [docs/DECISION_CONTEXT_MAP.md](DECISION_CONTEXT_MAP.md) points at the skill
 - Command routing (pointer + table, not a second catalog):
   - `/design_decisions`, `/create_plan`, `/execute_plan`, `/qa_checklist`
   - `/workflow` Phase 1 + related docs + common mistakes 29–30
