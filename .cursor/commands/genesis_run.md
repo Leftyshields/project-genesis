@@ -142,10 +142,10 @@ If `last_capture.md` exists, `issue_id` is copied from its `# Issue ID` header.
 1. Run `genesis-run.js init --autonomous` (include issue text in the same message for capture).
 2. Execute **all nine steps** in this session **without** confirmation prompts.
 3. Before advancing, run `node scripts/genesis-run.js validate-gate <step>` (or let `step-complete` enforce gates).
-4. Call `step-complete` after each step.
+4. Call `step-complete` after each step (appends to `.ai/context/decisions.tsv` per **decision-trail** skill).
 5. **Autonomous behaviors:**
-   - **Design:** auto-generate with `Rationale:` per decision; skip confirmation gate. If the run has a user-facing surface, follow `ux-laws`: apply map Defaults, write `### UX tradeoff:` blocks, **do not** ask Socratic UX questions.
-   - **Code review:** auto-fix safe issues → `code_review_changelog.md`; log manual-review items without halting.
+   - **Design:** follow **design-twice** (two alternatives, red flags, abandon point) and **engineering-principles**; auto-generate with `Rationale:` per decision; skip confirmation gate. If the run has a user-facing surface, follow `ux-laws`: apply map Defaults, write `### UX tradeoff:` blocks (ingested into the trail at design step complete), **do not** ask Socratic UX questions.
+   - **Code review:** follow **review-triage** buckets; auto-fix safe **Act on** items → `code_review_changelog.md`; log manual-review items without halting.
    - **QA:** `node scripts/genesis-run.js test`; on failure, one remediation (review → fix → `test --attempt 2 --remediation`); defer manual checklist items.
    - **Postmortem:** include run summary (decisions, fixes, QA results, manual flags) + closure doc.
 6. If `--reflect`, run `/reflection` after postmortem.
@@ -165,6 +165,8 @@ If `last_capture.md` exists, `issue_id` is copied from its `# Issue ID` header.
 | code_review | `code_review_changelog.md` |
 | qa | `test_results.json` + QA artifact |
 | postmortem | `postmortem_<ISSUE_ID>.md` |
+
+**Decision trail (autonomous and interactive):** `.ai/context/decisions.tsv` grows on each `step-complete` and via `npm run genesis:run -- log-decision ...`. See **decision-trail** skill.
 
 **After QA (step 8):** If `.genome/` or runtime deliverable changed, run organism build (`node scripts/build.js`) before postmortem. Workflow-only issues: build N/A — state that in QA completion response.
 

@@ -4,6 +4,18 @@ Do NOT write code yet.
 
 **This document should be created BEFORE implementation begins** (`/execute_plan`).
 
+## Design twice (required for non trivial scope)
+
+Follow [`.cursor/skills/design-twice/SKILL.md`](../skills/design-twice/SKILL.md). Produce at least two structurally different alternatives, screen every candidate with `references/design-red-flags.md`, document the chosen shape with `references/rationale-template.md`, and state an explicit abandon point. Single reviewer; no multi model arena.
+
+## Engineering principles
+
+Follow [`.cursor/skills/engineering-principles/SKILL.md`](../skills/engineering-principles/SKILL.md). Read **only** the matching section of `references/decision-context-map.md` for each structural decision.
+
+## Decision trail
+
+Log major choices in `.ai/context/decisions.tsv` via [`.cursor/skills/decision-trail/SKILL.md`](../skills/decision-trail/SKILL.md). `step-complete` appends per step rows; use `npm run genesis:run -- log-decision ...` for forks between steps.
+
 ## UX laws (user-facing surfaces)
 
 If capture scope includes a screen, form, flow, or other human-facing surface, follow [`.cursor/skills/ux-laws/SKILL.md`](../skills/ux-laws/SKILL.md). Classify each decision; read **only** the matching section of `references/decision-context-map.md`. Skip if the run is genuinely headless.
@@ -133,7 +145,9 @@ End by asking:
 
 If `run_config.json` has `mode: "autonomous"`:
 - Include `Rationale:` for each major decision.
-- If ux-laws engaged: include `### UX tradeoff:` blocks (skill format) — Default applied, rejected alternative named, `Mode: autonomous`.
+- Complete **Design twice** sections (alternatives, red flags, abandon point) without pausing.
+- If ux-laws engaged: include `### UX tradeoff:` blocks (skill format) — Default applied, rejected alternative named, `Mode: autonomous`. These blocks are also ingested into `decisions.tsv` at step complete.
+- Log other major choices with `log-decision` or trail rows as needed.
 - Skip the confirmation question **and** any Socratic UX question.
 - Run `npm run genesis:run -- step-complete design_decisions --artifacts .ai/context/design_decisions.md`.
 - **Immediately** continue with `/create_plan` logic in the same session.

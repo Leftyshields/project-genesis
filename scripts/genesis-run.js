@@ -25,6 +25,12 @@
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
+const {
+  appendDecisionRow,
+  appendRunStartRow,
+  logStepComplete,
+  DECISIONS_REL,
+} = require('./decision-log.js');
 
 const CONTEXT_DIR = '.ai/context';
 const RUN_CONFIG_FILE = 'run_config.json';
@@ -185,6 +191,14 @@ function initRun(repoRoot, options = {}) {
       if (issueId != null) existing.issue_id = issueId;
       if (options.reflect === true) existing.reflect = true;
       writeRunConfig(repoRoot, existing);
+      appendDecisionRow(
+        repoRoot,
+        'start',
+        'autonomous takeover mid run',
+        'user engaged autonomous without restarting genesis steps',
+        `run_id:${existing.run_id}`,
+        'open'
+      );
       return existing;
     }
     throw new Error(
@@ -219,6 +233,9 @@ function initRun(repoRoot, options = {}) {
   };
 
   writeRunConfig(repoRoot, config);
+  if (!existing || config.steps.length === 0) {
+    appendRunStartRow(repoRoot, { runId: config.run_id });
+  }
   return config;
 }
 
@@ -254,14 +271,17 @@ function stepComplete(repoRoot, stepName, artifacts = [], options = {}) {
     }
   }
 
+  const recordedArtifacts = artifacts.length ? artifacts : STEP_ARTIFACTS[stepName] || [];
+
   config.steps.push({
     name: stepName,
     status: 'completed',
     completed_at: new Date().toISOString(),
-    artifacts: artifacts.length ? artifacts : STEP_ARTIFACTS[stepName] || [],
+    artifacts: recordedArtifacts,
   });
 
   writeRunConfig(repoRoot, config);
+  logStepComplete(repoRoot, stepName, recordedArtifacts);
   return config;
 }
 
@@ -355,6 +375,7 @@ function printUsage() {
   node scripts/genesis-run.js step-complete <name> [--artifacts path,...]
   node scripts/genesis-run.js halt <step> <reason>
   node scripts/genesis-run.js test [--attempt N] [--remediation]
+  node scripts/genesis-run.js log-decision <phase> <decision> <why> <evidence> <result>
 
 Environment:
   GENESIS_AUTONOMOUS=true|1|yes  Enable autonomous mode when CLI flag omitted
@@ -421,6 +442,19 @@ if (require.main === module) {
       const config = haltRun(repoRoot, step, reason);
       console.log(JSON.stringify(config, null, 2));
       process.exit(1);
+    } else if (cmd === 'log-decision') {
+      const phase = argv[1];
+      const decision = argv[2];
+      const why = argv[3];
+      const evidence = argv[4];
+      const result = argv[5];
+      if (!phase || !decision || !why || !evidence || !result) {
+        throw new Error(
+          'log-decision requires <phase> <decision> <why> <evidence> <result>'
+        );
+      }
+      appendDecisionRow(repoRoot, phase, decision, why, evidence, result);
+      console.log(JSON.stringify({ logged: true, file: DECISIONS_REL }, null, 2));
     } else if (cmd === 'test') {
       let attempt = 1;
       const attemptIdx = argv.indexOf('--attempt');
@@ -456,9 +490,13 @@ module.exports = {
   validateArtifactsExist,
   expectedNextStep,
   parseArtifactsArg,
+  appendDecisionRow,
+  appendRunStartRow,
+  logStepComplete,
   STEP_ORDER,
   STEP_ARTIFACTS,
   CONTEXT_DIR,
   RUN_CONFIG_FILE,
   TEST_RESULTS_FILE,
+  DECISIONS_REL,
 };

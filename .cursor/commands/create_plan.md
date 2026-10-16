@@ -1,5 +1,15 @@
 Create a clear, minimal execution plan as a markdown file.
 
+## Design twice alignment
+
+Read `.ai/context/design_decisions.md`. The plan must preserve the chosen alternative, list what each rejected alternative would have required, include a task to re run the red flags screen if the plan adds a new public API or integration, and copy the abandon point into the plan header.
+
+Follow [`.cursor/skills/design-twice/SKILL.md`](../skills/design-twice/SKILL.md) when the design doc is missing required sections.
+
+## Engineering principles
+
+For scope and sequencing, follow [`.cursor/skills/engineering-principles/SKILL.md`](../skills/engineering-principles/SKILL.md) section 2 (subtract before you add) unless ux-laws section 8 already governs the cut.
+
 ## UX laws — strategy heuristics only
 
 Follow [`.cursor/skills/ux-laws/SKILL.md`](../skills/ux-laws/SKILL.md). For scope, prioritization, and pacing, read **section 8 only** of `references/decision-context-map.md` (Occam's, Pareto, Parkinson's — **scope, not pixels**). If a cut would push work onto the user, also read Tesler's (section 7) and that conflict pair in section 9.

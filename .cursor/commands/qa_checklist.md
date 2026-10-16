@@ -2,7 +2,7 @@ Create a QA checklist for this feature.
 
 ## Automated (agent runs first)
 
-- Run `node scripts/genesis-run.js test` (or `npm test` if no run config)
+- Follow [`.cursor/skills/verify/SKILL.md`](../skills/verify/SKILL.md): run `sh scripts/verify-genesis.sh` when workflow or genesis tooling changed; otherwise run `node scripts/genesis-run.js test` (or `npm test` if no run config)
 - Report pass/fail from `.ai/context/test_results.json`
 
 ### Autonomous mode

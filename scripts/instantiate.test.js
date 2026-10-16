@@ -38,6 +38,8 @@ test('instantiate.sh copies repo and e2e works', () => {
     assert.ok(fs.existsSync(path.join(targetDir, 'scripts', 'run-path.js')), 'scripts/run-path.js copied');
     assert.ok(fs.existsSync(path.join(targetDir, 'scripts', 'genesis-run.js')), 'scripts/genesis-run.js copied');
     assert.ok(fs.existsSync(path.join(targetDir, '.cursor', 'commands', 'genesis_run.md')), 'genesis_run.md copied');
+    assert.ok(fs.existsSync(path.join(targetDir, '.cursor', 'skills', 'verify', 'SKILL.md')), 'verify skill copied');
+    assert.ok(fs.existsSync(path.join(targetDir, 'scripts', 'verify-genesis.sh')), 'verify-genesis.sh copied');
     assert.ok(fs.existsSync(path.join(targetDir, '.ai', 'context')), '.ai/context created');
     assert.ok(fs.statSync(path.join(targetDir, '.ai', 'context')).isDirectory());
 

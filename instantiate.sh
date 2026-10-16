@@ -128,12 +128,12 @@ mkdir -p "$TARGET/.ai/context"
 
 echo "Copy complete: $TARGET"
 
-# Optional verification
+# Optional verification (see .cursor/skills/verify)
 if [ "$NO_VERIFY" -ne 1 ]; then
-  if (cd "$TARGET" && npm test) >/dev/null 2>&1; then
+  if (cd "$TARGET" && sh scripts/verify-genesis.sh) >/dev/null 2>&1; then
     echo "Verification: ok"
   else
-    echo "Verification: failed (run 'npm test' from target to debug)"
+    echo "Verification: failed (run 'sh scripts/verify-genesis.sh' from target to debug)"
     exit 1
   fi
 fi

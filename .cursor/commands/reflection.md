@@ -36,11 +36,16 @@ Read from `.ai/context/` and repo as needed:
 
 ---
 
+## Learnings (single reviewer)
+
+Follow [`.cursor/skills/reflect-learnings/SKILL.md`](../skills/reflect-learnings/SKILL.md). Produce **Accepted**, **Rejected**, and **Backlog** sections in the reflection artifact. Accepted rows propose doc or skill edits; **wait for explicit approval** before applying those edits.
+
 ## Outputs
 
 1. **`.ai/context/reflection_<ISSUE_ID>.md`** — handoff summary:
    - What changed (product + workflow)
-   - Which docs were updated and why
+   - **Accepted / Rejected / Backlog** learnings tables
+   - Which docs were updated and why (after approval for Accepted rows)
    - How to run / test / deploy (current commands only — verify against `package.json`)
    - Open items deferred to backlog
 

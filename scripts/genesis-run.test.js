@@ -19,6 +19,7 @@ const {
   expectedNextStep,
   parseArtifactsArg,
   TEST_RESULTS_FILE,
+  DECISIONS_REL,
 } = require('./genesis-run.js');
 
 const repoRoot = path.join(__dirname, '..');
@@ -138,6 +139,10 @@ test('stepComplete appends steps without overwriting mode', () => {
     assert.strictEqual(config.mode, 'autonomous');
     assert.strictEqual(config.steps.length, 1);
     assert.strictEqual(config.steps[0].name, 'capture');
+    const trailPath = path.join(root, DECISIONS_REL);
+    assert.ok(fs.existsSync(trailPath));
+    const trail = fs.readFileSync(trailPath, 'utf-8');
+    assert.ok(trail.includes('\tcapture\t'));
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }
