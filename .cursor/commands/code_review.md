@@ -2,6 +2,8 @@
 
 You are now in code review mode. Review the code changes systematically.
 
+Follow [`.cursor/skills/review-triage/SKILL.md`](../skills/review-triage/SKILL.md). Single reviewer; read `references/rubric.md`, `references/lead-judgment.md`, and `references/code-quality-review.md`.
+
 ---
 
 ## What to Review
@@ -78,39 +80,33 @@ If not specified, review all uncommitted changes.
 # Code Review: [Feature/File Name]
 
 ## Summary
-[1-2 sentence overview of what was reviewed]
+[1-2 sentence overview]
 
-## Security Issues 🔴
-[List any security concerns - these are blockers]
+## Intent
+[One paragraph on what the change is meant to do]
 
-## Bugs / Correctness Issues 🟠
-[List bugs or logic errors]
+## Act On
+[Each: finding, file/line, reason. Autonomous: auto fix when safe.]
 
-## Suggestions 🟡
-[Improvements that would be nice but aren't blockers]
+## Consider
+[Each: finding, tradeoff, reason bucket Consider]
 
-## Positive Notes 🟢
+## Noted
+[Each: finding, reason bucket Noted]
+
+## Dismissed
+[Each: finding, brief dismissal reason]
+
+## Positive Notes
 [What was done well]
 
 ## Verdict
-- [ ] ✅ Approved
-- [ ] ⚠️ Approved with suggestions
-- [ ] ❌ Changes requested
-
-## Next Steps
-[Specific actions needed before merge]
+- [ ] Approved
+- [ ] Approved with suggestions
+- [ ] Changes requested
 ```
 
----
-
-## Severity Levels
-
-| Level | Meaning | Action Required |
-|-------|---------|-----------------|
-| 🔴 Critical | Security issue or major bug | Must fix before merge |
-| 🟠 Major | Bug or significant issue | Should fix before merge |
-| 🟡 Minor | Improvement opportunity | Consider fixing |
-| 🟢 Nitpick | Style preference | Optional |
+Map **Act on** safe fixes to `code_review_changelog.md` **Auto-fixes**. Map **Consider**, **Noted**, and non auto **Act on** items to **manual_review_needed** with bucket and reason.
 
 ---
 
@@ -155,21 +151,11 @@ When `run_config.json` has `mode: "autonomous"`:
 
 1. Review uncommitted changes as usual.
 2. **Auto-fix** safe issues (style, dead code, obvious typos, clear test failures) directly in the repo.
-3. Write `.ai/context/code_review_changelog.md`:
-
-```markdown
-# Code Review Changelog
-
-## Auto-fixes
-- [file] summary — category
-
-## manual_review_needed
-- [file] issue — reason (security / business logic / architecture)
-```
-
-4. Do **not** halt on manual-review items.
-5. Run `npm run genesis:run -- step-complete code_review --artifacts .ai/context/code_review_changelog.md`.
-6. **Immediately** continue with `/qa_checklist` logic in the same session.
+3. Write `.ai/context/code_review_changelog.md` per **review-triage** (triage buckets → auto-fixes and manual_review_needed).
+4. Log a `code_review` row in `.ai/context/decisions.tsv` via `step-complete` (automatic) for the step gate; add `log-decision` rows for any manual halt on security **Act on** items.
+5. Do **not** halt on manual-review items.
+6. Run `npm run genesis:run -- step-complete code_review --artifacts .ai/context/code_review_changelog.md`.
+7. **Immediately** continue with `/qa_checklist` logic in the same session.
 
 **Auto-fix:** style, hygiene, obvious correctness, unambiguous test fixes.  
 **Manual only:** security, business logic, architecture tradeoffs.

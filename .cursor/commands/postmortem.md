@@ -47,6 +47,9 @@ Add these sections to `postmortem_<ISSUE_ID>.md`:
 
 ## Manual Review Items
 - From code_review_changelog manual_review_needed + deferred QA items
+
+## Learnings draft
+- Short Accepted / Rejected / Backlog bullets to seed `/reflection` (full tables live in reflection_<ISSUE_ID>.md)
 ```
 
 Run `npm run genesis:run -- step-complete postmortem --artifacts .ai/context/postmortem_<ISSUE_ID>.md,docs/CLOSURE_<ISSUE_ID>.md`

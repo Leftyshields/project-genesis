@@ -1,0 +1,7 @@
+NOTICE
+
+This repository adapts workflow ideas from pstack (Michael Denyer, Lauren Tan, and Cursor contributors) under the MIT license. See https://github.com/michael-denyer/pstack-claude and https://github.com/cursor/plugins/tree/main/pstack
+
+Adapted areas include decision trail logging, design twice review, review triage, verification skill patterns, engineering principle skills, and reflection learnings routing.
+
+No cursor team kit prose was copied for this adaptation. If future imports use cursor team kit skills, retain LICENSE-cursor-team-kit from the upstream pstack repository alongside this NOTICE.

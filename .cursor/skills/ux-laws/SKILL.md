@@ -36,7 +36,7 @@ Treat the run as autonomous when `.ai/context/run_config.json` has `mode: "auton
 1. Do **not** ask which law wins. Do **not** pause for UX confirmation. Do **not** end the step with "which do you prefer?"
 2. Classify each in-scope user-facing decision. Read **only** the matching section of `references/decision-context-map.md`.
 3. Apply that section's **Default**, or the section-9 conflict rule when two laws apply.
-4. Append a tradeoff block (format below) to `.ai/context/design_decisions.md` before `step-complete design_decisions`.
+4. Append a tradeoff block (format below) to `.ai/context/design_decisions.md` before `step-complete design_decisions`. The same blocks are copied into `.ai/context/decisions.tsv` when the design step completes (**decision-trail** skill).
 5. At QA: audit only the laws named in those blocks, plus the Doherty 400ms check when a measurable interaction exists. Do not run a twenty-law sweep.
 6. Continue remaining Genesis steps in the same session.
 
