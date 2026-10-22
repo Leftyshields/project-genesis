@@ -1,0 +1,81 @@
+{
+  "name": "proofmode-engineering-copilot",
+  "displayName": "ProofMode Engineering Copilot",
+  "description": "Diagnosis first test failure copilot with local accuracy record",
+  "version": "0.1.0",
+  "publisher": "proofmode",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onStartupFinished",
+    "onView:proofmode.copilotPanel"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "views": {
+      "proofmode": [
+        {
+          "type": "webview",
+          "id": "proofmode.copilotPanel",
+          "name": "ProofMode"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "proofmode",
+          "title": "ProofMode",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "proofmode.debugThis",
+        "title": "ProofMode: Debug this"
+      },
+      {
+        "command": "proofmode.showAdvice",
+        "title": "ProofMode: Show advice"
+      },
+      {
+        "command": "proofmode.markDiagnosis",
+        "title": "ProofMode: Mark diagnosis"
+      },
+      {
+        "command": "proofmode.myRecord",
+        "title": "ProofMode: My record"
+      },
+      {
+        "command": "proofmode.clearRecord",
+        "title": "ProofMode: Clear record"
+      }
+    ],
+    "configuration": {
+      "title": "ProofMode",
+      "properties": {
+        "proofmode.adviceProvider": {
+          "type": "string",
+          "default": "stub",
+          "enum": ["stub"],
+          "description": "Advice provider id. Stub runs locally with no network."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "npm run compile && node --test test/*.test.js",
+    "screenshots": "node scripts/capture-screenshots.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "puppeteer": "^22.0.0",
+    "typescript": "^5.3.0"
+  }
+}
