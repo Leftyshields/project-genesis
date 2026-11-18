@@ -2,7 +2,7 @@
 
 The UX laws organized by the decision they govern. Read only the section(s) matching the decision in front of you. Each law lists what it says, when it governs, the autonomous-mode default, and any conflict it participates in.
 
-The original source list had 20 entries. Three were redundant (two duplicate Postel's law, one restated Fitts's as "minimize target distance"). This map has 15 distinct design laws plus 3 strategy-level heuristics, deduplicated.
+The original source list had 20 entries. Three were redundant (two duplicate Postel's law, one restated Fitts's as "minimize target distance"). This map has 16 distinct design laws plus 3 strategy-level heuristics, deduplicated.
 
 ## Routing table
 
@@ -13,7 +13,7 @@ Classify the decision, then open that section only. If you cannot classify, read
 | Menus, choice sets, onboarding steps, settings | 1 |
 | Button size, tap targets, primary-action placement | 2 |
 | Spacing, grouping, cards, visual simplicity | 3 |
-| Emphasis, list order, endings, unfinished tasks | 4 |
+| Emphasis, list order, endings, unfinished tasks, progress bars | 4 |
 | Feedback latency, perceived performance | 5 |
 | Conventions, forgiving input | 6 |
 | Who absorbs inherent complexity | 7 |
@@ -78,7 +78,14 @@ These govern sequence, emphasis, and how the whole experience is remembered. The
 
 **Zeigarnik effect.** People remember and feel pulled toward incomplete tasks. Governs progress indicators, onboarding checklists, and anything meant to draw a user back to finish. Default: show progress on multi-step tasks; make the incomplete state visible.
 
-Conflict: Von Restorff vs Law of Similarity. See section 9.
+**Goal-gradient effect (with endowed progress).** People push harder the closer they feel to a finish (Hull, 1932). Endowed progress is the corollary: a head start raises completion even when the remaining work is identical. In the car wash study (Nunes & Drèze, *Journal of Consumer Research*, 2006), an 8-stamp card with none filled was finished by 19 percent of people; a 10-stamp card with 2 already filled, still 8 to go, was finished by 34 percent. Governs progress bars, onboarding, checkout, loyalty and streak counters, and level transitions. Default:
+- Show a progress bar on any task longer than one screen. A multi-step flow with no visible finish is the worst case.
+- Never start the bar at zero. Credit a step the user has genuinely done (picked a goal, created the account, carried over earlier work).
+- Put the quickest step first so the bar moves early.
+- Near the end, show what is left ("2 to go"), not what is done ("8 complete").
+- After a win, start the next level with real carried-over progress, not an empty bar.
+
+Conflict: Von Restorff vs Law of Similarity; Endowed progress vs honest feedback. See section 9.
 
 ---
 
@@ -135,3 +142,5 @@ When two governing laws pull opposite directions, name both and resolve with the
 **Postel's vs validation/security.** Accept liberally vs constrain input. Split by layer: liberal at parse (accept and normalize varied formats), strict at semantics and security (validate meaning, reject unsafe input). Forgiving input never means unvalidated input.
 
 **Doherty vs honest feedback.** Sub-400ms vs a truthful loading state. When you cannot hit 400ms, buy perceived speed honestly with optimistic UI, skeletons, and progressive reveal. Do not fake completion or hide that work is happening.
+
+**Endowed progress vs honest feedback.** Give a head start vs never fake state. Resolve by sourcing: the head start must be credit for something the user actually did or already has, and the count must stay true ("Step 2 of 4" means two of four real steps). Never pad the total with fake steps, pre-fill progress the user did not earn, or show a percentage the system cannot back up.

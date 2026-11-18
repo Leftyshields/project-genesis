@@ -1,6 +1,6 @@
 ---
 name: ux-laws
-description: Apply cognitive and behavioral UX design laws (Hick's, Fitts's, Jakob's, Tesler's, Peak-End, and others) to any user-facing surface Genesis builds. Use this whenever a run's scope includes a UI, screen, form, flow, component, page, or any human-facing interaction, even when the user does not say the words "UX" or "design." Engages at the design_decisions step and again as a QA gate. Skip only for genuinely headless work with no user-facing surface.
+description: Apply cognitive and behavioral UX design laws (Hick's, Fitts's, Jakob's, Tesler's, Peak-End, Goal-gradient, and others) to any user-facing surface Genesis builds. Use this whenever a run's scope includes a UI, screen, form, flow, component, page, or any human-facing interaction, even when the user does not say the words "UX" or "design." Engages at the design_decisions step and again as a QA gate. Skip only for genuinely headless work with no user-facing surface.
 ---
 
 # UX Laws
@@ -74,6 +74,7 @@ The conflict pairs are the highest-value part of this skill. When two governing 
 - **Von Restorff vs Law of Similarity** (make it stand out vs keep like things consistent): only the genuinely primary action earns the break from similarity. If two things stand out, neither does.
 - **Jakob's vs differentiation** (match convention vs be distinctive): convention wins for core interactions (where the cart, the submit, the back control live). Differentiate on brand and content, not on the location of expected controls.
 - **Postel's vs validation/security** (accept liberally vs constrain input): be liberal at the parse layer (accept messy phone formats, trim whitespace), strict at the semantic and security layer. Liberal input is not an excuse to skip validation.
+- **Endowed progress vs honest feedback** (give a head start vs never fake state): the head start must credit real work or carried-over progress, and counts must stay true. No padded totals or unearned pre-fill.
 - **Doherty vs honest feedback** (sub-400ms vs truthful loading state): if you cannot respond under 400ms, use perceived-performance techniques (optimistic UI, skeleton states, progressive reveal) rather than a spinner that pretends nothing is happening. Do not fake completion.
 
 ## The Doherty threshold check (automated)
