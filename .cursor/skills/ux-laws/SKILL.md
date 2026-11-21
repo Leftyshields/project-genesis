@@ -76,6 +76,7 @@ The conflict pairs are the highest-value part of this skill. When two governing 
 - **Postel's vs validation/security** (accept liberally vs constrain input): be liberal at the parse layer (accept messy phone formats, trim whitespace), strict at the semantic and security layer. Liberal input is not an excuse to skip validation.
 - **Endowed progress vs honest feedback** (give a head start vs never fake state): the head start must credit real work or carried-over progress, and counts must stay true. No padded totals or unearned pre-fill.
 - **Doherty vs honest feedback** (sub-400ms vs truthful loading state): if you cannot respond under 400ms, use perceived-performance techniques (optimistic UI, skeleton states, progressive reveal) rather than a spinner that pretends nothing is happening. Do not fake completion.
+- **Accent scarcity vs status contrast** (one accent per screen vs status colors that need 3:1 contrast): status colors are semantic and exempt from the accent count, but they stay small. The 60-30-10 area ratio still holds.
 
 ## The Doherty threshold check (automated)
 

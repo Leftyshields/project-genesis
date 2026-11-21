@@ -2,7 +2,7 @@
 
 The UX laws organized by the decision they govern. Read only the section(s) matching the decision in front of you. Each law lists what it says, when it governs, the autonomous-mode default, and any conflict it participates in.
 
-The original source list had 20 entries. Three were redundant (two duplicate Postel's law, one restated Fitts's as "minimize target distance"). This map has 16 distinct design laws plus 3 strategy-level heuristics, deduplicated.
+The original source list had 20 entries. Three were redundant (two duplicate Postel's law, one restated Fitts's as "minimize target distance"). This map has 16 distinct design laws, one color-proportion heuristic, and 3 strategy-level heuristics, deduplicated.
 
 ## Routing table
 
@@ -12,7 +12,7 @@ Classify the decision, then open that section only. If you cannot classify, read
 |--------------------------|---------|
 | Menus, choice sets, onboarding steps, settings | 1 |
 | Button size, tap targets, primary-action placement | 2 |
-| Spacing, grouping, cards, visual simplicity | 3 |
+| Spacing, grouping, cards, visual simplicity, color proportion | 3 |
 | Emphasis, list order, endings, unfinished tasks, progress bars | 4 |
 | Feedback latency, perceived performance | 5 |
 | Conventions, forgiving input | 6 |
@@ -62,7 +62,12 @@ These are Gestalt laws. They govern how the eye parses structure before reading 
 
 **Law of Prägnanz.** People resolve ambiguous or complex visuals into the simplest form they can. Governs iconography, visual simplicity, reducing visual noise. Default: prefer the simplest form that still reads correctly.
 
-Conflict: Law of Similarity vs Von Restorff. See section 9.
+**Color proportion (60-30-10).** Two well-matched colors look fine until a third appears at the same size, and the screen looks cheap. The fix is a ratio, a count, and a blur test (designmotionhq Instagram reel, Nov 2026). Governs palette weight and visual hierarchy on a screen. Default:
+- About 60 percent dominant neutral, 30 percent secondary, and 10 percent accent, by area.
+- One accent per screen, used only for the primary action or a key status. A third color never appears at the same visual weight as the other two.
+- Blur or squint at the screen; the primary action and the hierarchy must still read.
+
+Conflict: Law of Similarity vs Von Restorff; Accent scarcity vs status contrast. See section 9.
 
 ---
 
@@ -144,3 +149,5 @@ When two governing laws pull opposite directions, name both and resolve with the
 **Doherty vs honest feedback.** Sub-400ms vs a truthful loading state. When you cannot hit 400ms, buy perceived speed honestly with optimistic UI, skeletons, and progressive reveal. Do not fake completion or hide that work is happening.
 
 **Endowed progress vs honest feedback.** Give a head start vs never fake state. Resolve by sourcing: the head start must be credit for something the user actually did or already has, and the count must stay true ("Step 2 of 4" means two of four real steps). Never pad the total with fake steps, pre-fill progress the user did not earn, or show a percentage the system cannot back up.
+
+**Accent scarcity vs status contrast.** One accent per screen vs status colors that need 3:1 contrast. Status colors are semantic, so they are exempt from the accent count, but they stay small: a badge, an icon, or a short label, not a second equally weighted color field. The 60-30-10 area ratio still holds.
