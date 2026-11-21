@@ -70,11 +70,22 @@ Orchestrator CLI (`npm run genesis:run -- status|init|step-complete|…`): [.cur
 
 ---
 
+## UX enhancements
+
+Genesis designs interfaces on purpose. When a run touches a screen, form, or anything else people see and use, it applies proven UX laws. Agents pull only the rule that fits, log the tradeoff, and check it again at QA.
+
+- Choices stay small or get grouped so people can scan them.
+- Primary actions are big and easy to reach, with one clear focus per view.
+- Layout leads with spacing and grouping, plus a 60/30/10 color split and one accent per screen.
+- Flows show honest progress, put what matters first and last, and aim for feedback in under 400 ms.
+- Controls stay familiar, accept messy input and then validate it, and keep real complexity in the system instead of on the user.
+- Scope and priority follow Occam's razor, Pareto, and Parkinson's law. When two laws pull opposite ways, Genesis names both and resolves them with its conflict rule.
+
 ## Decision-Context Map
 
 When a design, scope, layout, input, or QA choice appears, do **not** reread every UX heuristic. The [`ux-laws` skill](.cursor/skills/ux-laws/SKILL.md) classifies the decision and reads **only** the matching section of [the catalog](.cursor/skills/ux-laws/references/decision-context-map.md).
 
-The map is 15 design laws plus 3 strategy-level heuristics (deduplicated from a 20-entry source). Each law states what it says, when it governs, the **autonomous-mode default**, and any conflict it participates in. Strategy heuristics (Occam's, Pareto, Parkinson's) belong at `/design_decisions` and `/create_plan` — they are **scope, not pixels**.
+The map is 16 design laws, 1 color proportion heuristic, and 3 strategy-level heuristics (deduplicated from a 20-entry source). Each law states what it says, when it governs, the **autonomous-mode default**, and any conflict it participates in. Strategy heuristics (Occam's, Pareto, Parkinson's) belong at `/design_decisions` and `/create_plan` — they are **scope, not pixels**.
 
 | Decision in front of you | Section |
 |--------------------------|---------|
