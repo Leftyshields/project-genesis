@@ -1,12 +1,12 @@
 # Project Genesis
 
-**A structured engineering workflow for building software with AI coding agents.**
+**A structured engineering workflow for AI coding agents, with UX and interaction design principles built in.**
 
-Project Genesis takes a software idea through requirements, design, implementation, code review, QA, and retrospective in a repeatable nine-step process. It runs through [Cursor](https://www.cursor.com/) slash commands, so you can guide each step or let the agent continue autonomously.
+Project Genesis takes a software idea through requirements, design, implementation, code review, QA, and retrospective in a repeatable nine-step process. Along the way, it applies UX and interaction design principles to decisions about layouts, controls, flows, feedback, and scope. It runs through [Cursor](https://www.cursor.com/) slash commands, so you can guide each step or let the agent continue autonomously.
 
-Coding agents can generate code quickly. Genesis focuses on everything around the code: capturing intent, recording decisions, enforcing checkpoints, reviewing changes, and verifying the result.
+Coding agents can generate code quickly. Genesis focuses on the engineering and product decisions around that code: capturing intent, recording decisions, shaping usable interactions, enforcing checkpoints, reviewing changes, and verifying the result.
 
-**You decide what to build. Genesis gives the agent a process for building it.**
+**You define what to build. Genesis gives the agent a disciplined process for engineering it and principles for how people should experience it.**
 
 ## Quick start
 
@@ -159,13 +159,23 @@ Genome files include `mission.md`, `constraints.md`, `decomposition_rules.md`, `
 
 **Important:** The runtime's `.genome/mission.md` is framework configuration, not a substitute for your application's product requirements. See [Product vs. Genome Mission](docs/PRODUCT_VS_GENOME_MISSION.md) and the [runtime API reference](lib/README.md).
 
-## UX decisions are part of the process
+## UX and interaction principles
 
-When a feature involves an interface, Genesis uses its [UX laws skill](.cursor/skills/ux-laws/SKILL.md) during design, planning, implementation, and QA.
+Genesis treats the user experience as part of engineering, not a visual polish step added after coding. For changes that involve a user-facing interface, its [UX laws skill](.cursor/skills/ux-laws/SKILL.md) informs design, planning, implementation, and QA.
 
-The agent identifies the decision type, consults the relevant part of the [decision-context map](.cursor/skills/ux-laws/references/decision-context-map.md), and records the tradeoff. Interactive mode can ask you to resolve a design tension. Autonomous mode uses the documented default and logs its reasoning without stopping.
+The principles help the agent reason about:
 
-The aim is to make UX decisions intentional without loading every heuristic into every development step.
+- **Choices and cognitive load:** keep choices understandable and organize complex options.
+- **Interaction and input:** make targets usable, rely on familiar patterns, accept imperfect input, and provide validation.
+- **Information hierarchy:** use grouping, spacing, emphasis, and order to make interfaces easier to scan.
+- **Feedback and flow:** communicate progress, status, and outcomes so users know what happened and what comes next.
+- **Scope and complexity:** favor the essential experience, while recognizing complexity that cannot simply be removed.
+
+Rather than applying every guideline mechanically, Genesis identifies the decision, reads the matching part of its [decision-context map](.cursor/skills/ux-laws/references/decision-context-map.md), and records the relevant tradeoff. If principles conflict, the agent should name the tension and resolve it explicitly.
+
+In **interactive mode**, you can participate in that decision. In **autonomous mode**, the agent applies the documented default and logs its reasoning without pausing. QA then revisits UX decisions, but real browser and user testing remain important.
+
+The goal is **intentional interaction design** alongside maintainable code: not just software that runs, but software that makes sense to the people using it.
 
 ## Working in an instantiated project
 
