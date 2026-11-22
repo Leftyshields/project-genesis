@@ -1,160 +1,203 @@
 # Project Genesis
 
-**You're the Creator. One prompt. One app.**
+**A structured engineering workflow for building software with AI coding agents.**
 
-Project Genesis turns a single prompt into a running system: capture intent, produce a validated blueprint (the **Genome**), then execute with guardrails and repair. **Genesis** is the planning workflow; the **Organism** is the runtime that loads the genome and runs it.
+Project Genesis takes a software idea through requirements, design, implementation, code review, QA, and retrospective in a repeatable nine-step process. It runs through [Cursor](https://www.cursor.com/) slash commands, so you can guide each step or let the agent continue autonomously.
 
-**Intent → Genome → Runtime.** The runtime never sees your raw prompt — only the genome in `.genome/`.
+Coding agents can generate code quickly. Genesis focuses on everything around the code: capturing intent, recording decisions, enforcing checkpoints, reviewing changes, and verifying the result.
 
+**You decide what to build. Genesis gives the agent a process for building it.**
+
+## Quick start
+
+### Requirements
+
+- [Cursor](https://www.cursor.com/) with support for project slash commands
+- Git
+- Node.js and npm (for the included scripts and verification)
+
+### 1. Create a project from Genesis
+
+Run these commands in a **terminal** from the directory where you want your project to live:
+
+```bash
+git clone https://github.com/Leftyshields/project-genesis.git
+./project-genesis/instantiate.sh ./project-genesis ./my-project
+cd my-project
 ```
-Creator → Genesis (workflow) → Genome (.genome/) → Organism (runtime)
-```
 
-| Term | Meaning |
-|------|---------|
-| **Genesis** | Nine-step planning workflow (Cursor slash commands) |
-| **Genome** | Executable blueprint — files in `.genome/` |
-| **Organism** | Runtime that loads the genome and runs one path |
-| **Blueprint** | Framework design doc — [docs/BLUEPRINT.md](docs/BLUEPRINT.md) (not what the runtime loads) |
+The installer creates `my-project`, copies the Genesis framework and Cursor commands into it, and verifies the copy by default. The destination must not already contain files unless you explicitly use `--force`.
 
----
+If the script is not executable in your environment, run `sh ./project-genesis/instantiate.sh ./project-genesis ./my-project` instead.
 
-## Workflow
+### 2. Capture an idea
 
-Nine steps, strict order. Full details: [.cursor/commands/workflow.md](.cursor/commands/workflow.md).
+Open `my-project` in **Cursor**. In the Cursor agent chat, invoke:
 
-| # | Step | Command |
-|---|------|---------|
-| 1 | Capture | `/capture_issue` |
-| 2 | Explore | `/explore` |
-| 3 | Design | `/design_decisions` |
-| 4 | Create Plan | `/create_plan` |
-| 5 | Pre-Implementation | `/pre_implementation_checklist` |
-| 6 | Execute | `/execute_plan` |
-| 7 | Code Review | `/code_review` |
-| 8 | QA | `/qa_checklist` |
-| 9 | Postmortem | `/postmortem` |
-
-Optional after step 9: `/reflection`, `/security_scan`, `/peer_review`.
-
-At **design, plan, execute, and QA**, the `ux-laws` skill applies: classify the decision and read **only** the matching map section. Autonomous runs apply the Default and log the tradeoff — they do not pause for a UX question.
-
-### How to run
-
-| Mode | Invoke | Behavior |
-|------|--------|----------|
-| **Interactive** (default) | `/genesis_run` or individual step commands | Pause after each step for confirmation |
-| **Autonomous** | `/genesis_run --autonomous` + prompt, or `--autonomous` on any step | All remaining steps in one session, no prompts |
-
-**Recommended when shaping a new idea:**
-
-1. **Ideate in capture (interactive)** — `/capture_issue` with a rough prompt; iterate until your guiding vision is clear.
-2. **Full run from explore (autonomous)** — `/explore --autonomous` runs steps 2–9 hands-off.
-
-```
-# Still shaping the idea
+```text
 /capture_issue
-I want a weekly digest of trending AI dev tools...
-/explore --autonomous
+I want a dashboard that tracks weekly sales by region and exports CSV.
+```
 
-# Vision already clear — full autonomous from the start
+Discuss the idea and refine the captured requirements before proceeding. This is particularly useful when you are starting with a rough concept.
+
+### 3. Choose how to proceed
+
+To run the rest of the workflow without stopping for approval at every stage, invoke this in **Cursor**:
+
+```text
+/explore --autonomous
+```
+
+This continues from exploration through design, planning, implementation, review, QA, and postmortem.
+
+Prefer to stay involved? Run `/explore` and proceed through subsequent steps interactively, or use `/genesis_run --interactive` for an explicitly interactive full run.
+
+**Already know exactly what you want?** Start a new full run directly in Cursor:
+
+```text
 /genesis_run --autonomous
 Build a dashboard that shows weekly sales by region with CSV export.
 ```
 
-`/genesis_run` alone is interactive — pass `--autonomous` explicitly for hands-off. Mid-run upgrade: append `--autonomous` to any step (e.g. `/execute_plan --autonomous`).
+Autonomous mode is best for familiar, well-scoped work. For new or ambiguous ideas, start with interactive capture.
 
-**Limits:** Autonomous mode suits known project shapes, not first-time greenfield. Auto-fix covers style/obvious bugs; security and business logic need manual review. After QA passes, autonomous mode runs `node scripts/build.js` automatically.
+### 4. Review the results
 
-Orchestrator CLI (`npm run genesis:run -- status|init|step-complete|…`): [.cursor/commands/genesis_run.md](.cursor/commands/genesis_run.md). Case studies: [docs/WORKFLOW_COURSE.md](docs/WORKFLOW_COURSE.md).
+Inspect the implementation, review findings, test output, and remaining manual QA items before shipping. Workflow artifacts and run state live under `.ai/context/`; the agent records decisions and results as it advances.
 
----
+Autonomous does **not** mean unattended production approval. Security-sensitive changes, business logic, UX in a real browser, and deployment decisions still need appropriate human review.
 
-## UX enhancements
+For workflow details and troubleshooting, see the [full workflow reference](.cursor/commands/workflow.md) and [run orchestrator reference](.cursor/commands/genesis_run.md).
 
-Genesis designs interfaces on purpose. When a run touches a screen, form, or anything else people see and use, it applies proven UX laws. Agents pull only the rule that fits, log the tradeoff, and check it again at QA.
+## How Genesis works
 
-- Choices stay small or get grouped so people can scan them.
-- Primary actions are big and easy to reach, with one clear focus per view.
-- Layout leads with spacing and grouping, plus a 60/30/10 color split and one accent per screen.
-- Flows show honest progress, put what matters first and last, and aim for feedback in under 400 ms.
-- Controls stay familiar, accept messy input and then validate it, and keep real complexity in the system instead of on the user.
-- Scope and priority follow Occam's razor, Pareto, and Parkinson's law. When two laws pull opposite ways, Genesis names both and resolves them with its conflict rule.
+The standard workflow has nine steps in a fixed order, organized into three phases:
 
-## Decision-Context Map
+| Phase | Step | Cursor command | Purpose |
+| --- | --- | --- | --- |
+| **Plan** | 1. Capture | `/capture_issue` | Define the problem and intended outcome |
+| | 2. Explore | `/explore` | Examine requirements, constraints, and risks |
+| | 3. Design | `/design_decisions` | Record the important technical and UX choices |
+| | 4. Plan | `/create_plan` | Break the work into implementation steps |
+| | 5. Check readiness | `/pre_implementation_checklist` | Verify the plan before coding |
+| **Build** | 6. Execute | `/execute_plan` | Implement the approved approach |
+| **Validate** | 7. Review | `/code_review` | Check correctness, security, and code quality |
+| | 8. QA | `/qa_checklist` | Run automated checks and identify manual tests |
+| | 9. Postmortem | `/postmortem` | Capture outcomes and opportunities to improve |
 
-When a design, scope, layout, input, or QA choice appears, do **not** reread every UX heuristic. The [`ux-laws` skill](.cursor/skills/ux-laws/SKILL.md) classifies the decision and reads **only** the matching section of [the catalog](.cursor/skills/ux-laws/references/decision-context-map.md).
+The workflow is meant to prevent a common AI development failure: moving straight from an ambiguous prompt to code, then discovering that assumptions, interfaces, or quality requirements were never resolved.
 
-The map is 16 design laws, 1 color proportion heuristic, and 3 strategy-level heuristics (deduplicated from a 20-entry source). Each law states what it says, when it governs, the **autonomous-mode default**, and any conflict it participates in. Strategy heuristics (Occam's, Pareto, Parkinson's) belong at `/design_decisions` and `/create_plan` — they are **scope, not pixels**.
+Genesis retains artifacts between steps so the next stage can work from documented decisions rather than reconstructing intent from chat history.
 
-| Decision in front of you | Section |
-|--------------------------|---------|
-| Choice sets, menus, settings density | 1 — Hick's, Miller's |
-| Button size, tap targets, placement | 2 — Fitts's |
-| Grouping, spacing, visual simplicity | 3 — Gestalt |
-| Emphasis, list order, endings, unfinished work | 4 — attention / memory |
-| Feedback latency (sub-400ms) | 5 — Doherty |
-| Conventions, forgiving input | 6 — Jakob's, Postel's |
-| Who absorbs inherent complexity | 7 — Tesler's |
-| Feature scope, prioritization, pacing | 8 — Occam's, Pareto, Parkinson's |
-| Two laws pull opposite ways | 9 — name both; never average |
+### Interactive or autonomous
 
-| Mode | Behavior |
-|------|----------|
-| **Interactive** | Socratic — name the laws and put the tradeoff to you |
-| **Autonomous** | Apply the Default (or section-9 conflict rule), write a `### UX tradeoff:` block into `design_decisions.md`, continue — no pause |
+| | Interactive | Autonomous |
+| --- | --- | --- |
+| Start | `/genesis_run --interactive` | `/genesis_run --autonomous` |
+| Progress | One stage at a time with confirmation | Continues through remaining stages without confirmation prompts |
+| Best for | Unclear requirements, major design decisions, higher-risk work | Familiar, well-defined tasks |
+| Human responsibility | Review each handoff | Review results, deferred QA, and high-risk decisions |
 
-Instantiated apps get the skill via `instantiate.sh` (`.cursor/skills/` is copied). Commands route to the skill, not a second copy of the catalog.
+You can also run individual step commands. To switch an existing interactive run to autonomous, append `--autonomous` to the next step, for example `/execute_plan --autonomous`.
 
----
+The orchestrator tracks step completion and validates required artifacts. Autonomous runs can fix straightforward review findings and retry certain tests, but they cannot reliably validate all business logic or security assumptions. For a completed issue, start a fresh run rather than carrying over its completed step state.
 
-## Run the build
+Optional follow-ups include `/security_scan`, `/peer_review`, `/reflection`, and `/project_wrap_up`. See the [workflow reference](.cursor/commands/workflow.md) for when to use each.
 
-After planning (and QA in a full workflow run), invoke the runtime:
+## What the workflow produces
+
+Genesis keeps a trail of the work, not just the final code. Depending on the stage, this includes:
+
+- Captured requirements, exploration notes, and design decisions
+- An implementation plan and a pre-implementation readiness check
+- Code review findings, fixes, test results, and manual QA follow-ups
+- A postmortem and closure notes for the issue
+
+Most workflow artifacts are written under `.ai/context/`. This helps a developer understand what the agent decided, why, and what still requires attention.
+
+For real-world workflow examples and common mistakes, see [Workflow Course](docs/WORKFLOW_COURSE.md).
+
+## The architecture: Genesis, Genome, and Organism
+
+The development workflow is one part of the project. Genesis also includes an experimental blueprint-driven runtime.
+
+```text
+Creator's intent
+      |
+      v
+Genesis (nine-step workflow)
+      |
+      v
+Genome (.genome/ blueprint files)
+      |
+      v
+Organism (guarded runtime)
+```
+
+| Term | Meaning |
+| --- | --- |
+| **Genesis** | The planning and development workflow operated through Cursor commands |
+| **Genome** | Structured blueprint files stored in `.genome/` |
+| **Organism** | The runtime that loads a genome, checks guardrails, and executes a path |
+| **Blueprint document** | The framework design explanation in [docs/BLUEPRINT.md](docs/BLUEPRINT.md), not the runtime's input |
+
+The runtime consumes the **Genome**, not the original prompt. This separation is intended to make the runtime operate from an explicit, inspectable specification.
+
+### Running the included runtime
+
+From a Genesis project directory, use these **terminal** commands:
 
 ```bash
 node scripts/run-path.js .genome/mission.md
 node scripts/build.js
 ```
 
-The runtime loads `.genome/`, checks guardrails, decomposes into a layer hierarchy (organ → tissue → cell → molecule), and runs **one path** to a leaf molecule. Only molecules execute code; upper layers are structure and governance. One invocation = one path. API details: [lib/README.md](lib/README.md).
+The runtime loads `.genome/`, applies guardrails, and decomposes the work into a hierarchy: **organ → tissue → cell → molecule**. Only the leaf molecules execute code. Each invocation follows one path rather than executing the entire hierarchy at once.
 
-**Genome files** (authored during the workflow, consumed by the runtime):
+Genome files include `mission.md`, `constraints.md`, `decomposition_rules.md`, `role_library/`, and `contracts/handoffs.md`. Optional policies include `guardrails.md` and `repair_policy.md`.
 
-- `mission.md`, `constraints.md`, `decomposition_rules.md`
-- `role_library/`, `contracts/handoffs.md`
-- Optional: `guardrails.md`, `repair_policy.md`
+**Important:** The runtime's `.genome/mission.md` is framework configuration, not a substitute for your application's product requirements. See [Product vs. Genome Mission](docs/PRODUCT_VS_GENOME_MISSION.md) and the [runtime API reference](lib/README.md).
 
----
+## UX decisions are part of the process
 
-## Start a new project
+When a feature involves an interface, Genesis uses its [UX laws skill](.cursor/skills/ux-laws/SKILL.md) during design, planning, implementation, and QA.
+
+The agent identifies the decision type, consults the relevant part of the [decision-context map](.cursor/skills/ux-laws/references/decision-context-map.md), and records the tradeoff. Interactive mode can ask you to resolve a design tension. Autonomous mode uses the documented default and logs its reasoning without stopping.
+
+The aim is to make UX decisions intentional without loading every heuristic into every development step.
+
+## Working in an instantiated project
+
+After creating your project:
+
+1. Copy [the architecture template](docs/ARCHITECTURE_TEMPLATE.md) to `docs/ARCHITECTURE.md` and document your actual entry points.
+2. Copy [the development runbook template](docs/DEV_RUNBOOK_TEMPLATE.md) to `docs/DEV_RUNBOOK.md` and update it as your project evolves.
+3. Read [Product vs. Genome Mission](docs/PRODUCT_VS_GENOME_MISSION.md) to keep application requirements separate from runtime configuration.
+
+Installer options:
+
+- `--force`: allow copying into a nonempty destination, overwriting matching files.
+- `--no-verify`: skip the post-copy verification script.
+
+To diagnose a verification failure inside an instantiated project, run:
 
 ```bash
-git clone <project-genesis-url>
-mkdir ~/my-project
-./instantiate.sh /path/to/project-genesis /path/to/my-project
-cd ~/my-project
-/capture_issue   # or edit .genome/ and run the build
+sh scripts/verify-genesis.sh
 ```
-
-Options: `--force` (non-empty target), `--no-verify` (skip post-copy `npm test`).
-
-After instantiate: copy [ARCHITECTURE_TEMPLATE](docs/ARCHITECTURE_TEMPLATE.md) and [DEV_RUNBOOK_TEMPLATE](docs/DEV_RUNBOOK_TEMPLATE.md) into `docs/`; read [Product vs genome mission](docs/PRODUCT_VS_GENOME_MISSION.md).
-
----
 
 ## Documentation
 
-- [docs/BLUEPRINT.md](docs/BLUEPRINT.md) — Framework architecture
-- [lib/README.md](lib/README.md) — Runtime API
-- [.cursor/commands/workflow.md](.cursor/commands/workflow.md) — Full workflow reference
-- [docs/WORKFLOW_COURSE.md](docs/WORKFLOW_COURSE.md) — Case studies and anti-patterns
-- [docs/DECISION_CONTEXT_MAP.md](docs/DECISION_CONTEXT_MAP.md) — pointer to the `ux-laws` skill
-- [`.cursor/skills/ux-laws/`](.cursor/skills/ux-laws/SKILL.md) — UX laws skill (autonomous: apply Default, log tradeoff, no pause)
-- [docs/VALIDATION_STORY_12.md](docs/VALIDATION_STORY_12.md) — Acceptance checklist
-- [docs/backlog.md](docs/backlog.md) — Roadmap
-
----
+| Resource | What you'll find |
+| --- | --- |
+| [Workflow reference](.cursor/commands/workflow.md) | Step-by-step commands, gates, and common mistakes |
+| [Run orchestrator](.cursor/commands/genesis_run.md) | Interactive and autonomous execution behavior |
+| [Workflow Course](docs/WORKFLOW_COURSE.md) | Examples and anti-patterns |
+| [Framework blueprint](docs/BLUEPRINT.md) | Architecture and design model |
+| [Runtime API](lib/README.md) | Genome loading and execution |
+| [UX laws skill](.cursor/skills/ux-laws/SKILL.md) | Contextual UX guidance |
+| [Validation checklist](docs/VALIDATION_STORY_12.md) | Acceptance and verification story |
+| [Roadmap](docs/backlog.md) | Planned work |
 
 ## License
 
